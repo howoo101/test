@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flex 를 알아보자</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="wrap">
+    <div class="left"></div>
+    <div class="right">
+      <p class="box"></p>
+      <p class="box2"></p>
+    </div>
+    <div class="bottom">1</div>
+  </div>
+
+  <!-- 
+    특정 영역안에서 자식요소를 자유롭게 배치 하는 법
+    -- 배치할 요소에 position:absolute 적용한뒤, 가로, 세로 좌표값을 설정
+    -- absolute의 좌표값은 무조건 "부모요소"중에서 position 속성이 있는 기준으로 좌표값 설정
+    -- 특정 요소를 absolute로 설정하는 순간에 해당 요소는 문서에서 강제로 뜯어져나와서 설정한 좌표값 위치로 얹혀짐
+    -- position: relative는 화면상에 (좌표값을 주지 않으면) 아무런 변화를 일으키지 않으면서 position속성만 설정
+    -- position: relative는 보통 자식 absolute요소의 기준점 설정할때 쓰임
+-->
+</body>
+
+</html>
