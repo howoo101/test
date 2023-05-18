@@ -10,4 +10,15 @@ li {
   list-style: none;
 }
 
+main {
+  width: 100%;
+  height: 100vh;
+  background: url(../pic.jpg) no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5vw;
+  color: #fff;
+}
+
 /*# sourceMappingURL=style.css.map */
