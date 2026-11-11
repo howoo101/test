@@ -2,16 +2,16 @@
 // 네이버 지역 검색 API로 좌표·주소·전화번호를 확인합니다.
 //
 //   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/enrich-naver-local.mjs          # 비교표만 출력
-//   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/enrich-naver-local.mjs --write  # places.js에 반영
+//   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/enrich-naver-local.mjs --write  # places.json에 반영
 //
 // 지역 검색은 한 번에 최대 5개 결과만 주고, mapx/mapy 는 WGS84 경위도에 10^7을 곱한 정수입니다.
-import { file, readWindowVar, writeWindowVar, stripTags, norm } from './lib/datafile.mjs';
+import { file, readJson, writeJson, stripTags, norm } from './lib/datafile.mjs';
 import { credentials, search } from './lib/naver-search.mjs';
 
 const write = process.argv.includes('--write');
 const cred = credentials();
-const placesFile = file('data', 'places.js');
-const data = readWindowVar(placesFile, 'JJIM_DATA');
+const placesFile = file('data', 'places.json');
+const data = readJson(placesFile);
 
 function toDeg(v) {
   const n = Number(v);
@@ -55,6 +55,6 @@ for (const place of data.places) {
 }
 
 if (write) {
-  writeWindowVar(placesFile, 'JJIM_DATA', data);
+  writeJson(placesFile, data);
   console.log(`${changed}곳을 고쳤어요. git diff 로 확인한 뒤 커밋하세요.`);
 }

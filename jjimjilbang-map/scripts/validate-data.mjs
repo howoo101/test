@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// data/places.js 검사기. 오류가 있으면 종료 코드 1로 끝납니다(GitHub Actions에서도 실행).
+// data/places.json 검사기. 오류가 있으면 종료 코드 1로 끝납니다(GitHub Actions에서도 실행).
 //
 //   node scripts/validate-data.mjs
-import { file, readWindowVar } from './lib/datafile.mjs';
+import { file, readJson } from './lib/datafile.mjs';
 
-const { places } = readWindowVar(file('data', 'places.js'), 'JJIM_DATA');
-const FAC = readWindowVar(file('js', 'facilities.js'), 'JJIM_FACILITIES');
-const GEO = readWindowVar(file('data', 'seoul-geo.js'), 'SEOUL_GEO');
+const { places } = readJson(file('data', 'places.json'));
+const FAC = readJson(file('data', 'facilities.json'));
+const GEO = readJson(file('data', 'seoul-geo.json'));
 
 const errors = [];
 const warnings = [];
@@ -79,7 +79,7 @@ for (const p of places) {
     else if (age > 12) warn(p, `요금 정보가 ${age}개월 전 자료예요. 다시 확인해 주세요.`);
   }
 
-  (p.facilities || []).forEach((k) => { if (!FAC.items[k]) err(p, `모르는 시설 코드: ${k} (js/facilities.js 확인)`); });
+  (p.facilities || []).forEach((k) => { if (!FAC.items[k]) err(p, `모르는 시설 코드: ${k} (data/facilities.json 확인)`); });
   (p.hashtags || []).forEach((t) => { if (/^#|\s/.test(t)) err(p, `해시태그에는 #과 공백을 빼 주세요 (${t})`); });
   (p.reviewLinks || []).forEach((r, i) => { if (!isUrl(r.url)) err(p, `reviewLinks[${i}].url 이 URL이 아니에요`); });
   (p.instagramPosts || []).forEach((u) => { if (!/^https:\/\/www\.instagram\.com\/(p|reel)\//.test(u)) err(p, `인스타그램 게시물 주소 형식이 아니에요 (${u})`); });

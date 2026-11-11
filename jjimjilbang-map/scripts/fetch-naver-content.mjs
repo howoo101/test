@@ -1,21 +1,19 @@
 #!/usr/bin/env node
-// 장소마다 네이버 블로그 후기와 이미지 검색 결과를 모아 data/naver-content.js 를 만듭니다.
+// 장소마다 네이버 블로그 후기와 이미지 검색 결과를 모아 data/naver-content.json 을 만듭니다.
 //
 //   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/fetch-naver-content.mjs [--only 장소id]
 //
 // 화면에는 제목·요약·링크만 보여주고 원문으로 연결합니다(본문 복사 금지).
-import { file, readWindowVar, writeWindowVar, stripTags, norm } from './lib/datafile.mjs';
+import { file, readJson, writeJson, stripTags, norm } from './lib/datafile.mjs';
 import { credentials, search } from './lib/naver-search.mjs';
 
 const args = process.argv.slice(2);
 const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
 const cred = credentials();
 
-const placesFile = file('data', 'places.js');
-const outFile = file('data', 'naver-content.js');
-const { places } = readWindowVar(placesFile, 'JJIM_DATA');
-let prev = { byPlace: {} };
-try { prev = readWindowVar(outFile, 'JJIM_NAVER'); } catch { /* 처음 실행 */ }
+const outFile = file('data', 'naver-content.json');
+const { places } = readJson(file('data', 'places.json'));
+const prev = readJson(outFile, { byPlace: {} });
 
 function mentions(place, text) {
   const t = norm(text);
@@ -57,5 +55,5 @@ for (const place of places) {
 const ids = new Set(places.map((p) => p.id));
 Object.keys(byPlace).forEach((id) => { if (!ids.has(id)) delete byPlace[id]; });
 
-writeWindowVar(outFile, 'JJIM_NAVER', { updatedAt: new Date().toISOString().slice(0, 10), byPlace });
+writeJson(outFile, { updatedAt: new Date().toISOString().slice(0, 10), byPlace });
 console.log(`저장: ${outFile}`);

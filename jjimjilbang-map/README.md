@@ -1,112 +1,131 @@
-# 서울 찜질방 지도
+# 서울 찜질방 지도 — 앱인토스 미니앱
 
-서울 찜질방의 **요금 · 시설 · 후기 · 사진**을 네이버 지도 위에서 한 번에 비교하는 웹 지도예요.
+서울 찜질방의 **요금 · 영업 상태 · 시설 · 후기 · 사진 바로가기**를 한 화면에서 비교하는 토스 미니앱이에요.
+[앱인토스 개발자 가이드](https://developers-apps-in-toss.toss.im/)의 **WebView 방식**을 그대로 따라 만들었어요.
 
-- 지도 핀에 어른 찜질 최저 요금이 바로 보여요 (`1.4만` 같은 식)
-- 요금표(주간·야간·주말·소인), 시설 25종, 후기 요약, 네이버 블로그 후기, 인스타그램 해시태그, 사진 바로가기를 상세 화면 하나에 모았어요
-- 모든 요금에 출처와 기준 날짜를 붙였어요
-- 네이버 지도 앱·웹과 같은 화면 패턴이에요: 떠 있는 검색창과 필터 칩, 목록 옆 상세 패널, 바텀시트, "현 지도에서 검색", 영업 중 표시
+| 항목 | 이 프로젝트에서 쓰는 것 |
+| --- | --- |
+| 웹 프레임워크 | Vite + React 18 + TypeScript |
+| 앱인토스 SDK | `@apps-in-toss/web-framework` 3.x (설정 파일 `apps-in-toss.config.ts`) |
+| 디자인 시스템 | TDS — `@toss/tds-mobile`, `@toss/tds-mobile-ait` (`TDSMobileAITProvider`) |
+| 개발 도구 | `@apps-in-toss/devtools` — 브라우저에서 SDK를 흉내 내는 공식 mock + AIT 패널 |
+| 빌드 결과 | `ait build` → `seoul-jjimjilbang-map.ait` (콘솔에 올리는 파일) |
 
-기획 배경, 화면 설계, 데이터 수집 정책은 [docs/기획서.md](docs/기획서.md)에 있어요.
+기획 배경과 화면·데이터 설계, 정책 검토는 [docs/기획서.md](docs/기획서.md)에 있어요.
 
-## 1. 바로 실행해 보기
+## 1. 준비
 
-빌드 과정이 없어요. 아무 웹 서버로 이 폴더를 열면 됩니다.
+- Node.js **24 이상**을 권장해요 (`@apps-in-toss/devtools`와 `.ait` 포맷 도구가 Node 24를 요구해요).
+- 처음 한 번 `npm install`
 
-- **VS Code:** `index.html`을 열고 오른쪽 아래 **Go Live**(Live Server 확장) 클릭 → `http://127.0.0.1:5500/jjimjilbang-map/`
-- **터미널:** `cd jjimjilbang-map && python3 -m http.server 5500` → `http://localhost:5500`
-
-네이버 지도 키를 넣기 전에는 서울 구 경계로 그린 **간이 지도**로 보여요. 기능은 모두 똑같이 동작해요.
-
-## 2. 네이버 지도 연결하기
-
-1. [네이버 클라우드 플랫폼](https://www.ncloud.com)에 가입하고 콘솔에 들어가요. (결제수단 등록이 필요할 수 있어요)
-2. **Services → Application Services → Maps** 에서 **Application 등록**을 눌러요.
-3. API는 **Dynamic Map**을 고르고, **Web 서비스 URL**에 이 페이지를 열 주소를 모두 넣어요.
-   - `http://127.0.0.1:5500`, `http://localhost:5500` (내 컴퓨터)
-   - `https://<깃허브아이디>.github.io` (GitHub Pages로 공개할 때)
-4. 만들어진 앱의 **Client ID**를 복사해 `js/config.js`의 `NAVER_MAP_KEY_ID`에 붙여 넣어요.
-
-```js
-window.JJIM_CONFIG = {
-  NAVER_MAP_KEY_ID: '여기에_Client_ID',
-  ...
-};
-```
-
-- 스크립트 주소는 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=...` 예요. 옛 예제의 `ncpClientId`는 2025년 신규 Maps 상품부터 `ncpKeyId`로 바뀌었어요.
-- Client ID는 브라우저에 보여도 괜찮아요. 등록한 주소에서만 동작해요.
-- 인증에 실패하면 화면 위에 안내가 뜨고 간이 지도로 바뀌어요. 키와 Web 서비스 URL을 다시 확인하세요.
-- NCP 콘솔에서 월 사용 한도를 걸어 두면 요금 걱정이 없어요.
-
-## 3. 네이버 블로그 후기·사진 자동으로 채우기
-
-네이버 검색 API(하루 25,000회 무료)로 장소마다 블로그 후기와 이미지를 모아 `data/naver-content.js`에 저장해요.
-
-1. [네이버 개발자센터](https://developers.naver.com/apps/#/register)에서 애플리케이션을 등록하고 사용 API로 **검색**을 골라요.
-2. 발급된 Client ID와 Client Secret으로 실행해요. (Node.js 18 이상)
+## 2. 브라우저에서 개발하기
 
 ```bash
-cd jjimjilbang-map
-NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:content   # 블로그 후기·이미지
-NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:enrich    # 좌표·전화번호 비교표
-NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 node scripts/enrich-naver-local.mjs --write  # 좌표 반영
+npm run dev        # http://localhost:5173
 ```
 
-**매일 자동으로 돌리기:** 저장소 **Settings → Secrets and variables → Actions**에 `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`을 등록하면 `.github/workflows/jjimjilbang-map.yml`이 매일 새벽(한국시간 03:17) 후기를 갱신해 커밋해요. 예약 실행은 기본 브랜치(main)에 합쳐진 뒤부터 돌아가요.
+- 토스 앱이 없어도 공식 mock SDK가 위치·저장소·공유 같은 기능을 흉내 내요.
+- 화면 오른쪽 아래 **AIT** 버튼을 누르면 패널이 열려요. 위치 권한 거부, 내 위치 좌표, 기기 화면(내비게이션 바 포함) 같은 상황을 바꿔 가며 확인할 수 있어요.
+- 휴대폰 화면 기준이라 브라우저 개발자 도구의 모바일 보기로 확인하는 게 편해요.
 
-> Client Secret은 절대 `js/config.js`나 다른 브라우저 코드에 넣지 마세요.
+## 3. 앱인토스 콘솔에 앱 등록하고 휴대폰에서 확인하기
 
-## 4. 찜질방 정보 고치기·추가하기
+1. 앱인토스 콘솔에서 미니앱을 만들고 **앱 이름을 `seoul-jjimjilbang-map`** 으로 등록해요. 이름을 바꾸려면 `apps-in-toss.config.ts`의 `appName`과 `src/lib/toss.ts`의 `APP_NAME`도 같이 바꿔요. 표시 이름과 아이콘은 콘솔에서 정해요.
+2. 아래 4번처럼 빌드해서 올리면 그 버전을 여는 `intoss-private://` 주소가 출력돼요. 콘솔 안내에 따라 휴대폰에서 열어 확인해요. 개발 서버를 샌드박스 앱에 바로 붙이는 방법은 개발자센터의 WebView 튜토리얼을 따라요.
+3. 휴대폰에서 콘솔 로그를 봐야 하면 `@apps-in-toss/debugger`와 `@apps-in-toss/debug-console`을 써요 (devtools 패키지 README에 안내가 있어요).
 
-모든 장소 정보는 `data/places.js` 한 파일에 있어요. 고친 뒤에는 꼭 검사기를 돌리세요.
+## 4. 빌드하고 배포하기
 
 ```bash
-npm run validate     # node scripts/validate-data.mjs
+npm run build      # 타입 검사 → vite build → ait build → seoul-jjimjilbang-map.ait
+npm run deploy     # ait deploy (콘솔에서 발급한 API 키가 필요해요)
 ```
 
-검사기는 형식 오류, 모르는 시설 코드, 좌표가 적힌 구 밖에 찍히는지, 12개월 넘은 요금 정보를 알려줘요. push와 PR에서도 GitHub Actions가 같은 검사를 해요.
+- API 키는 `npx ait token add`로 한 번 저장해 두면 다음부터 묻지 않아요.
+- 업로드한 뒤 콘솔에서 **검수**를 요청해요. 요청 전에 콘솔의 **비게임 출시 가이드 체크리스트**를 꼭 확인하세요.
+- `.ait` 파일은 커밋하지 않아요 (`.gitignore`에 있어요).
 
-새 장소를 추가할 때 체크리스트:
+## 5. 토스 앱 밖에서 보여줄 미리보기 만들기
+
+```bash
+npm run build:preview   # preview-dist/ — 공식 mock SDK를 넣어 일반 브라우저에서도 동작
+```
+
+실제 배포 번들(`dist/`)은 토스 앱 밖에서 열면 SDK 대신 웹 기능(브라우저 위치, localStorage 등)으로 동작하도록 만들어 두었어요.
+
+## 6. 토스 SDK를 쓰는 곳
+
+모든 SDK 호출은 `src/lib/toss.ts` 한 파일에 모여 있어요. 토스 앱 밖에서는 같은 함수가 웹 API로 대신 동작해요.
+
+| 기능 | SDK | 권한(`apps-in-toss.config.ts`) |
+| --- | --- | --- |
+| 내 위치·가까운순 정렬 | `Device.getLocation` (거부하면 `openPermissionDialog`로 다시 요청) | `geolocation` |
+| 주소·전화번호 복사 | `Clipboard.setText` | `clipboard` (write) |
+| 공유 | `Share.createLink` (`intoss://seoul-jjimjilbang-map?place=장소id`) + `Share.sendMessage` | — |
+| 찜 목록 저장 | `Storage.getItem` / `Storage.setItem` | — |
+| 네이버 지도·블로그·인스타 열기 | `Device.openURL` | — |
+| 가벼운 진동 | `Device.triggerHaptic` | — |
+| 상세 화면에서 뒤로 가기 | `graniteEvent`의 `backEvent` | — |
+
+공유 링크로 들어오면 `?place=장소id`를 읽어 바로 그 찜질방 상세를 열어요.
+
+## 7. 지도
+
+- 기본은 **간이 지도**예요. 외부 지도 키 없이 서울 25개 구 경계, 한강, 주요 지하철역을 그려요.
+- 네이버 지도를 쓰려면 프로젝트 폴더에 `.env` 파일을 만들고 `VITE_NAVER_MAP_KEY_ID=발급받은_Client_ID` 를 넣어요.
+- ⚠️ 미니앱 안에서 외부 지도 API를 쓸 수 있는지는 **지도 제공사와 앱인토스 정책을 먼저 확인**하세요. 카카오맵은 "토스 앱 안의 서비스에는 입점사 자체 앱 키를 쓸 수 없다"고 답한 사례가 있어요. 그래서 기본값을 간이 지도로 두었어요.
+
+## 8. 찜질방 정보 고치기·추가하기
+
+장소 정보는 `data/places.json`에 있어요. 고친 뒤에는 검사기를 돌리세요 (push·PR 때 GitHub Actions도 같은 검사를 해요).
+
+```bash
+npm run validate
+```
+
+네이버 검색 API(하루 25,000회 무료) 키가 있으면 블로그 후기·이미지와 좌표를 자동으로 채울 수 있어요.
+
+```bash
+NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:content   # data/naver-content.json
+NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:enrich    # 좌표·전화번호 비교표 (--write 로 반영)
+```
+
+저장소 **Settings → Secrets and variables → Actions**에 같은 이름으로 넣으면 매일 새벽 후기가 자동으로 갱신돼요. Client Secret은 앱 코드에 절대 넣지 마세요.
+
+새 장소를 넣을 때 확인할 것:
 
 - [ ] `id`는 영문 소문자와 하이픈 (`sparex-dongmyo`)
-- [ ] 요금마다 `type`(찜질/목욕/기타), `who`(대인/소인…), `price`(정수)
-- [ ] `priceSource`에 출처 URL과 기준 날짜 (`2026-11`)
-- [ ] `facilities`는 `js/facilities.js`에 있는 코드만
+- [ ] 요금마다 `type`(찜질/목욕/기타), `who`(대인/소인…), `price`(정수)와 `priceSource`(출처 URL, 기준 날짜)
+- [ ] `facilities`는 `data/facilities.json`에 있는 코드만
 - [ ] 후기 요약(`highlights`, `cons`)은 원문을 복사하지 말고 직접 요약
 - [ ] 사진(`photos`)은 직접 찍었거나 허락받은 것만, `credit` 표시
-- [ ] 네이버 지도에서 장소를 열었을 때 주소의 `/place/숫자`를 `naverPlaceId`에 넣으면 사진·리뷰 탭으로 바로 연결돼요
-
-## 5. 인터넷에 공개하기 (GitHub Pages)
-
-1. 이 브랜치를 main에 합쳐요.
-2. 저장소 **Settings → Pages → Build and deployment**에서 Source를 **Deploy from a branch**, 브랜치를 `main` / `(root)`로 저장해요.
-3. 몇 분 뒤 `https://<깃허브아이디>.github.io/<저장소이름>/jjimjilbang-map/` 에서 열려요.
-4. NCP Maps의 Web 서비스 URL에 `https://<깃허브아이디>.github.io`를 꼭 추가하세요.
 
 ## 폴더 구조
 
 ```
 jjimjilbang-map/
-├── index.html              화면 뼈대
-├── css/style.css           디자인 (라이트/다크 모드)
-├── js/config.js            네이버 지도 키, 제보 링크
-├── js/icons.js             선 아이콘 (SVG)
-├── js/facilities.js        시설 코드 사전 (25종)
-├── js/app.js               검색·필터·목록·상세·바텀시트
-├── js/map-naver.js         네이버 지도 어댑터
-├── js/map-fallback.js      간이 지도 어댑터 (SVG)
-├── data/places.js          찜질방 데이터 ← 사람이 관리
-├── data/naver-content.js   네이버 후기·이미지 ← 스크립트가 생성
-├── data/seoul-geo.js       서울 25개 구 경계 + 한강
-├── data/seoul-stations.js  간이 지도용 주요 지하철역 (근사 좌표)
-├── scripts/                검사·수집 스크립트
+├── apps-in-toss.config.ts   앱 이름·권한·번들 폴더 (ait init 형식)
+├── vite.config.ts           React + 앱인토스 devtools 플러그인
+├── index.html
+├── src/
+│   ├── main.tsx             TDS Provider + 앱 상태
+│   ├── App.tsx              홈 ↔ 상세 화면 전환 (#장소id)
+│   ├── pages/HomePage.tsx   검색·필터 칩·지도/목록·정렬
+│   ├── pages/PlacePage.tsx  상세 (요금표·기본 정보·시설·후기·하단 버튼)
+│   ├── components/          지도, 목록 줄, 아이콘
+│   └── lib/
+│       ├── data.ts          데이터 정리·영업 상태·필터
+│       ├── toss.ts          앱인토스 SDK 호출 (브라우저 대체 포함)
+│       └── map/             간이 지도(SVG)·네이버 지도 어댑터
+├── data/                    places.json, facilities.json, naver-content.json, seoul-geo.json, seoul-stations.json
+├── scripts/                 데이터 검사·네이버 검색 API 수집
 └── docs/기획서.md
 ```
 
 ## 데이터 출처와 주의
 
-- 장소 정보는 2026년 11월 공개 자료(기사, 여행 가이드, 후기)로 정리했어요. 장소마다 출처와 날짜가 `priceSource`, `reviewLinks`에 있어요.
+- 찜질방 정보는 2026년 11월 공개 자료(기사, 여행 가이드, 후기)로 정리했어요. 장소마다 출처와 날짜가 `priceSource`, `reviewLinks`에 있어요.
 - 요금과 운영 시간은 자주 바뀌어요. 화면에도 "방문 전 확인" 안내를 넣었어요.
-- 지도 위치는 아직 추정값이에요. 3번의 지역 검색 스크립트로 보정하세요.
+- 지도 위치는 아직 추정값이에요. 네이버 지역 검색 스크립트로 보정하세요.
+- TDS는 토스가 앱인토스 파트너에게 제공하는 디자인 시스템이에요. 앱인토스 미니앱 용도로 쓰세요.
 - 구 경계: 통계청 2013 센서스 경계 ([southkorea/seoul-maps](https://github.com/southkorea/seoul-maps))

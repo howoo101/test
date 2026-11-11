@@ -1,31 +1,18 @@
-// data/*.js 파일은 브라우저에서 바로 쓰도록 `window.이름 = {...};` 형태입니다.
-// Node 스크립트에서는 vm으로 실행해 값을 꺼내고, JSON으로 다시 씁니다.
+// data/*.json 읽기·쓰기 도우미 (앱은 Vite가 같은 JSON을 그대로 import 해요)
 import fs from 'node:fs';
 import path from 'node:path';
-import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const file = (...p) => path.join(ROOT, ...p);
 
-export function readWindowVar(filePath, name) {
-  const code = fs.readFileSync(filePath, 'utf8');
-  const sandbox = { window: {} };
-  vm.runInNewContext(code, sandbox, { filename: filePath });
-  if (!(name in sandbox.window)) throw new Error(`${filePath} 에 window.${name} 가 없어요`);
-  return sandbox.window[name];
+export function readJson(filePath, fallback) {
+  if (fallback !== undefined && !fs.existsSync(filePath)) return fallback;
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
-export function readHeader(filePath) {
-  if (!fs.existsSync(filePath)) return '';
-  const code = fs.readFileSync(filePath, 'utf8');
-  const m = code.match(/^\/\*[\s\S]*?\*\/\n/);
-  return m ? m[0] : '';
-}
-
-export function writeWindowVar(filePath, name, data) {
-  const header = readHeader(filePath);
-  fs.writeFileSync(filePath, header + `window.${name} = ` + JSON.stringify(data, null, 2) + ';\n');
+export function writeJson(filePath, data) {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
 }
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
