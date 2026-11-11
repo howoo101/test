@@ -69,6 +69,35 @@ export async function openExternal(url: string) {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
+/**
+ * 다른 앱(예: 네이버 지도 앱의 길찾기)을 바로 열어요. 앱이 없어서 열리지 않으면 webUrl을 열어요.
+ * - 토스 앱: Device.openURL 이 기기에서 그 주소를 처리할 앱을 찾아 열어요. 실패하면 웹 주소로.
+ * - 휴대폰 브라우저: 앱 주소로 이동해 보고, 1.5초 안에 화면을 떠나지 않으면 웹 주소로.
+ * - 데스크톱 브라우저: 앱이 없으니 바로 웹 주소를 새 탭으로.
+ */
+export async function openAppWithFallback(appUrl: string, webUrl: string) {
+  if (isInTossApp()) {
+    try {
+      await Device.openURL(appUrl);
+    } catch {
+      await Device.openURL(webUrl);
+    }
+    return;
+  }
+  if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.open(webUrl, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  let left = false;
+  const onHide = () => { if (document.visibilityState === 'hidden') left = true; };
+  document.addEventListener('visibilitychange', onHide);
+  window.setTimeout(() => {
+    document.removeEventListener('visibilitychange', onHide);
+    if (!left) window.location.href = webUrl;
+  }, 1500);
+  window.location.href = appUrl;
+}
+
 export async function copyText(text: string) {
   if (isInTossApp()) {
     await Clipboard.setText(text);

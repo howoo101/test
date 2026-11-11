@@ -1,7 +1,8 @@
-# 서울 찜질방 지도: 데이터 검사 + 네이버 후기·이미지 자동 갱신
-# - push / PR: data/places.json 형식과 좌표를 검사합니다.
-# - 매일 새벽(한국시간 03:17) 또는 수동 실행: 네이버 검색 API로 후기·이미지를 다시 모아 커밋합니다.
-#   저장소 Settings > Secrets and variables > Actions 에 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET 을 등록해야 동작해요.
+# 서울 찜질방 지도: 데이터 검사 + 네이버 후기·이미지, 유튜브 영상 자동 갱신
+# - push / PR: data/places.json 형식과 좌표, 후기·추천 링크를 검사합니다.
+# - 매일 새벽(한국시간 03:17) 또는 수동 실행: 네이버 검색 API로 후기·이미지를, YouTube Data API로 영상을 다시 모아 커밋합니다.
+#   저장소 Settings > Secrets and variables > Actions 에 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, YOUTUBE_API_KEY 를 등록해야 동작해요.
+#   (키가 없는 쪽은 건너뛰어요)
 #   (예약 실행은 기본 브랜치에서만 돌아갑니다)
 name: jjimjilbang-map data
 
@@ -38,6 +39,7 @@ jobs:
     env:
       NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
       NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -49,15 +51,18 @@ jobs:
       - name: 네이버 블로그 후기·이미지 가져오기
         if: env.NAVER_CLIENT_ID != ''
         run: node jjimjilbang-map/scripts/fetch-naver-content.mjs
+      - name: 유튜브 영상 가져오기
+        if: env.YOUTUBE_API_KEY != ''
+        run: node jjimjilbang-map/scripts/fetch-youtube.mjs
       - name: 바뀐 내용 커밋
-        if: env.NAVER_CLIENT_ID != ''
+        if: env.NAVER_CLIENT_ID != '' || env.YOUTUBE_API_KEY != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add jjimjilbang-map/data/naver-content.json
+          git add jjimjilbang-map/data/naver-content.json jjimjilbang-map/data/youtube-content.json
           if git diff --cached --quiet; then
             echo "바뀐 내용 없음"
           else
-            git commit -m "data: 네이버 후기·이미지 갱신"
+            git commit -m "data: 네이버 후기·이미지, 유튜브 영상 갱신"
             git push
           fi

@@ -63,7 +63,8 @@ npm run build:preview   # preview-dist/ — 공식 mock SDK를 넣어 일반 브
 | 주소·전화번호 복사 | `Clipboard.setText` | `clipboard` (write) |
 | 공유 | `Share.createLink` (`intoss://seoul-jjimjilbang-map?place=장소id`) + `Share.sendMessage` | — |
 | 찜 목록 저장 | `Storage.getItem` / `Storage.setItem` | — |
-| 네이버 지도·블로그·인스타 열기 | `Device.openURL` | — |
+| 네이버 지도·블로그·유튜브·인스타 열기 | `Device.openURL` | — |
+| 네이버 지도 길찾기 (하단 버튼) | `Device.openURL('nmap://route/public?…')` → 네이버 지도 앱이 현재 위치에서 대중교통 길찾기를 열어요. 앱이 없으면 네이버 지도 웹의 장소 화면으로 | — |
 | 가벼운 진동 | `Device.triggerHaptic` | — |
 | 상세 화면에서 뒤로 가기 | `graniteEvent`의 `backEvent` | — |
 
@@ -90,7 +91,53 @@ NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:content   
 NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:enrich    # 좌표·전화번호 비교표 (--write 로 반영)
 ```
 
-저장소 **Settings → Secrets and variables → Actions**에 같은 이름으로 넣으면 매일 새벽 후기가 자동으로 갱신돼요. Client Secret은 앱 코드에 절대 넣지 마세요.
+유튜브 영상도 자동으로 모을 수 있어요. Google Cloud 콘솔에서 **YouTube Data API v3** 키를 만들어 넣어요 (하루 무료 10,000단위, 17곳 검색에 약 1,700단위).
+
+```bash
+YOUTUBE_API_KEY=키 npm run youtube   # data/youtube-content.json
+```
+
+이 스크립트는 `reviewLinks`에 넣은 추천 영상도 확인해요. 비어 있는 채널 이름과 올린 날짜를 채우고, 지워졌거나 비공개로 바뀐 영상은 화면과 추천순에서 빼요.
+
+저장소 **Settings → Secrets and variables → Actions**에 같은 이름(`NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`, `YOUTUBE_API_KEY`)으로 넣으면 매일 새벽 후기와 영상이 자동으로 갱신돼요. 키는 앱 코드에 절대 넣지 마세요.
+
+### 유튜브·인스타 추천 넣기
+
+장소의 `reviewLinks`에 글·영상 하나씩 넣어요. 평가(`verdict`)가 있는 링크가 **후기 평가**와 **추천순**에 들어가요.
+
+```json
+{
+  "title": "서울 3대 찜질방! 리얼 숯가마 사우나 …",
+  "url": "https://www.youtube.com/watch?v=영상ID",
+  "source": "유튜브",
+  "date": "2025-02",
+  "platform": "youtube",
+  "kind": "review",
+  "author": "채널 이름",
+  "verdict": "recommend",
+  "note": "서울 3대 숯가마 찜질방으로 꼽고 이용법 소개"
+}
+```
+
+| 필드 | 값 |
+| --- | --- |
+| `platform` | `youtube` · `instagram` · `web`(블로그·기사·여행 가이드·스레드). 비우면 주소로 판단 |
+| `kind` | `review`(그곳만 다룬 후기) · `list`(여러 곳을 묶은 추천 모음) |
+| `verdict` | `recommend` 추천 · `mixed` 장단점 · `negative` 아쉬움 · `null` 판단 근거 없음 |
+| `note` | 그 글·영상이 이 장소에 대해 한 말을 **직접** 한 줄로 요약 (원문 복사 금지) |
+| `sponsored` | 협찬·광고 표시가 있으면 `true` (추천순에서 절반만 반영) |
+
+- 유튜브 주소는 `watch?v=영상ID`나 `shorts/영상ID` 형식, 인스타그램은 게시물(`/p/`)이나 릴스(`/reel/`) 주소만 넣어요. 검사기가 형식을 확인해요.
+- 인스타그램 게시물은 검색 엔진에 거의 잡히지 않고, 공식 해시태그 검색 API는 메타 앱 심사가 필요해요. 그래서 운영자가 직접 골라 넣는 방식으로 시작해요.
+- 평가는 제목과 소개에 드러난 내용으로만 나눠요. 애매하면 `null`로 둬요.
+
+**추천순은 이렇게 정해요** (`src/lib/data.ts`의 `reviewScore`)
+
+- 링크 하나마다 `출처 가중치 × 평가 점수 × 최신성`을 더해요. 출처 가중치는 유튜브 1.2, 인스타그램 1, 블로그·기사 0.8이에요.
+- 평가 점수는 추천 1, 장단점 0.3, 아쉬움 -1, 판단 근거 없음 0.2예요.
+- 최신성은 1년 안이면 1, 2년 안이면 0.8, 4년 안이면 0.5, 그보다 오래되면 0.3, 날짜를 모르면 0.4예요.
+- 묶음 글(`list`)은 0.8배, 협찬(`sponsored`)은 0.5배로 줄여서 더해요.
+- 여기에 정보 신뢰도(높음 1, 보통 0.5)와 네이버 블로그 글 수(최대 1점)를 더해요.
 
 새 장소를 넣을 때 확인할 것:
 
@@ -98,6 +145,7 @@ NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:enrich    
 - [ ] 요금마다 `type`(찜질/목욕/기타), `who`(대인/소인…), `price`(정수)와 `priceSource`(출처 URL, 기준 날짜)
 - [ ] `facilities`는 `data/facilities.json`에 있는 코드만
 - [ ] 후기 요약(`highlights`, `cons`)은 원문을 복사하지 말고 직접 요약
+- [ ] 유튜브·인스타·블로그 후기는 `reviewLinks`에 평가(`verdict`)와 함께
 - [ ] 사진(`photos`)은 직접 찍었거나 허락받은 것만, `credit` 표시
 
 ## 폴더 구조
@@ -117,8 +165,8 @@ jjimjilbang-map/
 │       ├── data.ts          데이터 정리·영업 상태·필터
 │       ├── toss.ts          앱인토스 SDK 호출 (브라우저 대체 포함)
 │       └── map/             간이 지도(SVG)·네이버 지도 어댑터
-├── data/                    places.json, facilities.json, naver-content.json, seoul-geo.json, seoul-stations.json
-├── scripts/                 데이터 검사·네이버 검색 API 수집
+├── data/                    places.json, facilities.json, naver-content.json, youtube-content.json, seoul-geo.json, seoul-stations.json
+├── scripts/                 데이터 검사, 네이버 검색 API·YouTube Data API 수집
 └── docs/기획서.md
 ```
 

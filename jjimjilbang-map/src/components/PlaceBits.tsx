@@ -1,5 +1,5 @@
 // 목록·지도·상세에서 같이 쓰는 작은 조각들
-import { ListRow } from '@toss/tds-mobile';
+import { Badge, ListRow } from '@toss/tds-mobile';
 import { colors } from '@toss/tds-colors';
 import { useApp } from '../AppContext';
 import {
@@ -12,6 +12,7 @@ import {
   reviewLabel,
   shortWon,
   signature,
+  snsBadge,
   won,
   type OpenKey,
   type Place,
@@ -28,7 +29,9 @@ const STATUS_COLOR: Record<OpenKey, string> = {
 export function StatusText({ place, withReview = true, withDistance = false }: { place: Place; withReview?: boolean; withDistance?: boolean }) {
   const { userPos } = useApp();
   const st = openStatus(place);
-  const rest = [st.sub, withReview ? reviewLabel(place) : '', withDistance && userPos ? fmtDist(distanceKm(userPos, place)) : '']
+  // 유튜브·인스타 추천 배지가 붙는 곳은 배지에 추천 수가 있으니 여기서는 빼요.
+  const review = withReview && !snsBadge(place) ? reviewLabel(place) : '';
+  const rest = [st.sub, review, withDistance && userPos ? fmtDist(distanceKm(userPos, place)) : '']
     .filter(Boolean)
     .join(' · ');
   return (
@@ -79,6 +82,7 @@ const shortStation = (s?: string | null) => (s ? /[가-힣A-Za-z0-9]+역/.exec(s
 /** 목록 한 줄 */
 export function PlaceRow({ place, onClick, withReview = true }: { place: Place; onClick: () => void; withReview?: boolean }) {
   const meta = [category(place), place.gu, shortStation(place.station)].filter(Boolean).join(' · ');
+  const badge = snsBadge(place);
   return (
     <ListRow
       onClick={onClick}
@@ -88,7 +92,12 @@ export function PlaceRow({ place, onClick, withReview = true }: { place: Place; 
       contents={
         <ListRow.Texts
           type="3RowTypeA"
-          top={place.name}
+          top={badge ? (
+            <span className="row-title">
+              <span className="row-name">{place.name}</span>
+              <Badge size="xsmall" variant="weak" color="red">{badge}</Badge>
+            </span>
+          ) : place.name}
           middle={<StatusText place={place} withReview={withReview} withDistance />}
           bottom={meta}
         />

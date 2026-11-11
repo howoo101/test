@@ -38,6 +38,41 @@ function monthsAgo(ym) {
 }
 const isUrl = (u) => /^https?:\/\/[^\s]+$/.test(u || '');
 
+// 후기·추천 링크 (블로그·기사·유튜브·인스타그램)
+const PLATFORMS = new Set(['youtube', 'instagram', 'web']);
+const KINDS = new Set(['review', 'list']);
+const VERDICTS = new Set(['recommend', 'mixed', 'negative']);
+const YOUTUBE_URL = /^https:\/\/(www\.youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)[\w-]{11}/;
+const INSTAGRAM_URL = /^https:\/\/www\.instagram\.com\/(p|reel|reels)\/[\w-]+/;
+const hostPlatform = (u) => (/^https:\/\/([a-z]+\.)?(youtube\.com|youtu\.be)\//.test(u) ? 'youtube' : /^https:\/\/([a-z]+\.)?instagram\.com\//.test(u) ? 'instagram' : 'web');
+let snsLinks = 0;
+let snsRecommends = 0;
+
+function checkReviewLinks(p) {
+  const seen = new Set();
+  (p.reviewLinks || []).forEach((r, i) => {
+    const at = `reviewLinks[${i}]`;
+    if (!isUrl(r.url)) { err(p, `${at}.url 이 URL이 아니에요`); return; }
+    if (!r.title) err(p, `${at}.title 이 비었어요`);
+    const platform = r.platform ?? hostPlatform(r.url);
+    if (!PLATFORMS.has(platform)) err(p, `${at}.platform 은 youtube/instagram/web 중 하나예요 (${r.platform})`);
+    else if (platform !== hostPlatform(r.url)) err(p, `${at}.platform(${platform}) 이 주소(${r.url})와 맞지 않아요`);
+    if (platform === 'youtube' && !YOUTUBE_URL.test(r.url)) err(p, `${at} 유튜브 주소는 watch?v=영상ID 나 shorts/영상ID 형식으로 써 주세요 (${r.url})`);
+    if (platform === 'instagram' && !INSTAGRAM_URL.test(r.url)) err(p, `${at} 인스타그램은 게시물(/p/)이나 릴스(/reel/) 주소만 넣어요 (${r.url})`);
+    if (r.kind != null && !KINDS.has(r.kind)) err(p, `${at}.kind 는 review/list 중 하나예요 (${r.kind})`);
+    if (r.verdict != null && !VERDICTS.has(r.verdict)) err(p, `${at}.verdict 는 recommend/mixed/negative/null 중 하나예요 (${r.verdict})`);
+    if (r.date != null && !/^\d{4}(-\d{2}(-\d{2})?)?$/.test(r.date)) err(p, `${at}.date 는 YYYY, YYYY-MM, YYYY-MM-DD 형식이에요 (${r.date})`);
+    if (r.note && r.note.length > 60) warn(p, `${at}.note 가 길어요. 원문을 옮기지 말고 한 줄로 직접 요약해 주세요`);
+    const key = r.url.replace(/^https?:\/\/(www\.|m\.)?/, '').replace(/\/$/, '');
+    if (seen.has(key)) warn(p, `${at} 같은 주소가 두 번 들어 있어요 (${r.url})`);
+    seen.add(key);
+    if (platform !== 'web') {
+      snsLinks++;
+      if (r.verdict === 'recommend') snsRecommends++;
+    }
+  });
+}
+
 const ids = new Set();
 for (const p of places) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id || '')) err(p, `id는 영문 소문자·숫자·하이픈만 써요 (${p.id})`);
@@ -81,8 +116,8 @@ for (const p of places) {
 
   (p.facilities || []).forEach((k) => { if (!FAC.items[k]) err(p, `모르는 시설 코드: ${k} (data/facilities.json 확인)`); });
   (p.hashtags || []).forEach((t) => { if (/^#|\s/.test(t)) err(p, `해시태그에는 #과 공백을 빼 주세요 (${t})`); });
-  (p.reviewLinks || []).forEach((r, i) => { if (!isUrl(r.url)) err(p, `reviewLinks[${i}].url 이 URL이 아니에요`); });
-  (p.instagramPosts || []).forEach((u) => { if (!/^https:\/\/www\.instagram\.com\/(p|reel)\//.test(u)) err(p, `인스타그램 게시물 주소 형식이 아니에요 (${u})`); });
+  checkReviewLinks(p);
+  if (p.instagramPosts) err(p, 'instagramPosts 는 더 쓰지 않아요. reviewLinks 에 platform: "instagram" 으로 넣어 주세요');
   (p.photos || []).forEach((ph, i) => {
     if (!isUrl(ph.url)) err(p, `photos[${i}].url 이 URL이 아니에요`);
     if (!ph.credit) warn(p, `photos[${i}] 에 저작권 표시(credit)가 없어요`);
@@ -101,4 +136,4 @@ if (errors.length) {
   errors.forEach((e) => console.error('  ✗ ' + e));
   process.exit(1);
 }
-console.log(`검사 통과: 찜질방 ${places.length}곳`);
+console.log(`검사 통과: 찜질방 ${places.length}곳, 유튜브·인스타 링크 ${snsLinks}개 (추천 ${snsRecommends}개)`);

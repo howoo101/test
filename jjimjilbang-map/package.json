@@ -12,7 +12,8 @@
     "deploy": "ait deploy",
     "validate": "node scripts/validate-data.mjs",
     "naver:content": "node scripts/fetch-naver-content.mjs",
-    "naver:enrich": "node scripts/enrich-naver-local.mjs"
+    "naver:enrich": "node scripts/enrich-naver-local.mjs",
+    "youtube": "node scripts/fetch-youtube.mjs"
   },
   "engines": {
     "node": ">=20"

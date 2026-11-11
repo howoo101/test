@@ -21,6 +21,7 @@ type View = 'map' | 'list';
 
 const CHIPS: { id: string; label: string }[] = [
   { id: 'open', label: '영업 중' },
+  { id: 'sns', label: '유튜브·인스타 추천' },
   { id: 'open24h', label: '24시간' },
   { id: 'under15k', label: '1.5만원 이하' },
   { id: 'fav', label: '찜한 곳' },
@@ -106,6 +107,10 @@ export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; act
       <section className="home-list" hidden={view !== 'list'}>
         <ListHeader
           title={<ListHeader.TitleParagraph fontWeight="bold">{`찜질방 ${places.length}곳`}</ListHeader.TitleParagraph>}
+          description={sort === 'rec'
+            ? <ListHeader.DescriptionParagraph>유튜브·인스타·블로그 추천과 후기 평가를 합친 순서예요</ListHeader.DescriptionParagraph>
+            : undefined}
+          descriptionPosition="bottom"
           right={
             <button type="button" className="sort-btn" onClick={() => setSortOpen(true)} aria-haspopup="dialog">
               <ListHeader.RightArrow>{SORT_LABELS[sort]}</ListHeader.RightArrow>

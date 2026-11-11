@@ -42,22 +42,80 @@
           "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
           "url": "https://v.daum.net/v/FRuH6nme5C",
           "source": "다음 뉴스",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "Seoul Jjimjilbang & Spa Guide (2026): Top 7",
           "url": "https://www.seoulitepost.com/2026/07/seoul-jjimjilbang-spa-guide-2026-top-7.html",
           "source": "여행 가이드",
-          "date": "2026-07"
+          "date": "2026-07",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "Club K Seoul",
           "url": "https://visitgangnam.net/en/places/club-k-seoul",
           "source": "강남구 관광 사이트",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "클럽케이서울 선릉 찜질방 스파 미술관",
+          "url": "https://www.youtube.com/watch?v=RYTr2WN4hR8",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "스파와 미술관 같은 공간을 둘러본 영상"
+        },
+        {
+          "title": "강남에서 13,600원으로 하루 숙박 온천 노트북작업 카페 다된다 공항 가기전 잠시 여기 어때? 클럽케이 서울",
+          "url": "https://www.youtube.com/watch?v=--psIhq8ZR4",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "만원대로 쉬고 일하기 좋아 출국 전 들르기 좋다고 소개"
+        },
+        {
+          "title": "【韓国チムジルバンで4泊してみた】一泊2,000円 江南エリア カフェあり 熟睡 最高のチムジルバン見つけてしまった",
+          "url": "https://www.youtube.com/watch?v=Hsrf9AXjeps",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "일본어 브이로그, 카페 있는 강남 찜질방 숙박에 크게 만족"
+        },
+        {
+          "title": "역대급 한파에 꼭 가야할 서울 찜질방 추천 5곳!",
+          "url": "https://www.youtube.com/shorts/KNboP-qRSwY",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "한파에 갈 만한 서울 찜질방 5곳에 포함"
+        },
+        {
+          "title": "서울, 수도권(경기도) 찜질방 추천 BEST 10ㅣ추위를 녹이는 가족, 데이트 코스",
+          "url": "https://www.youtube.com/watch?v=bvUXcvNkWxo",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "가족·데이트 코스로 고른 수도권 찜질방 10곳에 포함"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -154,22 +212,100 @@
           "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
           "url": "https://v.daum.net/v/FRuH6nme5C",
           "source": "다음 뉴스",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "한국 찜질방 가이드",
           "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
           "source": "LG U+ 블로그",
-          "date": "2026-11"
+          "date": "2026-11",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "숲속한방랜드",
           "url": "https://korean.visitseoul.net/entertainment/2024-sshbl/KOPnnbbgy",
           "source": "비짓서울",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "서울 3대 찜질방! 리얼 숯가마 사우나 신촌 숲속한방랜드 이용방법 및 꿀팁 I 이색 데이트 장소 추천",
+          "url": "https://www.youtube.com/watch?v=aYvz18oGCvE",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "서울 3대 숯가마 찜질방으로 꼽고 이용법·데이트 팁 소개"
+        },
+        {
+          "title": "찜질방 처돌이가 추천하는, 서울 이색 찜질방 '숲속한방랜드' 에서 혼자 하루 보내는 vlog",
+          "url": "https://www.youtube.com/watch?v=JApAShFxd4g",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "찜질방 마니아가 혼자 하루 보내기 좋은 곳으로 추천"
+        },
+        {
+          "title": "서울 찜질방 추천_숲속 숯가마 찜질방 #서울찜질방 #숯가마 #숲속한방랜드",
+          "url": "https://www.youtube.com/watch?v=OZoNxyQNxkw",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "숲속 분위기 숯가마 찜질방으로 추천"
+        },
+        {
+          "title": "나혼자 숲속한방랜드 찜질방가서 혼자 삼겹살 구워먹는 브이로그",
+          "url": "https://www.youtube.com/watch?v=q8N0Tz3T1Ow",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "숯불에 삼겹살·고구마를 구워 먹는 재미를 호평"
+        },
+        {
+          "title": "역대급 한파에 꼭 가야할 서울 찜질방 추천 5곳!",
+          "url": "https://www.youtube.com/shorts/KNboP-qRSwY",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "한파에 갈 만한 서울 찜질방 5곳에 포함"
+        },
+        {
+          "title": "서울, 수도권(경기도) 찜질방 추천 BEST 10ㅣ추위를 녹이는 가족, 데이트 코스",
+          "url": "https://www.youtube.com/watch?v=bvUXcvNkWxo",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "가족·데이트 코스로 고른 수도권 찜질방 10곳에 포함"
+        },
+        {
+          "title": "How to Enjoy a Korean Sauna like a Local",
+          "url": "https://www.youtube.com/watch?v=48Rvt8dNb_U",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "외국인용 찜질방 이용법 영상에서 갈 곳으로 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -284,22 +420,41 @@
           "title": "K-목욕탕 탐험 일지 (19) 더파크 스파랜드",
           "url": "https://www.threads.com/@bath.diary/post/DOvDsSJEvIm",
           "source": "Threads",
-          "date": "2025-09"
+          "date": "2025-09",
+          "platform": "web",
+          "kind": "review",
+          "author": "bath.diary",
+          "verdict": null
         },
         {
           "title": "넓고 쾌적한 영등포구 찜질방 추천 [더파크 스파랜드]",
           "url": "https://kr.trip.com/moments/detail/seoul-234-119569750/",
           "source": "트립닷컴",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
         },
         {
           "title": "찜질방에서 치맥! 한겨울 이색 데이트 '영등포 더파크 스파랜드'",
           "url": "https://kr.trip.com/moments/detail/yeongdeungpo-gu-2016448-119872781/",
           "source": "트립닷컴",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "역대급 한파에 꼭 가야할 서울 찜질방 추천 5곳!",
+          "url": "https://www.youtube.com/shorts/KNboP-qRSwY",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "한파에 갈 만한 서울 찜질방 5곳 중 첫 번째"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -418,22 +573,70 @@
           "title": "영등포 씨랄라 워터파크 솔직후기 (2025년)",
           "url": "https://seowoojjang.com/entry/%EC%98%81%EB%93%B1%ED%8F%AC-%EC%94%A8%EB%9E%84%EB%9D%BC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC-%EC%86%94%EC%A7%81%ED%9B%84%EA%B8%B0-2025%EB%85%84%E2%80%93%EC%9A%B4%EC%98%81%EC%9D%BC%EC%A0%95%ED%95%A0%EC%9D%B8%EC%A0%95%EB%B3%B4%EB%B0%A9%EB%AC%B8-%EC%A0%84-%EA%BC%AD-%EC%9D%BD%EC%96%B4%EB%B3%B4%EC%84%B8%EC%9A%94",
           "source": "블로그",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "mixed"
         },
         {
           "title": "영등포 워터파크, 찜질방 어디가 좋을까? 씨랄라 워터파크",
           "url": "https://tournwine.com/entry/%EC%98%81%EB%93%B1%ED%8F%AC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%96%B4%EB%94%94%EA%B0%80-%EC%A2%8B%EC%9D%84%EA%B9%8C-%EC%94%A8%EB%9E%84%EB%9D%BC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC",
           "source": "블로그",
-          "date": "2025-03"
+          "date": "2025-03",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
         },
         {
           "title": "[서울 찜질방 추천] 2026 찜질방 마니아 추천 BEST 7",
           "url": "https://kr.trip.com/blog/seoul-sauna/",
           "source": "트립닷컴",
-          "date": "2026"
+          "date": "2026",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
+        },
+        {
+          "title": "역대급 한파에 꼭 가야할 서울 찜질방 추천 5곳!",
+          "url": "https://www.youtube.com/shorts/KNboP-qRSwY",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "한파에 갈 만한 서울 찜질방 5곳에 포함"
+        },
+        {
+          "title": "씨랄라 워터파크&찜질방 이용후기 및 꿀팁 / 서울 실내 워터파크",
+          "url": "https://www.youtube.com/watch?v=tCi-4o0KdCs",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "실내 워터파크와 찜질방 이용 후기·꿀팁"
+        },
+        {
+          "title": "[소서시가 간다] 요즘 SNS에서 핫한 서울 실내워터파크 씨랄라 워터파크+찜질방 리뷰",
+          "url": "https://www.youtube.com/watch?v=5q_dsZuWxG4",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "물놀이와 찜질방을 함께 즐기는 곳으로 소개"
+        },
+        {
+          "title": "씨랄라워터파크 체험후기",
+          "url": "https://www.youtube.com/watch?v=dAHtk9EiuNI",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "2022년 8월 종일권 체험, 일부 기구는 운영하지 않았음"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -532,22 +735,70 @@
           "title": "강변스파랜드 (아이와 가기 좋은 찜질방)",
           "url": "https://mom-mom.net/travel/places/670cdd1eaba36a71c3955b97",
           "source": "맘맘",
-          "date": "2025-04"
+          "date": "2025-04",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
         },
         {
           "title": "Riverside Spa Land 리뷰",
           "url": "https://www.tripadvisor.com.au/Attraction_Review-g294197-d4798783-Reviews-Riverside_Spa_Land-Seoul.html",
           "source": "트립어드바이저",
-          "date": "2025-08"
+          "date": "2025-08",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         },
         {
           "title": "강변스파랜드 광진구 데이트 사우나 찜질방 추천",
           "url": "https://sugaroil.co.kr/%EA%B0%95%EB%B3%80%EC%8A%A4%ED%8C%8C%EB%9E%9C%EB%93%9C/",
           "source": "블로그",
-          "date": "2024-03"
+          "date": "2024-03",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "가족 나들이 하기 좋은 찜질방 데이트 강변스파랜드",
+          "url": "https://www.youtube.com/watch?v=vcofg5d7L4w",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "가성비 좋은 가족·데이트 찜질방, 한산할 때 가길 권함"
+        },
+        {
+          "title": "서울 24시 찜질방 강변스파랜드 후기",
+          "url": "https://www.youtube.com/watch?v=hBVTgArB0sE",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "황토불가마와 당구·탁구·오락실 같은 놀거리 소개"
+        },
+        {
+          "title": "Gangbyeon Spa land / Riverside spa land / Jimjilbang experience (강변스파 랜드)",
+          "url": "https://www.youtube.com/watch?v=vf1Bf5rNT44",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "외국인 방문자가 서울 최고 찜질방 중 하나로 평가"
+        },
+        {
+          "title": "[Vlog] 코시국 찜질방 브이로그",
+          "url": "https://www.youtube.com/watch?v=F3fx5VRdY2o",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "코로나 시기에 다녀온 찜질방 일상 기록"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -656,22 +907,50 @@
           "title": "Spa Lei 리뷰",
           "url": "https://www.tripadvisor.com/Attraction_Review-g294197-d3727477-Reviews-or10-Spa_Lei-Seoul.html",
           "source": "트립어드바이저",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         },
         {
           "title": "Spa Lei",
           "url": "https://english.visitseoul.net/entertainment/spa-lei-en_/9747",
           "source": "비짓서울",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         },
         {
           "title": "스파레이 후기",
           "url": "https://place.map.kakao.com/8231174",
           "source": "카카오맵",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "강남 신사동에 있는 여성전용 24시 찜질방 프리미엄급 시설 한증막도 좋고 황토방에서 힐링하기 좋아요",
+          "url": "https://www.youtube.com/watch?v=CGAZruPzIww",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "프리미엄 여성전용 찜질방, 한증막·황토방 호평"
+        },
+        {
+          "title": "[내돈내산] 요즘 진짜 핫한 곳 여성 전용 찜질방 #스파레이",
+          "url": "https://www.youtube.com/shorts/9LMj4I7iiUk",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "내돈내산 후기, 챙겨 갈 것과 관리 서비스 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -757,22 +1036,79 @@
           "title": "한국 찜질방 가이드",
           "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
           "source": "LG U+ 블로그",
-          "date": "2026-11"
+          "date": "2026-11",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "서울에서 2만 원으로 24시간 묵을 수 있는 곳",
           "url": "https://blog.namanecard.com/jjimjilbang-meaning/",
           "source": "블로그",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "스파렉스 동대문점 이용 기록",
           "url": "https://sauna-ikitai.com/saunas/6280/posts",
           "source": "사우나이키타이",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "역대급 한파에 꼭 가야할 서울 찜질방 추천 5곳!",
+          "url": "https://www.youtube.com/shorts/KNboP-qRSwY",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "한파에 갈 만한 서울 찜질방 5곳에 포함"
+        },
+        {
+          "title": "서울, 수도권(경기도) 찜질방 추천 BEST 10ㅣ추위를 녹이는 가족, 데이트 코스",
+          "url": "https://www.youtube.com/watch?v=bvUXcvNkWxo",
+          "source": "유튜브",
+          "date": "2025",
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "가족·데이트 코스로 고른 수도권 찜질방 10곳 중 첫 순서"
+        },
+        {
+          "title": "시니어들의 쉼터로 유명한 한옥 찜질방|사우나|찜질방|스파렉스",
+          "url": "https://www.youtube.com/watch?v=PwYD7p0PCzk",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "한옥풍 찜질방 탐방, 어르신·외국인 손님이 많다고 소개"
+        },
+        {
+          "title": "동대문 스파렉스 굿모닝시티점",
+          "url": "https://www.youtube.com/watch?v=K-5KXlvnj-M",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "How to Enjoy a Korean Sauna like a Local",
+          "url": "https://www.youtube.com/watch?v=48Rvt8dNb_U",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "외국인용 찜질방 이용법 영상에서 갈 곳으로 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -854,16 +1190,59 @@
           "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
           "url": "https://v.daum.net/v/FRuH6nme5C",
           "source": "다음 뉴스",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "코로나로 문 닫았던 찜질방 3대장, 지금은 어떤가 봤더니",
           "url": "https://v.daum.net/v/535r572XQE",
           "source": "다음 뉴스",
-          "date": "2024"
+          "date": "2024",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "주말 데이트 뭐하지? 서울 24시간 대형 찜질방, #스파렉스동묘",
+          "url": "https://www.youtube.com/watch?v=-5tV5GdgVpg",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "먹거리·놀거리 많은 대형 찜질방, 주말 데이트로 추천"
+        },
+        {
+          "title": "[여행 영상기록-서울] 스파렉스 동묘점 찜질방 체험",
+          "url": "https://www.youtube.com/watch?v=Y0fZ-2wz650",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "【韓国旅行チムジルバン】SPAREX 東廟店 스파렉스동묘 韓国サウナ",
+          "url": "https://www.youtube.com/watch?v=pMIAflIaVQ4",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "일본어 한국 여행 영상으로 동묘점 방문 소개"
+        },
+        {
+          "title": "스파렉스(동묘점)",
+          "url": "https://www.youtube.com/watch?v=_vkyhqqD_XA",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -952,16 +1331,59 @@
           "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
           "url": "https://v.daum.net/v/FRuH6nme5C",
           "source": "다음 뉴스",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "파크하비오 워터킹덤&스파",
           "url": "https://www.ktriptips.com/kor/tourspot/2606150",
           "source": "케이트립팁스",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "송파 파크하비오 워터킹덤워터파크 찜질스파 리뷰 / 송파 최대규모 실내 워터파크 물놀이와 찜질방",
+          "url": "https://www.youtube.com/watch?v=lJMoJvfeeBA",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "mixed",
+          "note": "규모가 크고 즐길 거리가 많지만 사람이 많아 붐빈다고 언급"
+        },
+        {
+          "title": "[다녀왔습니다] 송파파크하비오 워터킹덤 찜질방",
+          "url": "https://www.youtube.com/watch?v=iL7-zI44q8M",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "송파파크하비오 워터킹덤 찜질방 즐기기!",
+          "url": "https://www.youtube.com/watch?v=XsOyyVk_X2s",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "워터킹덤 워터파크 가도 될까? - 슬라이드부터 찜질방까지 완벽풀코스",
+          "url": "https://www.youtube.com/watch?v=dv_At0DMKrA",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "슬라이드부터 찜질방까지 직접 다녀보며 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1086,22 +1508,51 @@
           "title": "K-목욕탕 탐험 일지 (14) 베뉴지아쿠아24",
           "url": "https://www.threads.com/@bath.diary/post/DNDx6J4SYLX",
           "source": "Threads",
-          "date": "2025-08"
+          "date": "2025-08",
+          "platform": "web",
+          "kind": "review",
+          "author": "bath.diary",
+          "verdict": null
         },
         {
           "title": "[서울 찜질방 추천] 2026 찜질방 마니아 추천 BEST 7",
           "url": "https://kr.trip.com/blog/seoul-sauna/",
           "source": "트립닷컴",
-          "date": "2026"
+          "date": "2026",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "베뉴지아쿠아24",
           "url": "https://www.honyeomap.com/spot/7060",
           "source": "혼여맵",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "서울에 생긴 미친 가격의 최대 규모 찜질방",
+          "url": "https://www.youtube.com/watch?v=X93_VT0sqVs",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "싼 요금에 비해 규모가 크다고 강조"
+        },
+        {
+          "title": "서울 강서구 최대 찜질방 베뉴지아쿠아24(전 그랜드아쿠아 24) 리뉴얼",
+          "url": "https://www.youtube.com/watch?v=DYo2R4MeiFA",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "리뉴얼로 키즈존·카페형 공간·족욕탕이 생겼다고 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1204,16 +1655,31 @@
           "title": "서울 목동 24시간 사우나 목욕탕 파라곤 스파 후기",
           "url": "https://www.1000001.net/2023/07/24.html",
           "source": "블로그",
-          "date": "2023-07"
+          "date": "2023-07",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         },
         {
           "title": "목동 찜질방 24시 사우나 추천! 파라곤스파",
           "url": "https://nobrothers.co.kr/%EB%AA%A9%EB%8F%99-%EC%B0%9C%EC%A7%88%EB%B0%A9-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-%EC%B6%94%EC%B2%9C-%ED%8C%8C%EB%9D%BC%EA%B3%A4%EC%8A%A4%ED%8C%8C/",
           "source": "블로그",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "Jjimjilbang 찜질방, Paragon Spa 파라곤 스파, Seoul 서울, South Korea Vlog",
+          "url": "https://www.youtube.com/watch?v=cwIMiSoQ7oM",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "외국인의 첫 찜질방 체험 브이로그"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1325,16 +1791,31 @@
           "title": "성수 찜질방 사우나 목욕탕 추천 Best 5",
           "url": "https://sssbrain.com/entry/%EC%84%B1%EC%88%98-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-5/",
           "source": "티스토리",
-          "date": "2025-02"
+          "date": "2025-02",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "이색 찜질방 추천 TOP 10",
           "url": "https://travelmapjourney.com/unique-jjimjilbang-sauna-top10/",
           "source": "블로그",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
+        },
+        {
+          "title": "How to Enjoy a Korean Sauna like a Local",
+          "url": "https://www.youtube.com/watch?v=48Rvt8dNb_U",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "외국인용 찜질방 이용법 영상에서 갈 곳으로 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1443,16 +1924,41 @@
           "title": "서울 잠실 백제인삼사우나 목욕 후기",
           "url": "https://brunch.co.kr/@@6Owg/56",
           "source": "브런치",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         },
         {
           "title": "잠실 찜질방 사우나 목욕탕 추천 Best 4",
           "url": "https://sssbrain.com/entry/%EC%9E%A0%EC%8B%A4-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-4/",
           "source": "티스토리",
-          "date": "2025-05"
+          "date": "2025-05",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
+        },
+        {
+          "title": "송파구민의 찜질방 사우나 추천",
+          "url": "https://www.youtube.com/shorts/LomP4wT9S14",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": "recommend",
+          "note": "석촌고분역 가까운 24시간 찜질방으로 추천"
+        },
+        {
+          "title": "잠실찜질방 백제인삼사우나 그냥 혼자 컵라면 냠",
+          "url": "https://www.youtube.com/watch?v=GYgiBSIFB_I",
+          "source": "유튜브",
+          "date": "2023",
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "혼자 들른 브이로그, 인삼탕·녹차탕을 칭찬"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1531,10 +2037,12 @@
           "title": "북한산 자락 우이령불가마주쉼사우나 체험기",
           "url": "https://the-edit.co.kr/88747",
           "source": "디에디트",
-          "date": "2026-10"
+          "date": "2026-10",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1606,10 +2114,12 @@
           "title": "강남역 찜질방 24시 사우나 스파 추천 Top 3",
           "url": "https://nobrothers.co.kr/%EA%B0%95%EB%82%A8%EC%97%AD-%EC%B0%9C%EC%A7%88%EB%B0%A9-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-%EC%8A%A4%ED%8C%8C-%EC%B6%94%EC%B2%9C-top-3/",
           "source": "블로그",
-          "date": "2024-02"
+          "date": "2024-02",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1693,16 +2203,21 @@
           "title": "신도림 찜질방 사우나 목욕탕 추천 Best 4",
           "url": "https://sssbrain.com/entry/%EC%8B%A0%EB%8F%84%EB%A6%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-4/",
           "source": "티스토리",
-          "date": "2025"
+          "date": "2025",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         },
         {
           "title": "구로구 사우나·찜질방·목욕탕 추천",
           "url": "https://scola.kr/sauna/seoul/gurogu",
           "source": "정보 사이트",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
@@ -1817,10 +2332,32 @@
           "title": "봉일스파랜드 후기",
           "url": "https://fbh.purpleo.co.kr/view/500",
           "source": "후기 모음",
-          "date": null
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "[VLOG] 덥고 비오는날 실내 데이트는 어디?!",
+          "url": "https://www.youtube.com/watch?v=pe6kBKXyhdA",
+          "source": "유튜브",
+          "date": "2023",
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null,
+          "note": "비 오는 날 실내 데이트로 다녀온 브이로그"
+        },
+        {
+          "title": "서울·경기·인천 온천, 스파, 노천탕 추천 Top 13",
+          "url": "https://www.youtube.com/watch?v=L9xUdENSfEk",
+          "source": "유튜브",
+          "date": null,
+          "platform": "youtube",
+          "kind": "list",
+          "verdict": "recommend",
+          "note": "수도권 온천·스파 13곳 중 첫 번째로 소개"
         }
       ],
-      "instagramPosts": [],
       "photos": [],
       "naverPlaceId": null,
       "coordsApprox": true,
