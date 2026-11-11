@@ -1,0 +1,1805 @@
+/*
+ * 서울 찜질방 데이터 (사람이 직접 고치는 파일)
+ *
+ * - 한 곳 = 객체 하나. 필드 설명은 docs/기획서.md 의 "7. 데이터 설계"를 보세요.
+ * - prices[].type: "찜질"(찜질+목욕) | "목욕"(목욕·사우나만) | "기타"
+ * - prices[].who:  "대인" | "소인" | "청소년" | "초등" | "미취학" | "공통"
+ * - facilities: js/facilities.js 에 있는 코드만 쓰세요.
+ * - coordsApprox: true 는 주소로 추정한 좌표예요 -> scripts/enrich-naver-local.mjs 로 보정하세요.
+ * - confidence: high(여러 최신 출처 일치) | medium(출처 1~2개) | low(오래됐거나 목록성 자료뿐 -> "확인 필요" 표시)
+ * - 고친 뒤에는 `node scripts/validate-data.mjs` 로 검사하세요.
+ *
+ * 2026-11 공개 웹 자료(기사, 여행 가이드, 후기)로 정리했어요. 요금은 현장과 다를 수 있어요.
+ */
+window.JJIM_DATA = {
+  "updatedAt": "2026-11-11",
+  "places": [
+    {
+      "aliases": [
+        "클럽K서울",
+        "클럽케이 서울",
+        "선릉 찜질방"
+      ],
+      "nameEn": "Club K Seoul",
+      "phone": "02-563-1145",
+      "includes": [
+        "찜질복"
+      ],
+      "extraFees": [
+        {
+          "label": "12시간 초과 시 1시간당",
+          "price": 2000
+        }
+      ],
+      "priceNote": "공식 홈페이지와 2025년 기사 모두 평일 17,000원, 주말 19,000원(12시간)으로 안내해요.",
+      "alert": null,
+      "facilityNotes": "한증막·온돌방·북카페·개인 수면실이 있는 클럽존과 사우나존으로 나뉘어 있어요. 같은 건물에 피트니스와 브런치 카페가 있고, 작업용 책상과 와이파이도 있어요.",
+      "highlights": [
+        "갤러리처럼 꾸민 넓고 세련된 공간",
+        "책이 많은 북카페에서 조용히 쉬거나 작업하기 좋음",
+        "깨끗하다는 평이 많음",
+        "선릉역 가까운 24시간 영업"
+      ],
+      "cons": [
+        "12시간을 넘기면 시간당 추가 요금이 붙음"
+      ],
+      "hashtags": [
+        "클럽케이서울",
+        "선릉찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
+          "url": "https://v.daum.net/v/FRuH6nme5C",
+          "source": "다음 뉴스",
+          "date": "2025"
+        },
+        {
+          "title": "Seoul Jjimjilbang & Spa Guide (2026): Top 7",
+          "url": "https://www.seoulitepost.com/2026/07/seoul-jjimjilbang-spa-guide-2026-top-7.html",
+          "source": "여행 가이드",
+          "date": "2026-07"
+        },
+        {
+          "title": "Club K Seoul",
+          "url": "https://visitgangnam.net/en/places/club-k-seoul",
+          "source": "강남구 관광 사이트",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "club-k-seoul",
+      "name": "클럽케이서울",
+      "gu": "강남구",
+      "address": "서울 강남구 선릉로 524 대림아크로텔 지하1층",
+      "station": "선릉역 8번 출구 도보 3분",
+      "lat": 37.5062,
+      "lng": 127.0479,
+      "open24h": true,
+      "hours": "24시간 운영",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "12시간권",
+          "who": "대인",
+          "days": "평일",
+          "time": null,
+          "price": 17000,
+          "note": "찜질복 포함"
+        },
+        {
+          "type": "찜질",
+          "label": "12시간권",
+          "who": "대인",
+          "days": "주말·공휴일",
+          "time": null,
+          "price": 19000,
+          "note": "찜질복 포함"
+        },
+        {
+          "type": "기타",
+          "label": "24시간권",
+          "who": "공통",
+          "days": "전체",
+          "time": null,
+          "price": 30000,
+          "note": "공식 홈페이지 안내"
+        }
+      ],
+      "priceSource": {
+        "url": "https://v.daum.net/v/FRuH6nme5C",
+        "label": "다음 여행 기사",
+        "date": "2025"
+      },
+      "facilities": [
+        "bulgama",
+        "bath",
+        "comics",
+        "capsule",
+        "gym",
+        "cafe"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "2026년 7월 서울 찜질방 가이드, 강남구 관광 사이트에 영업 중으로 소개"
+    },
+    {
+      "aliases": [
+        "숲속 한방랜드",
+        "신촌 숲속한방랜드"
+      ],
+      "nameEn": "Supsok Hanbang Land",
+      "phone": "02-365-2700",
+      "includes": [],
+      "extraFees": [],
+      "priceNote": "2025년 기사와 같은 요금이에요. 2024년 자료에는 숯가마 성인 15,000원으로 나와요.",
+      "alert": null,
+      "facilityNotes": "안산 숲속의 전통 참숯가마가 대표 시설이에요. 숯가마 앞 화로에서 고구마와 가래떡을 구워 먹을 수 있고, 한증막·아이스방·남녀 분리 수면실·식당(삼겹살)이 있어요.",
+      "highlights": [
+        "도심 가까운 숲속에서 즐기는 전통 숯가마",
+        "화로에 고구마·가래떡을 구워 먹는 재미",
+        "식당 음식 가격이 무난함"
+      ],
+      "cons": [
+        "오래된 시설이라 낡은 느낌",
+        "위생이 아쉽다는 의견",
+        "가격에 비해 아쉽다는 평도 있음"
+      ],
+      "hashtags": [
+        "숲속한방랜드",
+        "신촌찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
+          "url": "https://v.daum.net/v/FRuH6nme5C",
+          "source": "다음 뉴스",
+          "date": "2025"
+        },
+        {
+          "title": "한국 찜질방 가이드",
+          "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
+          "source": "LG U+ 블로그",
+          "date": "2026-11"
+        },
+        {
+          "title": "숲속한방랜드",
+          "url": "https://korean.visitseoul.net/entertainment/2024-sshbl/KOPnnbbgy",
+          "source": "비짓서울",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "supsok-hanbang-land",
+      "name": "숲속한방랜드",
+      "gu": "서대문구",
+      "address": "서울 서대문구 봉원사길 75-7",
+      "station": "신촌·이대 뒤 안산 자락 (7024번 버스 봉원사 종점)",
+      "lat": 37.5698,
+      "lng": 126.9449,
+      "open24h": false,
+      "hours": "매일 06:30~22:00 (숯가마 08:00~21:00)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "숯가마",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 16000,
+          "note": "중학생 이상. 이용 시간을 넘기면 추가 요금"
+        },
+        {
+          "type": "찜질",
+          "label": "숯가마",
+          "who": "초등",
+          "days": "전체",
+          "time": null,
+          "price": 9000
+        },
+        {
+          "type": "찜질",
+          "label": "숯가마",
+          "who": "미취학",
+          "days": "전체",
+          "time": null,
+          "price": 7000
+        },
+        {
+          "type": "목욕",
+          "label": "목욕",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 10000
+        }
+      ],
+      "priceSource": {
+        "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
+        "label": "LG U+ 찜질방 가이드",
+        "date": "2026-11"
+      },
+      "facilities": [
+        "charcoal",
+        "bulgama",
+        "bath",
+        "ice",
+        "sleep",
+        "femaleSleep",
+        "food",
+        "rooftop"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "2026년 11월 갱신된 찜질방 가이드와 2025년 기사에 운영 시간·요금 소개"
+    },
+    {
+      "aliases": [
+        "더파크스파랜드",
+        "THE PARK 스파랜드"
+      ],
+      "nameEn": null,
+      "phone": "02-2069-2229",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "12시간 초과 시 1시간당",
+          "price": 1000
+        },
+        {
+          "label": "세신",
+          "price": 25000
+        },
+        {
+          "label": "주차 무료시간(주간 4시간·야간 8시간) 초과 1시간당",
+          "price": 2000
+        }
+      ],
+      "priceNote": "찜질 요금은 2025년 9월 후기의 목욕 요금에 찜질·야간 추가분을 더한 값이에요. 예전 자료에는 9,000원~11,000원으로 제각각이에요.",
+      "alert": null,
+      "facilityNotes": "소금방·황토방·아이스방·산소방·토굴방이 있고, 탕 5개(열탕·온탕·이벤트탕·마사지탕·냉탕)와 습식·건식 사우나가 있어요. 만화방·게임방과 치킨·식혜 같은 간식도 있어요.",
+      "highlights": [
+        "넓고 쾌적한 시설",
+        "24시간에 1만 원 안팎인 가성비 요금",
+        "널찍한 안마탕 등 탕 구성이 좋음",
+        "만화방·게임방, 치맥까지 즐길 거리가 많음"
+      ],
+      "cons": [
+        "주말에는 사람이 아주 많음"
+      ],
+      "hashtags": [
+        "더파크스파랜드",
+        "영등포찜질방",
+        "당산찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "K-목욕탕 탐험 일지 (19) 더파크 스파랜드",
+          "url": "https://www.threads.com/@bath.diary/post/DOvDsSJEvIm",
+          "source": "Threads",
+          "date": "2025-09"
+        },
+        {
+          "title": "넓고 쾌적한 영등포구 찜질방 추천 [더파크 스파랜드]",
+          "url": "https://kr.trip.com/moments/detail/seoul-234-119569750/",
+          "source": "트립닷컴",
+          "date": null
+        },
+        {
+          "title": "찜질방에서 치맥! 한겨울 이색 데이트 '영등포 더파크 스파랜드'",
+          "url": "https://kr.trip.com/moments/detail/yeongdeungpo-gu-2016448-119872781/",
+          "source": "트립닷컴",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "the-park-spaland",
+      "name": "더파크 스파랜드",
+      "gu": "영등포구",
+      "address": "서울 영등포구 선유동1로 50 A동 지하1층 (THE PARK 365)",
+      "station": "영등포구청역 인근",
+      "lat": 37.5257,
+      "lng": 126.8932,
+      "open24h": true,
+      "hours": "연중무휴 24시간",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 11000,
+          "note": "목욕 10,000원 + 찜질복 1,000원"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "야간 1,000원 추가"
+        },
+        {
+          "type": "목욕",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 10000
+        },
+        {
+          "type": "목욕",
+          "label": "기본",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 7000,
+          "note": "작성일을 알 수 없는 자료"
+        }
+      ],
+      "priceSource": {
+        "url": "https://www.threads.com/@bath.diary/post/DOvDsSJEvIm",
+        "label": "2025년 9월 방문 후기 (Threads)",
+        "date": "2025-09"
+      },
+      "facilities": [
+        "salt",
+        "hwangto",
+        "ice",
+        "bath",
+        "seshin",
+        "comics",
+        "food",
+        "parking"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "2025년 9월 방문 후기, 트립닷컴 2026 찜질방 추천 목록"
+    },
+    {
+      "aliases": [
+        "씨랄라 워터파크",
+        "씨랄라 찜질방"
+      ],
+      "nameEn": "Sealala Water Park",
+      "phone": "1522-9661",
+      "includes": [
+        "사우나"
+      ],
+      "extraFees": [
+        {
+          "label": "주차 6시간 초과 30분당",
+          "price": 1000
+        }
+      ],
+      "priceNote": null,
+      "alert": "찜질방은 주말·공휴일만 운영",
+      "facilityNotes": "실내 워터파크와 사우나, 찜질방이 한곳에 있어요. 향토불가마·참숯 한약방·원적외선방·아이스방이 있고, 찜질방·워터파크 이용 시 주차 6시간 무료예요.",
+      "highlights": [
+        "도심 실내 워터파크와 찜질방을 함께 이용",
+        "불가마·참숯 한약방·아이스방 등 찜질방이 다양",
+        "가족 나들이·데이트 장소로 자주 소개됨"
+      ],
+      "cons": [
+        "2026년 8월부터 찜질방은 주말·공휴일만 운영",
+        "찜질복 대여(5,000원)가 필수라 실제 부담이 큼"
+      ],
+      "hashtags": [
+        "씨랄라",
+        "씨랄라워터파크",
+        "영등포워터파크"
+      ],
+      "reviewLinks": [
+        {
+          "title": "영등포 씨랄라 워터파크 솔직후기 (2025년)",
+          "url": "https://seowoojjang.com/entry/%EC%98%81%EB%93%B1%ED%8F%AC-%EC%94%A8%EB%9E%84%EB%9D%BC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC-%EC%86%94%EC%A7%81%ED%9B%84%EA%B8%B0-2025%EB%85%84%E2%80%93%EC%9A%B4%EC%98%81%EC%9D%BC%EC%A0%95%ED%95%A0%EC%9D%B8%EC%A0%95%EB%B3%B4%EB%B0%A9%EB%AC%B8-%EC%A0%84-%EA%BC%AD-%EC%9D%BD%EC%96%B4%EB%B3%B4%EC%84%B8%EC%9A%94",
+          "source": "블로그",
+          "date": "2025"
+        },
+        {
+          "title": "영등포 워터파크, 찜질방 어디가 좋을까? 씨랄라 워터파크",
+          "url": "https://tournwine.com/entry/%EC%98%81%EB%93%B1%ED%8F%AC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%96%B4%EB%94%94%EA%B0%80-%EC%A2%8B%EC%9D%84%EA%B9%8C-%EC%94%A8%EB%9E%84%EB%9D%BC-%EC%9B%8C%ED%84%B0%ED%8C%8C%ED%81%AC",
+          "source": "블로그",
+          "date": "2025-03"
+        },
+        {
+          "title": "[서울 찜질방 추천] 2026 찜질방 마니아 추천 BEST 7",
+          "url": "https://kr.trip.com/blog/seoul-sauna/",
+          "source": "트립닷컴",
+          "date": "2026"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "sealala",
+      "name": "씨랄라",
+      "gu": "영등포구",
+      "address": "서울 영등포구 문래로 164 SK리더스뷰 지하2층",
+      "station": "영등포구청역·문래역 인근",
+      "lat": 37.5222,
+      "lng": 126.8937,
+      "open24h": false,
+      "hours": "찜질방은 토·일·공휴일 07:00~21:30 (2026년 8월 24일부터 평일 미운영)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "주말·공휴일",
+          "time": "07:00~21:30",
+          "price": 15000,
+          "note": "입장 10,000원 + 찜질복 대여 5,000원(필수)"
+        },
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "소인",
+          "days": "주말·공휴일",
+          "time": "07:00~21:30",
+          "price": 12000,
+          "note": "입장 9,000원 + 찜질복 3,000원"
+        },
+        {
+          "type": "기타",
+          "label": "워터파크 종일권",
+          "who": "대인",
+          "days": "주말·공휴일",
+          "time": null,
+          "price": 60000,
+          "note": "워터파크 이용객은 찜질방 무료(찜질복 대여 5,000원)"
+        }
+      ],
+      "priceSource": {
+        "url": "https://www.sealala.com/guide/",
+        "label": "씨랄라 공식 이용안내",
+        "date": "2026-08"
+      },
+      "facilities": [
+        "pool",
+        "bulgama",
+        "charcoal",
+        "ice",
+        "bath",
+        "parking"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "공식 홈페이지 요금표(2026-08-24 적용)"
+    },
+    {
+      "aliases": [
+        "강변 스파랜드"
+      ],
+      "nameEn": "Riverside Spa Land",
+      "phone": "02-455-3737",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "입실 후 15시간 초과 시 1시간당",
+          "price": 1000
+        }
+      ],
+      "priceNote": "공식 홈페이지 요금이에요. 예전 자료에는 주간 14,000원·야간 16,000원으로 나와요.",
+      "alert": null,
+      "facilityNotes": "사우나와 찜질방이 함께 있어요. 어린이 놀이방(09:00~24:00)과 10세 이하 볼풀장이 있고, 상가 건물 주차가 5시간 무료예요. 찜질방 식당은 수요일에 쉬어요.",
+      "highlights": [
+        "24시간이라 시간 제약 없이 이용",
+        "놀이방·볼풀장이 있어 아이 동반 가족에게 인기",
+        "강변역 도보 5분, 주차 5시간 무료",
+        "규모가 큰 대형 찜질방"
+      ],
+      "cons": [
+        "관리·청결 상태가 아쉽다는 후기",
+        "식당이 저녁에 일찍 닫고 수요일엔 쉼",
+        "주말 혼잡, 응대가 불친절했다는 평"
+      ],
+      "hashtags": [
+        "강변스파랜드",
+        "강변역찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "강변스파랜드 (아이와 가기 좋은 찜질방)",
+          "url": "https://mom-mom.net/travel/places/670cdd1eaba36a71c3955b97",
+          "source": "맘맘",
+          "date": "2025-04"
+        },
+        {
+          "title": "Riverside Spa Land 리뷰",
+          "url": "https://www.tripadvisor.com.au/Attraction_Review-g294197-d4798783-Reviews-Riverside_Spa_Land-Seoul.html",
+          "source": "트립어드바이저",
+          "date": "2025-08"
+        },
+        {
+          "title": "강변스파랜드 광진구 데이트 사우나 찜질방 추천",
+          "url": "https://sugaroil.co.kr/%EA%B0%95%EB%B3%80%EC%8A%A4%ED%8C%8C%EB%9E%9C%EB%93%9C/",
+          "source": "블로그",
+          "date": "2024-03"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "gangbyeon-spaland",
+      "name": "강변스파랜드",
+      "gu": "광진구",
+      "address": "서울 광진구 구의강변로 45 성진프라자 지하2층",
+      "station": "강변역 4번 출구 도보 5분",
+      "lat": 37.536,
+      "lng": 127.0935,
+      "open24h": true,
+      "hours": "연중무휴 24시간",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": "05:00~20:00",
+          "price": 15000
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "20:00~05:00",
+          "price": 17000
+        },
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "소인",
+          "days": "전체",
+          "time": "05:00~20:00",
+          "price": 11000,
+          "note": "7세 이하"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "소인",
+          "days": "전체",
+          "time": "20:00~05:00",
+          "price": 13000,
+          "note": "7세 이하"
+        }
+      ],
+      "priceSource": {
+        "url": "http://ispaland.co.kr/%EA%B0%95%EB%B3%80%EC%8A%A4%ED%8C%8C%EB%9E%9C%EB%93%9C/%EC%9D%B4%EC%9A%A9%EC%95%88%EB%82%B4/",
+        "label": "강변스파랜드 공식 이용안내",
+        "date": "2025-11"
+      },
+      "facilities": [
+        "bath",
+        "kids",
+        "food",
+        "parking"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "2025년 8월 트립어드바이저 후기, 공식 홈페이지 365일 24시간 안내"
+    },
+    {
+      "aliases": [
+        "스파 레이",
+        "신사 스파레이"
+      ],
+      "nameEn": "Spa Lei",
+      "phone": "02-545-4002",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "8시간 초과 1시간당",
+          "price": 2000
+        },
+        {
+          "label": "2층 침대 수면실",
+          "price": 10000
+        }
+      ],
+      "priceNote": "2025년 가을 18,000원(12시간)에서 22,000원(8시간)으로 올랐다는 후기가 있어요.",
+      "alert": null,
+      "facilityNotes": "노천탕·해수탕·족욕탕·약재탕과 소나무 장작 불한증막, 황토방·숯방·소금방이 있어요. 세신·마사지·네일과 파우더룸도 있어요.",
+      "highlights": [
+        "한증막에서 땀 빼기 좋음",
+        "탕 종류가 다양하고 목욕 시설이 좋음",
+        "여성 전용이라 편하게 쉬기 좋음",
+        "세신이 꼼꼼하다는 후기"
+      ],
+      "cons": [
+        "잇따른 요금 인상에 대한 불만",
+        "건물이 낡았고 수면실 냄새 지적",
+        "세신 서비스가 예전만 못하다는 의견"
+      ],
+      "hashtags": [
+        "스파레이",
+        "여성전용찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "Spa Lei 리뷰",
+          "url": "https://www.tripadvisor.com/Attraction_Review-g294197-d3727477-Reviews-or10-Spa_Lei-Seoul.html",
+          "source": "트립어드바이저",
+          "date": null
+        },
+        {
+          "title": "Spa Lei",
+          "url": "https://english.visitseoul.net/entertainment/spa-lei-en_/9747",
+          "source": "비짓서울",
+          "date": null
+        },
+        {
+          "title": "스파레이 후기",
+          "url": "https://place.map.kakao.com/8231174",
+          "source": "카카오맵",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "female",
+      "id": "spa-lei",
+      "name": "스파레이",
+      "gu": "서초구",
+      "address": "서울 서초구 강남대로107길 5 크레신빌딩",
+      "station": "신사역 5번 출구 인근",
+      "lat": 37.516,
+      "lng": 127.0193,
+      "open24h": true,
+      "hours": "연중무휴 24시간",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "입장(8시간)",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 22000,
+          "note": "8시간 초과 시 1시간당 2,000원"
+        }
+      ],
+      "priceSource": {
+        "url": "http://www.spalei.com/renew/about/",
+        "label": "스파레이 공식 홈페이지",
+        "date": "2025-11"
+      },
+      "facilities": [
+        "bulgama",
+        "hwangto",
+        "charcoal",
+        "salt",
+        "bath",
+        "outdoor",
+        "sleep",
+        "femaleSleep",
+        "seshin",
+        "massage",
+        "parking"
+      ],
+      "confidence": "high",
+      "operatingEvidence": "2025년 9~11월 요금 인상·수면실 관련 후기"
+    },
+    {
+      "aliases": [
+        "스파렉스 동대문점",
+        "동대문 스파렉스"
+      ],
+      "nameEn": "SPAREX Good Morning City",
+      "phone": "02-2273-2777",
+      "includes": [
+        "찜질복"
+      ],
+      "extraFees": [
+        {
+          "label": "주차 3시간 초과 30분당",
+          "price": 1500
+        }
+      ],
+      "priceNote": "다른 자료에는 주간 13,000원으로도 나와요. 온라인 입장권(WAUG 등) 할인가가 따로 있어요. 22시~05시에는 보호자 없는 19세 이하 출입이 제한돼요.",
+      "alert": null,
+      "facilityNotes": "쇼핑몰 지하 3~4층을 한옥풍으로 꾸몄어요. 한증막과 건식·습식 사우나, 찜질 이용객이 쓸 수 있는 헬스장, 밤새 여는 푸드코트가 있고 데스크 등록 시 3시간 무료 주차예요.",
+      "highlights": [
+        "쇼핑몰 지하를 한옥풍으로 꾸민 이색적인 분위기",
+        "역 바로 앞 24시간이라 동대문 쇼핑 뒤 밤샘 장소로 좋음",
+        "2만 원 이하로 하룻밤을 보낼 수 있는 가성비"
+      ],
+      "cons": [
+        "밤에는 자는 사람이 많아 붐빔"
+      ],
+      "hashtags": [
+        "스파렉스",
+        "동대문찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "한국 찜질방 가이드",
+          "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
+          "source": "LG U+ 블로그",
+          "date": "2026-11"
+        },
+        {
+          "title": "서울에서 2만 원으로 24시간 묵을 수 있는 곳",
+          "url": "https://blog.namanecard.com/jjimjilbang-meaning/",
+          "source": "블로그",
+          "date": null
+        },
+        {
+          "title": "스파렉스 동대문점 이용 기록",
+          "url": "https://sauna-ikitai.com/saunas/6280/posts",
+          "source": "사우나이키타이",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "sparex-goodmorning-city",
+      "name": "스파렉스 굿모닝시티점",
+      "gu": "중구",
+      "address": "서울 중구 장충단로 247 굿모닝시티쇼핑몰 지하3~4층",
+      "station": "동대문역사문화공원역 14번 출구 바로 앞",
+      "lat": 37.5666,
+      "lng": 127.0077,
+      "open24h": true,
+      "hours": "연중무휴 24시간 (01:00~03:00 청소 시간엔 세신 불가)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 14000,
+          "note": "찜질복 포함"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 16000,
+          "note": "찜질복 포함"
+        }
+      ],
+      "priceSource": {
+        "url": "https://www.lguplus.com/korea-sim/kor/pc/support/blog/korea_jjimjilbang_guide",
+        "label": "LG U+ 찜질방 가이드",
+        "date": "2026-11"
+      },
+      "facilities": [
+        "bulgama",
+        "bath",
+        "gym",
+        "food",
+        "seshin",
+        "parking"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2026년 11월 갱신된 찜질방 가이드, 2026년 방문 기록"
+    },
+    {
+      "aliases": [
+        "스파렉스 동묘",
+        "동묘 스파렉스"
+      ],
+      "nameEn": "SPAREX Dongmyo",
+      "phone": null,
+      "includes": [],
+      "extraFees": [],
+      "priceNote": "다른 안내에는 주간 13,000원, 야간 16,000원(수건 대여 3,000원 별도)으로 나와요. 방문 전 꼭 확인하세요.",
+      "alert": null,
+      "facilityNotes": "2024년 7월 문을 연 고층 찜질방이라 서울 시내가 내려다보여요. 불한증막·토굴방·황토방·소금방·숯방·아이스방·편백 산림욕장이 있어요.",
+      "highlights": [
+        "2024년에 새로 열어 깔끔하고 모던한 인테리어",
+        "고층이라 서울 전망을 즐길 수 있음",
+        "불한증막·토굴방·편백방 등 테마방이 다양",
+        "세신을 잘한다는 평"
+      ],
+      "cons": [],
+      "hashtags": [
+        "스파렉스동묘",
+        "동묘찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
+          "url": "https://v.daum.net/v/FRuH6nme5C",
+          "source": "다음 뉴스",
+          "date": "2025"
+        },
+        {
+          "title": "코로나로 문 닫았던 찜질방 3대장, 지금은 어떤가 봤더니",
+          "url": "https://v.daum.net/v/535r572XQE",
+          "source": "다음 뉴스",
+          "date": "2024"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "sparex-dongmyo",
+      "name": "스파렉스 동묘점",
+      "gu": "종로구",
+      "address": "서울 종로구 지봉로 19 시즌빌딩 12층",
+      "station": "동묘앞역 6번 출구 바로 앞",
+      "lat": 37.574,
+      "lng": 127.0162,
+      "open24h": true,
+      "hours": "24시간 운영",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "입장",
+          "who": "대인",
+          "days": "평일",
+          "time": null,
+          "price": 18000,
+          "note": "2025년 기사 기준. 주말·야간·소인 요금은 확인 중"
+        }
+      ],
+      "priceSource": {
+        "url": "https://v.daum.net/v/FRuH6nme5C",
+        "label": "다음 여행 기사",
+        "date": "2025"
+      },
+      "facilities": [
+        "bulgama",
+        "hwangto",
+        "salt",
+        "charcoal",
+        "ice",
+        "pyeonbaek",
+        "bath",
+        "seshin",
+        "food",
+        "sleep"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 서울 찜질방 추천 기사, 온라인 입장권 판매 중"
+    },
+    {
+      "aliases": [
+        "파크하비오 찜질스파",
+        "파크하비오 찜질방",
+        "워터킹덤"
+      ],
+      "nameEn": null,
+      "phone": "1600-0666",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "워터파크 구명조끼 대여",
+          "price": 8000
+        }
+      ],
+      "priceNote": "주말 요금은 확인 중이에요. 온라인 입장권은 13,000원부터 팔고 있어요.",
+      "alert": null,
+      "facilityNotes": "워터파크와 찜질스파를 함께 운영해요. 한증막·아이스방·보석방·토굴방과 사진 찍기 좋은 작은 테마방이 있고, 주차가 넉넉해요.",
+      "highlights": [
+        "워터파크와 찜질을 한 번에",
+        "주차 공간이 넉넉함",
+        "물이 깨끗하고 음식이 맛있다는 후기",
+        "가족·데이트 방문객에게 인기"
+      ],
+      "cons": [
+        "24시간이 아니고 자료마다 운영 시간이 다름",
+        "구명조끼 대여료 별도"
+      ],
+      "hashtags": [
+        "파크하비오",
+        "파크하비오워터킹덤"
+      ],
+      "reviewLinks": [
+        {
+          "title": "2025 시설 '끝내'주는 서울 찜질방 추천 4곳",
+          "url": "https://v.daum.net/v/FRuH6nme5C",
+          "source": "다음 뉴스",
+          "date": "2025"
+        },
+        {
+          "title": "파크하비오 워터킹덤&스파",
+          "url": "https://www.ktriptips.com/kor/tourspot/2606150",
+          "source": "케이트립팁스",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "park-habio-spa",
+      "name": "파크하비오 워터킹덤&스파",
+      "gu": "송파구",
+      "address": "서울 송파구 송파대로 111 파크하비오",
+      "station": "장지역·문정역 사이",
+      "lat": 37.4815,
+      "lng": 127.1238,
+      "open24h": false,
+      "hours": "찜질방 07:00~22:00, 사우나 07:00~23:00 (판매처 안내 기준)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "평일",
+          "time": null,
+          "price": 18000
+        },
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "청소년",
+          "days": "평일",
+          "time": null,
+          "price": 15000
+        },
+        {
+          "type": "목욕",
+          "label": "사우나",
+          "who": "대인",
+          "days": "평일",
+          "time": null,
+          "price": 15000
+        },
+        {
+          "type": "목욕",
+          "label": "사우나",
+          "who": "청소년",
+          "days": "평일",
+          "time": null,
+          "price": 14000
+        },
+        {
+          "type": "기타",
+          "label": "워터파크",
+          "who": "공통",
+          "days": "전체",
+          "time": null,
+          "price": 65000,
+          "note": "2025년 기사 기준, 연령·요일 구분 확인 중"
+        }
+      ],
+      "priceSource": {
+        "url": "https://v.daum.net/v/FRuH6nme5C",
+        "label": "다음 여행 기사",
+        "date": "2025"
+      },
+      "facilities": [
+        "bulgama",
+        "ice",
+        "jade",
+        "bath",
+        "pool",
+        "food",
+        "parking"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 서울 찜질방 추천 기사, 2026년까지 쓸 수 있는 온라인 입장권 판매"
+    },
+    {
+      "aliases": [
+        "베뉴지 아쿠아24",
+        "그랜드아쿠아",
+        "강서 그랜드아쿠아"
+      ],
+      "nameEn": null,
+      "phone": "02-2065-0011",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "세신",
+          "price": 30000
+        },
+        {
+          "label": "주차 3시간 초과 10분당",
+          "price": 500
+        }
+      ],
+      "priceNote": "찜질복 포함 여부가 자료마다 달라요(포함 / 2,000원 별도). 옛 그랜드아쿠아를 2025년 8월 리뉴얼했어요.",
+      "alert": "매월 셋째 주 수요일 휴무",
+      "facilityNotes": "탕 5개(열탕·온탕·이벤트탕·냉냉탕·냉탕)와 사우나 2종, 세신, 매점이 있고 같은 건물에 피트니스가 있어요. 리뉴얼 후 찜질방 구성은 확인 중이에요.",
+      "highlights": [
+        "넓고 쾌적한 대형 목욕탕·찜질방",
+        "1만 원대 초반 가성비 요금",
+        "찜질복이 깔끔하고 매점 가격이 무난",
+        "혼자 가도 어색하지 않은 분위기"
+      ],
+      "cons": [
+        "매월 셋째 주 수요일 휴무",
+        "무료 주차 3시간 이후 요금 발생"
+      ],
+      "hashtags": [
+        "베뉴지아쿠아24",
+        "강서구찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "K-목욕탕 탐험 일지 (14) 베뉴지아쿠아24",
+          "url": "https://www.threads.com/@bath.diary/post/DNDx6J4SYLX",
+          "source": "Threads",
+          "date": "2025-08"
+        },
+        {
+          "title": "[서울 찜질방 추천] 2026 찜질방 마니아 추천 BEST 7",
+          "url": "https://kr.trip.com/blog/seoul-sauna/",
+          "source": "트립닷컴",
+          "date": "2026"
+        },
+        {
+          "title": "베뉴지아쿠아24",
+          "url": "https://www.honyeomap.com/spot/7060",
+          "source": "혼여맵",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "venuezi-aqua24",
+      "name": "베뉴지아쿠아24",
+      "gu": "강서구",
+      "address": "서울 강서구 화곡로 347 지하2층",
+      "station": "강서구청 인근 화곡로 변",
+      "lat": 37.553,
+      "lng": 126.852,
+      "open24h": true,
+      "hours": "24시간 (매월 셋째 주 수요일 휴무)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 11000
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000
+        },
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 6000
+        }
+      ],
+      "priceSource": {
+        "url": "https://seoulstart.com/ko/guides/korean-spa-jjimjilbang",
+        "label": "서울스타트 찜질방 가이드",
+        "date": "2026-06"
+      },
+      "facilities": [
+        "bath",
+        "seshin",
+        "gym",
+        "food",
+        "parking"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 11월 방문 모임 글, 2026년 6월 찜질방 요금표"
+    },
+    {
+      "aliases": [
+        "목동파라곤스파",
+        "목동 파라곤 스파"
+      ],
+      "nameEn": null,
+      "phone": "02-2654-3387",
+      "includes": [
+        "찜질복"
+      ],
+      "extraFees": [
+        {
+          "label": "찜질복 재이용",
+          "price": 1000
+        },
+        {
+          "label": "수면 이불·수건 대여",
+          "price": 1000
+        },
+        {
+          "label": "발권 후 24시간 초과",
+          "price": 10000
+        }
+      ],
+      "priceNote": "2023년 후기 요금인데, 2025년 5월 블로그에도 같은 요금이 나와요. 대인은 초등학생 이상이에요.",
+      "alert": null,
+      "facilityNotes": "SBS 목동 사옥 옆 목동파라곤 지하 6층이에요. 온탕·열탕·세족탕·냉탕과 키즈룸이 있어요.",
+      "highlights": [
+        "오목교역 가까운 24시간 찜질방",
+        "이색 데이트 코스로 소개되는 대형 찜질방",
+        "키즈룸이 있어 아이와 가기 좋음"
+      ],
+      "cons": [
+        "예전보다 가격이 많이 올랐다는 후기"
+      ],
+      "hashtags": [
+        "파라곤스파",
+        "목동찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "서울 목동 24시간 사우나 목욕탕 파라곤 스파 후기",
+          "url": "https://www.1000001.net/2023/07/24.html",
+          "source": "블로그",
+          "date": "2023-07"
+        },
+        {
+          "title": "목동 찜질방 24시 사우나 추천! 파라곤스파",
+          "url": "https://nobrothers.co.kr/%EB%AA%A9%EB%8F%99-%EC%B0%9C%EC%A7%88%EB%B0%A9-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-%EC%B6%94%EC%B2%9C-%ED%8C%8C%EB%9D%BC%EA%B3%A4%EC%8A%A4%ED%8C%8C/",
+          "source": "블로그",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "paragon-spa",
+      "name": "파라곤스파",
+      "gu": "양천구",
+      "address": "서울 양천구 목동서로 155 목동파라곤 지하6층",
+      "station": "오목교역 2번 출구 400m",
+      "lat": 37.5287,
+      "lng": 126.873,
+      "open24h": true,
+      "hours": "연중무휴 24시간 (조조 05~09시 · 주간 09~21시 · 야간 21~05시)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "조조",
+          "who": "대인",
+          "days": "전체",
+          "time": "05:00~09:00",
+          "price": 11000
+        },
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": "09:00~21:00",
+          "price": 12000
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "21:00~05:00",
+          "price": 14000
+        },
+        {
+          "type": "목욕",
+          "label": "조조",
+          "who": "대인",
+          "days": "전체",
+          "time": "05:00~09:00",
+          "price": 9000
+        },
+        {
+          "type": "목욕",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": "09:00~21:00",
+          "price": 10000
+        },
+        {
+          "type": "목욕",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "21:00~05:00",
+          "price": 11000
+        }
+      ],
+      "priceSource": {
+        "url": "https://www.1000001.net/2023/07/24.html",
+        "label": "방문 후기 블로그",
+        "date": "2023-07"
+      },
+      "facilities": [
+        "bath",
+        "kids"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 5월 블로그 요금표, 2023년 방문 후기"
+    },
+    {
+      "aliases": [
+        "라성보석사우나",
+        "성수 찜질방"
+      ],
+      "nameEn": null,
+      "phone": null,
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "찜질복 대여",
+          "price": 2000
+        }
+      ],
+      "priceNote": null,
+      "alert": null,
+      "facilityNotes": "개인 수면 캡슐, 북카페, 24시간 매점, PC방, 마사지숍, 헬스장, 남녀 따로 쓰는 수면실이 있어요.",
+      "highlights": [
+        "SF 영화 같은 개인 수면 캡슐",
+        "북카페·PC방·헬스장·마사지까지 부대시설이 다양",
+        "성수동 한가운데 24시간"
+      ],
+      "cons": [],
+      "hashtags": [
+        "라성스파",
+        "성수찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "성수 찜질방 사우나 목욕탕 추천 Best 5",
+          "url": "https://sssbrain.com/entry/%EC%84%B1%EC%88%98-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-5/",
+          "source": "티스토리",
+          "date": "2025-02"
+        },
+        {
+          "title": "이색 찜질방 추천 TOP 10",
+          "url": "https://travelmapjourney.com/unique-jjimjilbang-sauna-top10/",
+          "source": "블로그",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "raseong-spa",
+      "name": "라성스파",
+      "gu": "성동구",
+      "address": "서울 성동구 성수이로 118 성수아카데미타워",
+      "station": "성수역 인근",
+      "lat": 37.5458,
+      "lng": 127.0557,
+      "open24h": true,
+      "hours": "연중무휴 24시간",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "찜질복 대여 2,000원 별도"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 14000,
+          "note": "찜질복 대여 2,000원 별도"
+        },
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "미취학",
+          "days": "전체",
+          "time": null,
+          "price": 9000
+        },
+        {
+          "type": "기타",
+          "label": "캡슐룸 숙박",
+          "who": "공통",
+          "days": "전체",
+          "time": null,
+          "price": 33700,
+          "note": "사우나·찜질복 포함"
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EC%84%B1%EC%88%98-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-5/",
+        "label": "성수 찜질방 추천 블로그",
+        "date": "2025-02"
+      },
+      "facilities": [
+        "capsule",
+        "sleep",
+        "femaleSleep",
+        "comics",
+        "pc",
+        "massage",
+        "gym",
+        "food",
+        "bath"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 2월 성수 찜질방 추천 글에 24시간 영업으로 소개"
+    },
+    {
+      "aliases": [
+        "백제인삼사우나",
+        "백제불한증막",
+        "잠실 백제인삼사우나"
+      ],
+      "nameEn": null,
+      "phone": null,
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "세신",
+          "price": 30000
+        }
+      ],
+      "priceNote": null,
+      "alert": "운영 시간 확인 필요",
+      "facilityNotes": "불한증막과 온탕·녹차탕·인삼탕·냉탕, 건식·습식 사우나, 세신이 있어요.",
+      "highlights": [
+        "인삼탕·녹차탕 같은 이색 탕",
+        "불한증막과 건식·습식 사우나를 함께 이용"
+      ],
+      "cons": [
+        "평일 오후에도 붐빈다는 후기",
+        "인삼탕이 뜨거워 적응이 필요"
+      ],
+      "hashtags": [
+        "백제인삼사우나",
+        "백제불한증막"
+      ],
+      "reviewLinks": [
+        {
+          "title": "서울 잠실 백제인삼사우나 목욕 후기",
+          "url": "https://brunch.co.kr/@@6Owg/56",
+          "source": "브런치",
+          "date": "2025"
+        },
+        {
+          "title": "잠실 찜질방 사우나 목욕탕 추천 Best 4",
+          "url": "https://sssbrain.com/entry/%EC%9E%A0%EC%8B%A4-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-4/",
+          "source": "티스토리",
+          "date": "2025-05"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "baekje-insam-sauna",
+      "name": "백제불한증막 인삼사우나",
+      "gu": "송파구",
+      "address": "서울 송파구 백제고분로 293",
+      "station": "석촌역·석촌고분역 인근",
+      "lat": 37.5041,
+      "lng": 127.1025,
+      "open24h": false,
+      "hours": "확인 중 (24시간 / 22~23시 마감으로 자료마다 다름)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "평일",
+          "time": null,
+          "price": 18000
+        },
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "주말·공휴일",
+          "time": null,
+          "price": 20000,
+          "note": "야간도 같은 요금"
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EC%86%A1%ED%8C%8C-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-6%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+        "label": "송파 찜질방 추천 블로그",
+        "date": "2025-02"
+      },
+      "facilities": [
+        "bulgama",
+        "bath",
+        "seshin"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2025년 방문 후기(브런치), 2025년 송파·잠실 추천 글"
+    },
+    {
+      "aliases": [
+        "우이령불가마",
+        "우이령 불가마"
+      ],
+      "nameEn": null,
+      "phone": null,
+      "includes": [],
+      "extraFees": [],
+      "priceNote": null,
+      "alert": null,
+      "facilityNotes": "불가마와 효소 찜질, 목욕탕을 함께 운영해요. 북한산 숲이 보이는 우이령길 근처예요.",
+      "highlights": [
+        "서울 안에서 북한산 숲이 훤히 보이는 산자락 입지",
+        "문 연 지 1년이 안 된 새 시설",
+        "효소 찜질과 목욕을 한곳에서"
+      ],
+      "cons": [
+        "역에서 걸어서 20분쯤 걸려 대중교통이 불편"
+      ],
+      "hashtags": [
+        "우이령불가마",
+        "북한산사우나"
+      ],
+      "reviewLinks": [
+        {
+          "title": "북한산 자락 우이령불가마주쉼사우나 체험기",
+          "url": "https://the-edit.co.kr/88747",
+          "source": "디에디트",
+          "date": "2026-10"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "uiryeong-bulgama",
+      "name": "우이령불가마주쉼사우나",
+      "gu": "강북구",
+      "address": "서울 강북구 삼양로179길 212-22",
+      "station": "북한산우이역에서 걸어서 20분",
+      "lat": 37.6745,
+      "lng": 127.0095,
+      "open24h": false,
+      "hours": "확인 중",
+      "prices": [],
+      "priceSource": null,
+      "facilities": [
+        "bulgama",
+        "bath"
+      ],
+      "confidence": "medium",
+      "operatingEvidence": "2026년 10월 체험기에서 새로 연 시설로 소개"
+    },
+    {
+      "aliases": [
+        "뉴거평사우나",
+        "뉴거평 찜질방",
+        "신논현 찜질방"
+      ],
+      "nameEn": null,
+      "phone": "02-511-4444",
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "찜질복",
+          "price": 2000
+        },
+        {
+          "label": "수면 타올",
+          "price": 1000
+        },
+        {
+          "label": "주차 3시간 초과 1시간당",
+          "price": 3000
+        }
+      ],
+      "priceNote": "2024년 자료라 지금 요금과 다를 수 있어요.",
+      "alert": null,
+      "facilityNotes": "소나무 불한증막·소금방·아이스방·쑥사우나와 수면실(여성 수면실 별도), 식당·매점이 있고 주차 3시간 무료예요.",
+      "highlights": [
+        "아담하지만 조용한 분위기",
+        "신논현역 가까운 24시간",
+        "식당 메뉴가 다양"
+      ],
+      "cons": [
+        "매점 가격이 비싼 편",
+        "라커 위치에 따라 계단 이동이 번거로움",
+        "여성 수면실 곰팡이·냄새 지적"
+      ],
+      "hashtags": [
+        "뉴거평찜질방",
+        "신논현찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "강남역 찜질방 24시 사우나 스파 추천 Top 3",
+          "url": "https://nobrothers.co.kr/%EA%B0%95%EB%82%A8%EC%97%AD-%EC%B0%9C%EC%A7%88%EB%B0%A9-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-%EC%8A%A4%ED%8C%8C-%EC%B6%94%EC%B2%9C-top-3/",
+          "source": "블로그",
+          "date": "2024-02"
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "new-geopyeong",
+      "name": "뉴거평힐링24시찜질방",
+      "gu": "강남구",
+      "address": "서울 강남구 봉은사로 129-1 751빌딩 지하1층",
+      "station": "신논현역 3번 출구 도보 5분",
+      "lat": 37.5056,
+      "lng": 127.0286,
+      "open24h": true,
+      "hours": "24시간 운영",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": "06:00~19:00",
+          "price": 12000,
+          "note": "찜질복 2,000원 별도"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "19:00~06:00",
+          "price": 14000,
+          "note": "찜질복 2,000원 별도"
+        }
+      ],
+      "priceSource": {
+        "url": "https://nobrothers.co.kr/%EA%B0%95%EB%82%A8%EC%97%AD-%EC%B0%9C%EC%A7%88%EB%B0%A9-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-%EC%8A%A4%ED%8C%8C-%EC%B6%94%EC%B2%9C-top-3/",
+        "label": "강남역 찜질방 추천 블로그",
+        "date": "2024-02"
+      },
+      "facilities": [
+        "bulgama",
+        "salt",
+        "ice",
+        "bath",
+        "sleep",
+        "femaleSleep",
+        "food",
+        "parking"
+      ],
+      "confidence": "low",
+      "operatingEvidence": "2024년 추천 글과 업체 목록 (2025년 이후 방문 후기는 확인 못 함)"
+    },
+    {
+      "aliases": [
+        "해양불가마",
+        "신도림 찜질방"
+      ],
+      "nameEn": null,
+      "phone": null,
+      "includes": [],
+      "extraFees": [
+        {
+          "label": "찜질복 추가",
+          "price": 2000
+        }
+      ],
+      "priceNote": null,
+      "alert": null,
+      "facilityNotes": "불가마·소금방·원적외선방·한방방·편백 아이스방이 있어요.",
+      "highlights": [],
+      "cons": [],
+      "hashtags": [
+        "해양불가마사우나",
+        "신도림찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "신도림 찜질방 사우나 목욕탕 추천 Best 4",
+          "url": "https://sssbrain.com/entry/%EC%8B%A0%EB%8F%84%EB%A6%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-4/",
+          "source": "티스토리",
+          "date": "2025"
+        },
+        {
+          "title": "구로구 사우나·찜질방·목욕탕 추천",
+          "url": "https://scola.kr/sauna/seoul/gurogu",
+          "source": "정보 사이트",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "haeyang-bulgama",
+      "name": "해양불가마사우나",
+      "gu": "구로구",
+      "address": "서울 구로구 공원로 63 지하2~3층",
+      "station": "신도림역·구로역 일대",
+      "lat": 37.4995,
+      "lng": 126.8862,
+      "open24h": true,
+      "hours": "연중무휴 24시간",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "22:00~05:00",
+          "price": 14000
+        },
+        {
+          "type": "찜질",
+          "label": "기본",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 10000,
+          "note": "7세 이하"
+        },
+        {
+          "type": "목욕",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 10000
+        },
+        {
+          "type": "목욕",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": "22:00~05:00",
+          "price": 12000
+        },
+        {
+          "type": "목욕",
+          "label": "기본",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 8000,
+          "note": "7세 이하"
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EC%8B%A0%EB%8F%84%EB%A6%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%82%AC%EC%9A%B0%EB%82%98-%EB%AA%A9%EC%9A%95%ED%83%95-%EC%B6%94%EC%B2%9C-best-4/",
+        "label": "신도림 찜질방 추천 블로그",
+        "date": "2025"
+      },
+      "facilities": [
+        "bulgama",
+        "salt",
+        "ice",
+        "bath"
+      ],
+      "confidence": "low",
+      "operatingEvidence": "2025년 지역 추천 글 2건 (개별 방문 후기는 확인 못 함)"
+    },
+    {
+      "aliases": [
+        "봉일온천",
+        "봉일 스파랜드",
+        "봉천동 찜질방"
+      ],
+      "nameEn": null,
+      "phone": "02-874-1500",
+      "includes": [],
+      "extraFees": [],
+      "priceNote": null,
+      "alert": null,
+      "facilityNotes": "온천수를 내세운 대형 찜질방이에요. 동굴형 고온실·중온실, 소금방, 아이 놀이 공간이 있어요.",
+      "highlights": [
+        "규모가 큼",
+        "온천수 탕",
+        "아이 놀이 공간과 휴게 공간"
+      ],
+      "cons": [
+        "시설이 최신식은 아님",
+        "사람이 많은 편"
+      ],
+      "hashtags": [
+        "봉일스파랜드",
+        "봉천동찜질방"
+      ],
+      "reviewLinks": [
+        {
+          "title": "봉일스파랜드 후기",
+          "url": "https://fbh.purpleo.co.kr/view/500",
+          "source": "후기 모음",
+          "date": null
+        }
+      ],
+      "instagramPosts": [],
+      "photos": [],
+      "naverPlaceId": null,
+      "coordsApprox": true,
+      "verifiedAt": "2026-11",
+      "gender": "all",
+      "id": "bongil-spaland",
+      "name": "봉일스파랜드",
+      "gu": "관악구",
+      "address": "서울 관악구 은천로 28",
+      "station": "봉천역 인근",
+      "lat": 37.4845,
+      "lng": 126.9417,
+      "open24h": false,
+      "hours": "확인 중",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000,
+          "note": "후기 기준 약 13,000원, 찜질복은 별도일 수 있음"
+        }
+      ],
+      "priceSource": {
+        "url": "https://fbh.purpleo.co.kr/view/500",
+        "label": "후기 모음 사이트",
+        "date": null
+      },
+      "facilities": [
+        "salt",
+        "bath",
+        "kids"
+      ],
+      "confidence": "low",
+      "operatingEvidence": "인허가 데이터 기반 목록에 영업 중으로 등재 (최근 방문 후기는 확인 못 함)"
+    }
+  ]
+};

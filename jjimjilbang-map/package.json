@@ -1,0 +1,15 @@
+{
+  "name": "seoul-jjimjilbang-map",
+  "version": "0.1.0",
+  "private": true,
+  "description": "서울 찜질방 요금·시설·후기·사진을 네이버 지도 위에서 비교하는 웹 지도",
+  "scripts": {
+    "start": "python3 -m http.server 5500",
+    "validate": "node scripts/validate-data.mjs",
+    "naver:content": "node scripts/fetch-naver-content.mjs",
+    "naver:enrich": "node scripts/enrich-naver-local.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
