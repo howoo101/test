@@ -7,72 +7,103 @@
   <meta name="description" content="서울 찜질방의 요금, 시설, 네이버·인스타 후기, 사진을 지도 위에서 한 번에 비교해요.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="app" id="app">
-    <aside class="panel" id="panel" aria-label="찜질방 목록과 상세 정보">
-      <div class="sheet-grip" id="sheetGrip" role="button" tabindex="0" aria-label="목록 패널 크기 바꾸기">
-        <span class="grip-bar" aria-hidden="true"></span>
-        <div class="brand">
-          <span class="brand-mark" aria-hidden="true">♨</span>
-          <h1 class="brand-name">서울 찜질방 지도</h1>
-          <span class="brand-sub">요금 · 시설 · 후기 한눈에</span>
-        </div>
-      </div>
+    <!-- 데스크톱 왼쪽 메뉴 (네이버 지도 웹처럼) -->
+    <nav class="rail" aria-label="메뉴">
+      <a class="rail-logo" href="#" title="서울 찜질방 지도"><span aria-hidden="true">♨</span><span class="sr-only">처음 화면</span></a>
+      <button type="button" class="rail-btn is-active" id="railList"><span data-icon="search"></span><span>찾기</span></button>
+      <button type="button" class="rail-btn" id="railFav" aria-pressed="false"><span data-icon="heart"></span><span>찜</span></button>
+    </nav>
 
-      <div class="panel-head" id="panelHead">
-        <div class="search">
-          <label class="sr-only" for="q">찜질방 검색</label>
-          <input id="q" type="search" placeholder="이름, 동네, 역 이름으로 검색" autocomplete="off" enterkeyhint="search">
-        </div>
-        <div class="chips" id="chips" role="group" aria-label="빠른 필터"></div>
-        <div class="list-meta">
+    <!-- 검색창 + 필터 칩 (휴대폰에서는 지도 위에 떠 있음) -->
+    <header class="panel-head" id="panelHead">
+      <div class="brand-row">
+        <h1 class="brand-name">서울 찜질방 지도</h1>
+        <span class="brand-sub">요금 · 시설 · 후기 한눈에</span>
+      </div>
+      <form class="searchbox" id="searchForm" role="search">
+        <span class="sb-mark" aria-hidden="true">♨</span>
+        <span class="sb-ico" data-icon="search"></span>
+        <label class="sr-only" for="q">찜질방 검색</label>
+        <input id="q" type="search" placeholder="찜질방, 동네, 역 이름 검색" autocomplete="off" enterkeyhint="search">
+        <button type="button" class="sb-clear" id="qClear" aria-label="검색어 지우기" hidden><span data-icon="close"></span></button>
+      </form>
+      <div class="chips" id="chips" role="group" aria-label="빠른 필터"></div>
+    </header>
+
+    <!-- 목록 (휴대폰에서는 끌어올리는 시트) -->
+    <aside class="panel" id="panel" aria-label="찜질방 목록">
+      <div class="sheet-top" id="sheetTop">
+        <div class="sheet-grip" id="sheetGrip" aria-label="목록 크기 바꾸기"><span class="grip-bar"></span></div>
+        <div class="list-meta" id="listMeta">
           <span class="count" id="count" aria-live="polite"></span>
-          <button type="button" class="mini" id="reset" hidden>초기화</button>
+          <button type="button" class="link-btn" id="reset" hidden>초기화</button>
           <div class="selects">
-            <label class="sr-only" for="fGu">지역</label>
-            <select id="fGu"></select>
-            <label class="sr-only" for="fPrice">최대 요금</label>
-            <select id="fPrice">
-              <option value="">요금 전체</option>
-              <option value="10000">1만원 이하</option>
-              <option value="13000">1.3만원 이하</option>
-              <option value="15000">1.5만원 이하</option>
-              <option value="20000">2만원 이하</option>
-            </select>
-            <label class="sr-only" for="fSort">정렬</label>
-            <select id="fSort">
-              <option value="rec">추천순</option>
-              <option value="price">낮은 요금순</option>
-              <option value="near">가까운순</option>
-            </select>
+            <span class="select">
+              <label class="sr-only" for="fSort">정렬</label>
+              <select id="fSort">
+                <option value="rec">추천순</option>
+                <option value="price">낮은 요금순</option>
+                <option value="near">가까운순</option>
+              </select>
+            </span>
+            <span class="select">
+              <label class="sr-only" for="fGu">지역</label>
+              <select id="fGu"></select>
+            </span>
+            <span class="select">
+              <label class="sr-only" for="fPrice">최대 요금</label>
+              <select id="fPrice">
+                <option value="">요금 전체</option>
+                <option value="10000">1만원 이하</option>
+                <option value="13000">1.3만원 이하</option>
+                <option value="15000">1.5만원 이하</option>
+                <option value="20000">2만원 이하</option>
+              </select>
+            </span>
           </div>
         </div>
       </div>
-
       <div class="panel-body" id="panelBody">
         <ul class="list" id="list" aria-label="찜질방 목록"></ul>
         <div class="empty" id="empty" hidden>
           <p><b>조건에 맞는 찜질방이 없어요.</b></p>
           <p>필터를 하나씩 풀어 보세요.</p>
         </div>
-        <article class="detail" id="detail" hidden></article>
       </div>
     </aside>
 
-    <main class="map-wrap" aria-label="지도">
+    <!-- 상세 (데스크톱은 목록 옆 패널, 휴대폰은 시트 안) -->
+    <article class="detail" id="detail" aria-label="장소 상세 정보" hidden></article>
+
+    <main class="map-wrap" id="mapWrap" aria-label="지도">
       <div class="map" id="map"></div>
-      <div class="map-notice" id="mapNotice" role="note" hidden></div>
+      <div class="map-top">
+        <button type="button" class="area-search" id="areaSearch" hidden><span data-icon="refresh"></span>현 지도에서 검색</button>
+        <div class="map-notice" id="mapNotice" role="note" hidden></div>
+      </div>
+      <div class="map-ctrl">
+        <button type="button" class="mc-btn mc-solo" id="mcLocate" aria-label="내 위치 보기" title="내 위치"><span data-icon="locate"></span></button>
+        <div class="mc-group">
+          <button type="button" class="mc-btn" id="mcZoomIn" aria-label="지도 확대" title="확대"><span data-icon="plus"></span></button>
+          <button type="button" class="mc-btn" id="mcZoomOut" aria-label="지도 축소" title="축소"><span data-icon="minus"></span></button>
+        </div>
+        <button type="button" class="mc-btn mc-solo" id="mcFit" aria-label="찜질방 전체 보기" title="전체 보기"><span data-icon="expand"></span></button>
+      </div>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   </div>
 
   <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
   <script src="js/facilities.js"></script>
   <script src="data/seoul-geo.js"></script>
+  <script src="data/seoul-stations.js"></script>
   <script src="data/places.js"></script>
   <script src="data/naver-content.js"></script>
   <script src="js/map-fallback.js"></script>

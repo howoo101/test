@@ -54,6 +54,15 @@ for (const p of places) {
     else if (at !== p.gu) warn(p, `좌표가 ${at}에 찍혀요 (적힌 구: ${p.gu}). 구 경계 근처라면 괜찮아요.`);
   }
   if (!GENDERS.has(p.gender)) err(p, `gender는 all/female/male 중 하나예요 (${p.gender})`);
+  if (p.schedule) {
+    const hm = /^([01]\d|2[0-3]):[0-5]\d$/;
+    if (!hm.test(p.schedule.open || '') || !hm.test(p.schedule.close || '')) err(p, 'schedule.open/close 는 "HH:MM" 형식이에요');
+    if (p.schedule.days && !p.schedule.days.every((d) => Number.isInteger(d) && d >= 0 && d <= 6)) err(p, 'schedule.days 는 0(일)~6(토) 숫자예요');
+    if (p.open24h) warn(p, 'open24h 인데 schedule 도 있어요. 하나만 쓰세요.');
+  }
+  (p.closed || []).forEach((c, i) => {
+    if (!(c.weekday >= 0 && c.weekday <= 6) || !(c.nth >= 1 && c.nth <= 5)) err(p, `closed[${i}] 는 { weekday: 0~6, nth: 1~5 } 형식이에요`);
+  });
   if (typeof p.open24h !== 'boolean') err(p, 'open24h는 true/false 예요');
 
   (p.prices || []).forEach((r, i) => {

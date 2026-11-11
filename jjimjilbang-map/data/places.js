@@ -15,6 +15,9 @@ window.JJIM_DATA = {
   "updatedAt": "2026-11-11",
   "places": [
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "클럽K서울",
         "클럽케이 서울",
@@ -128,6 +131,12 @@ window.JJIM_DATA = {
       "operatingEvidence": "2026년 7월 서울 찜질방 가이드, 강남구 관광 사이트에 영업 중으로 소개"
     },
     {
+      "category": "숯가마 찜질방",
+      "schedule": {
+        "open": "06:30",
+        "close": "22:00"
+      },
+      "closed": [],
       "aliases": [
         "숲속 한방랜드",
         "신촌 숲속한방랜드"
@@ -242,6 +251,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2026년 11월 갱신된 찜질방 가이드와 2025년 기사에 운영 시간·요금 소개"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "더파크스파랜드",
         "THE PARK 스파랜드"
@@ -371,6 +383,17 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 9월 방문 후기, 트립닷컴 2026 찜질방 추천 목록"
     },
     {
+      "category": "워터파크·찜질방",
+      "schedule": {
+        "days": [
+          0,
+          6
+        ],
+        "open": "07:00",
+        "close": "21:30",
+        "note": "토·일·공휴일만 운영"
+      },
+      "closed": [],
       "aliases": [
         "씨랄라 워터파크",
         "씨랄라 찜질방"
@@ -484,6 +507,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "공식 홈페이지 요금표(2026-08-24 적용)"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "강변 스파랜드"
       ],
@@ -600,6 +626,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 8월 트립어드바이저 후기, 공식 홈페이지 365일 24시간 안내"
     },
     {
+      "category": "여성전용 찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "스파 레이",
         "신사 스파레이"
@@ -703,6 +732,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 9~11월 요금 인상·수면실 관련 후기"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "스파렉스 동대문점",
         "동대문 스파렉스"
@@ -805,6 +837,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2026년 11월 갱신된 찜질방 가이드, 2026년 방문 기록"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "스파렉스 동묘",
         "동묘 스파렉스"
@@ -888,6 +923,12 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 서울 찜질방 추천 기사, 온라인 입장권 판매 중"
     },
     {
+      "category": "워터파크·찜질스파",
+      "schedule": {
+        "open": "07:00",
+        "close": "22:00"
+      },
+      "closed": [],
       "aliases": [
         "파크하비오 찜질스파",
         "파크하비오 찜질방",
@@ -1009,6 +1050,15 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 서울 찜질방 추천 기사, 2026년까지 쓸 수 있는 온라인 입장권 판매"
     },
     {
+      "category": "찜질방·사우나",
+      "schedule": null,
+      "closed": [
+        {
+          "weekday": 3,
+          "nth": 3,
+          "label": "매월 셋째 주 수요일"
+        }
+      ],
       "aliases": [
         "베뉴지 아쿠아24",
         "그랜드아쿠아",
@@ -1121,6 +1171,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 11월 방문 모임 글, 2026년 6월 찜질방 요금표"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "목동파라곤스파",
         "목동 파라곤 스파"
@@ -1251,6 +1304,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 5월 블로그 요금표, 2023년 방문 후기"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "라성보석사우나",
         "성수 찜질방"
@@ -1363,6 +1419,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 2월 성수 찜질방 추천 글에 24시간 영업으로 소개"
     },
     {
+      "category": "불한증막·사우나",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "백제인삼사우나",
         "백제불한증막",
@@ -1454,6 +1513,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 방문 후기(브런치), 2025년 송파·잠실 추천 글"
     },
     {
+      "category": "불가마 사우나",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "우이령불가마",
         "우이령 불가마"
@@ -1510,6 +1572,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2026년 10월 체험기에서 새로 연 시설로 소개"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "뉴거평사우나",
         "뉴거평 찜질방",
@@ -1611,6 +1676,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2024년 추천 글과 업체 목록 (2025년 이후 방문 후기는 확인 못 함)"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "해양불가마",
         "신도림 찜질방"
@@ -1729,6 +1797,9 @@ window.JJIM_DATA = {
       "operatingEvidence": "2025년 지역 추천 글 2건 (개별 방문 후기는 확인 못 함)"
     },
     {
+      "category": "찜질방",
+      "schedule": null,
+      "closed": [],
       "aliases": [
         "봉일온천",
         "봉일 스파랜드",

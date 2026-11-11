@@ -41,5 +41,7 @@ window.JJIM_FACILITIES = {
     parking:     { label: '주차 가능', short: '주차', group: 'amenity', icon: '🅿️' }
   },
   // 목록 상단 필터 칩으로 노출할 시설 (순서대로)
-  quickFilters: ['bulgama', 'outdoor', 'pool', 'sleep', 'femaleSleep', 'hwangto', 'salt', 'ice', 'charcoal', 'seshin', 'kids', 'parking']
+  quickFilters: ['bulgama', 'outdoor', 'pool', 'sleep', 'femaleSleep', 'hwangto', 'salt', 'ice', 'charcoal', 'seshin', 'kids', 'parking'],
+  // 사진이 없을 때 목록 썸네일·상세 표지에 보여줄 대표 시설 우선순위
+  signature: ['pool', 'outdoor', 'charcoal', 'bulgama', 'pyeonbaek', 'hwangto', 'salt', 'ice', 'jade', 'capsule', 'rooftop', 'kids', 'comics', 'seshin', 'bath']
 };
