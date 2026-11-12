@@ -47,6 +47,23 @@ const INSTAGRAM_URL = /^https:\/\/www\.instagram\.com\/(p|reel|reels)\/[\w-]+/;
 const hostPlatform = (u) => (/^https:\/\/([a-z]+\.)?(youtube\.com|youtu\.be)\//.test(u) ? 'youtube' : /^https:\/\/([a-z]+\.)?instagram\.com\//.test(u) ? 'instagram' : 'web');
 let snsLinks = 0;
 let snsRecommends = 0;
+let igLocations = 0;
+
+// 인스타그램 위치 태그 페이지·공식 계정
+function checkInstagram(p) {
+  if (!p.instagram) return;
+  const { location, account } = p.instagram;
+  if (location) {
+    if (!/^https:\/\/www\.instagram\.com\/explore\/locations\/\d+\//.test(location.url || '')) err(p, `instagram.location.url 은 instagram.com/explore/locations/숫자/ 주소예요 (${location.url})`);
+    if (location.posts != null && !(Number.isInteger(location.posts) && location.posts >= 0)) err(p, 'instagram.location.posts 는 0 이상의 정수예요');
+    if (location.checkedAt != null && !/^\d{4}-\d{2}(-\d{2})?$/.test(location.checkedAt)) err(p, 'instagram.location.checkedAt 은 YYYY-MM 또는 YYYY-MM-DD 예요');
+    igLocations++;
+  }
+  if (account) {
+    if (!/^https:\/\/www\.instagram\.com\/[A-Za-z0-9._]+\/?$/.test(account.url || '')) err(p, `instagram.account.url 은 계정 주소예요 (${account.url})`);
+    else if (!account.handle || !account.url.toLowerCase().replace(/\/$/, '').endsWith('/' + account.handle.toLowerCase())) err(p, 'instagram.account.handle 이 주소의 계정 이름과 달라요');
+  }
+}
 
 function checkReviewLinks(p) {
   const seen = new Set();
@@ -117,6 +134,7 @@ for (const p of places) {
   (p.facilities || []).forEach((k) => { if (!FAC.items[k]) err(p, `모르는 시설 코드: ${k} (data/facilities.json 확인)`); });
   (p.hashtags || []).forEach((t) => { if (/^#|\s/.test(t)) err(p, `해시태그에는 #과 공백을 빼 주세요 (${t})`); });
   checkReviewLinks(p);
+  checkInstagram(p);
   if (p.instagramPosts) err(p, 'instagramPosts 는 더 쓰지 않아요. reviewLinks 에 platform: "instagram" 으로 넣어 주세요');
   (p.photos || []).forEach((ph, i) => {
     if (!isUrl(ph.url)) err(p, `photos[${i}].url 이 URL이 아니에요`);
@@ -136,4 +154,4 @@ if (errors.length) {
   errors.forEach((e) => console.error('  ✗ ' + e));
   process.exit(1);
 }
-console.log(`검사 통과: 찜질방 ${places.length}곳, 유튜브·인스타 링크 ${snsLinks}개 (추천 ${snsRecommends}개)`);
+console.log(`검사 통과: 찜질방 ${places.length}곳, 유튜브·인스타 링크 ${snsLinks}개 (추천 ${snsRecommends}개), 인스타 위치 태그 페이지 ${igLocations}곳`);

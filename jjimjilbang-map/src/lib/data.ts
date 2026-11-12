@@ -40,6 +40,14 @@ export interface ReviewLink {
   /** 협찬·광고 표시가 있으면 true */
   sponsored?: boolean;
 }
+/** 장소의 인스타그램 페이지 (개별 게시물은 reviewLinks 에 platform: 'instagram' 으로) */
+export interface InstagramInfo {
+  /** 이 장소를 태그한 게시물 모음 (instagram.com/explore/locations/숫자/…) */
+  location?: { url: string; posts?: number | null; checkedAt?: string | null } | null;
+  /** 업체 공식 계정 */
+  account?: { url: string; handle: string; followers?: number | null } | null;
+}
+
 export interface Photo { url: string; credit?: string; caption?: string }
 export interface Schedule { open: string; close: string; days?: number[]; note?: string }
 export interface RegularClosing { weekday: number; nth: number; label?: string }
@@ -74,6 +82,7 @@ export interface RawPlace {
   cons?: string[];
   hashtags?: string[];
   reviewLinks?: ReviewLink[];
+  instagram?: InstagramInfo | null;
   photos?: Photo[];
   naverPlaceId?: string | null;
   naverQuery?: string;
@@ -102,6 +111,8 @@ export interface ReviewSummary {
   mixed: number;
   negative: number;
   byPlatform: Record<ReviewPlatform, { total: number; recommend: number }>;
+  /** 인스타그램 위치 태그 게시물 수 (모르면 null) */
+  instaTagged: number | null;
   /** 추천순 점수 (아래 reviewScore 설명 참고) */
   score: number;
 }
@@ -202,15 +213,19 @@ const VERDICT_POINT: Record<Verdict, number> = { recommend: 1, mixed: 0.3, negat
 const CONFIDENCE_BONUS = { high: 1, medium: 0.5, low: 0 } as const;
 const recency = (months: number | null) => (months == null ? 0.4 : months <= 12 ? 1 : months <= 24 ? 0.8 : months <= 48 ? 0.5 : 0.3);
 
+// 글 수가 많을수록 조금씩 더해요: 10개 0.25, 100개 0.5, 1,000개 0.75, 10,000개 이상 1
+const buzz = (count?: number | null) => (count && count > 1 ? Math.min(1, Math.log10(count) / 4) : 0);
+
 /**
  * 추천순 점수
  * = Σ(후기 하나마다: 출처 가중치 × 평가 점수 × 최신성 × 묶음 글 0.8 × 협찬 0.5)
- *   + 정보 신뢰도(높음 1, 보통 0.5, 낮음 0) + 네이버 블로그 글 수(최대 1)
+ *   + 정보 신뢰도(높음 1, 보통 0.5, 낮음 0)
+ *   + 화제성: 네이버 블로그 글 수(최대 1) + 인스타그램 위치 태그 게시물 수(최대 1)
  * - 출처 가중치: 유튜브 1.2, 인스타그램 1, 블로그·기사 0.8
  * - 평가 점수: 추천 1, 장단점 0.3, 아쉬움 -1, 판단 근거 없음 0.2
  * - 최신성: 1년 안 1, 2년 안 0.8, 4년 안 0.5, 그 전 0.3, 날짜 모름 0.4
  */
-function reviewScore(links: ReviewLink[], confidence: RawPlace['confidence'], blogTotal?: number) {
+function reviewScore(links: ReviewLink[], confidence: RawPlace['confidence'], blogTotal?: number, instaTagged?: number | null) {
   let score = 0;
   for (const r of links) {
     const point = r.verdict ? VERDICT_POINT[r.verdict] : 0.2;
@@ -218,11 +233,11 @@ function reviewScore(links: ReviewLink[], confidence: RawPlace['confidence'], bl
       * (r.kind === 'list' ? 0.8 : 1) * (r.sponsored ? 0.5 : 1);
   }
   score += CONFIDENCE_BONUS[confidence ?? 'medium'];
-  if (blogTotal && blogTotal > 1) score += Math.min(1, Math.log10(blogTotal) / 4);
+  score += buzz(blogTotal) + buzz(instaTagged);
   return Math.round(score * 100) / 100;
 }
 
-function summarizeReviews(links: ReviewLink[], confidence: RawPlace['confidence'], blogTotal?: number): ReviewSummary {
+function summarizeReviews(links: ReviewLink[], confidence: RawPlace['confidence'], blogTotal?: number, instaTagged?: number | null): ReviewSummary {
   const byPlatform: ReviewSummary['byPlatform'] = {
     youtube: { total: 0, recommend: 0 },
     instagram: { total: 0, recommend: 0 },
@@ -236,7 +251,11 @@ function summarizeReviews(links: ReviewLink[], confidence: RawPlace['confidence'
     else if (r.verdict === 'mixed') mixed++;
     else if (r.verdict === 'negative') negative++;
   }
-  return { total: links.length, recommend, mixed, negative, byPlatform, score: reviewScore(links, confidence, blogTotal) };
+  return {
+    total: links.length, recommend, mixed, negative, byPlatform,
+    instaTagged: instaTagged ?? null,
+    score: reviewScore(links, confidence, blogTotal, instaTagged),
+  };
 }
 
 function normalize(p: RawPlace, index: number): Place {
@@ -257,7 +276,7 @@ function normalize(p: RawPlace, index: number): Place {
     priceRows: base,
     minPrice: base.length ? Math.min(...base.map((r) => r.price)) : null,
     haystack: normText([p.name, p.nameEn, (p.aliases || []).join(' '), p.gu, p.address, p.station, p.category, (p.hashtags || []).join(' ')].join(' ')),
-    reviews: summarizeReviews(reviewLinks, p.confidence, NAVER.byPlace?.[p.id]?.blogTotal),
+    reviews: summarizeReviews(reviewLinks, p.confidence, NAVER.byPlace?.[p.id]?.blogTotal, p.instagram?.location?.posts),
   };
 }
 

@@ -27,6 +27,7 @@ import {
   naverInfo,
   naverPlaceUrl,
   naverRouteScheme,
+  num,
   photoList,
   platformOf,
   reviewHeadline,
@@ -217,12 +218,14 @@ function ReviewSection({ place: p, open }: { place: Place; open: (url: string) =
     instagram: [],
     web: (nv?.blog ?? []).slice(0, 5).map((b) => ({ title: b.title, url: b.link, author: b.bloggername ?? null, source: '네이버 블로그', date: b.postdate ?? null, auto: true })),
   };
+  const ig = p.instagram;
+  const hasIgPages = Boolean(ig?.location || ig?.account);
   const groups = PLATFORMS.map((pf) => {
     const items: ReviewItem[] = sortReviews(p.reviewLinks.filter((r) => platformOf(r) === pf));
     const seen = new Set(items.map((r) => urlKey(r.url)));
     for (const a of auto[pf]) if (!seen.has(urlKey(a.url))) { seen.add(urlKey(a.url)); items.push(a); }
     return { pf, items };
-  }).filter((g) => g.items.length);
+  }).filter((g) => g.items.length || (g.pf === 'instagram' && hasIgPages));
   return (
     <>
       <Border variant="height16" />
@@ -239,7 +242,9 @@ function ReviewSection({ place: p, open }: { place: Place; open: (url: string) =
             <Stat n={s.negative} label="아쉬움" tone="bad" />
           </div>
           <p className="pad review-platforms">
-            {PLATFORMS.map((pf) => `${PLATFORM_LABEL[pf]} ${s.byPlatform[pf].total}`).join(' · ')}
+            {PLATFORMS.map((pf) => (pf === 'instagram' && !s.byPlatform.instagram.total && s.instaTagged
+              ? `인스타그램 태그 게시물 ${num(s.instaTagged)}`
+              : `${PLATFORM_LABEL[pf]} ${s.byPlatform[pf].total}`)).join(' · ')}
           </p>
         </>
       )}
@@ -272,9 +277,23 @@ function ReviewSection({ place: p, open }: { place: Place; open: (url: string) =
         const items = all ? g.items : g.items.slice(0, SHOW);
         return (
           <section key={g.pf} className="review-group" aria-label={`${PLATFORM_LABEL[g.pf]} 후기`}>
-            <p className="group-title pad">{`${PLATFORM_LABEL[g.pf]} ${g.items.length}`}</p>
+            <p className="group-title pad">{g.items.length ? `${PLATFORM_LABEL[g.pf]} ${g.items.length}` : PLATFORM_LABEL[g.pf]}</p>
             <List>
               {items.map((r) => <ReviewRow key={urlKey(r.url)} item={r} platform={g.pf} onClick={() => open(r.url)} />)}
+              {g.pf === 'instagram' && ig?.location && (
+                <InstaRow
+                  top={ig.location.posts ? `이 장소를 태그한 게시물 ${num(ig.location.posts)}개` : '이 장소를 태그한 게시물 보기'}
+                  bottom={['인스타그램 위치 태그', ig.location.checkedAt ? `${fmtDate(ig.location.checkedAt.slice(0, 7))} 기준` : ''].filter(Boolean).join(' · ')}
+                  onClick={() => open(ig.location!.url)}
+                />
+              )}
+              {g.pf === 'instagram' && ig?.account && (
+                <InstaRow
+                  top={`공식 계정 @${ig.account.handle}`}
+                  bottom={ig.account.followers ? `팔로워 ${num(ig.account.followers)} · 업체가 올린 소식` : '업체가 올린 소식·이벤트'}
+                  onClick={() => open(ig.account!.url)}
+                />
+              )}
             </List>
             {!all && g.items.length > SHOW && (
               <div className="pad more">
@@ -338,6 +357,14 @@ function ReviewRow({ item: r, platform, onClick }: { item: ReviewItem; platform:
           bottom={meta}
         />
       } />
+  );
+}
+
+function InstaRow({ top, bottom, onClick }: { top: string; bottom: string; onClick: () => void }) {
+  return (
+    <ListRow onClick={onClick} withTouchEffect arrowType="right"
+      left={<span className="rv-ico rv-instagram"><Icon name="photo" size={18} /></span>}
+      contents={<ListRow.Texts type="2RowTypeA" top={top} bottom={bottom} />} />
   );
 }
 
