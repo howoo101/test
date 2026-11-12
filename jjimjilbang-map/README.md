@@ -53,6 +53,15 @@ npm run build:preview   # preview-dist/ — 공식 mock SDK를 넣어 일반 브
 
 실제 배포 번들(`dist/`)은 토스 앱 밖에서 열면 SDK 대신 웹 기능(브라우저 위치, localStorage 등)으로 동작하도록 만들어 두었어요.
 
+### 웹사이트로 올리기 (Vercel)
+
+토스 앱 밖에서도 같은 번들이 웹 기능으로 동작해서 웹사이트로 올릴 수 있어요. `vercel.json`이 Vercel에 웹 번들만 빌드하라고 알려줘요 (`npm run build:web` → `dist/`, `.ait`는 만들지 않아요).
+
+- **GitHub 연결:** Vercel에서 이 저장소를 가져오고(Import) **Root Directory를 `jjimjilbang-map`** 으로 지정해요. 그다음부터는 push할 때마다 자동으로 배포되고, PR마다 미리보기 주소가 생겨요.
+- **명령어로:** `npx vercel --cwd jjimjilbang-map` (미리보기), `npx vercel --cwd jjimjilbang-map --prod` (실서비스)
+
+⚠️ TDS(`@toss/tds-mobile`) 패키지에는 공개 라이선스가 없어요. 토스가 앱인토스 미니앱용으로 제공하는 디자인 시스템이라, 누구나 볼 수 있는 웹사이트로 공개하기 전에 이용 조건을 확인하세요. 확인 전에는 Vercel의 Deployment Protection으로 접근을 제한해 두는 게 안전해요.
+
 ## 6. 토스 SDK를 쓰는 곳
 
 모든 SDK 호출은 `src/lib/toss.ts` 한 파일에 모여 있어요. 토스 앱 밖에서는 같은 함수가 웹 API로 대신 동작해요.
