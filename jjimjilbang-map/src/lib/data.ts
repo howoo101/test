@@ -87,6 +87,8 @@ export interface RawPlace {
   photos?: Photo[];
   naverPlaceId?: string | null;
   naverQuery?: string;
+  /** 같은 이름의 다른 지점 글·사진을 거르는 단어 (예: "문래") */
+  naverExclude?: string[];
   verifiedAt?: string;
   confidence?: 'high' | 'medium' | 'low';
   operatingEvidence?: string | null;

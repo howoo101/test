@@ -39,6 +39,7 @@ const decode = (s) => String(s || '')
 // 제목·설명에 장소 이름(또는 별칭)이 실제로 들어간 영상만 남겨요. 같은 이름의 다른 지점은 사람이 걸러 주세요.
 function mentions(place, text) {
   const t = norm(text);
+  if ((place.naverExclude || []).some((w) => w && t.includes(norm(w)))) return false;
   return [place.name, ...(place.aliases || [])].some((n) => n && t.includes(norm(n)));
 }
 
