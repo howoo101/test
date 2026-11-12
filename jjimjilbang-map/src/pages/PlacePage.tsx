@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   Badge,
   BottomSheet,
@@ -432,15 +432,29 @@ function InfoRow({ icon, label, value, sub, action }: { icon: IconName; label: s
   );
 }
 
+/**
+ * 사진: 네이버 지도처럼 큰 사진 1장 + 작은 사진 4장. 마지막 칸에 남은 장수(+N)를 보여주고,
+ * 누르면 전체 화면으로 넘겨 볼 수 있어요. 사진이 없으면 대표 시설 타일을 보여줘요.
+ */
 function Cover({ place: p }: { place: Place }) {
   const photos = photoList(p);
+  const [viewer, setViewer] = useState<number | null>(null);
   if (photos.length) {
+    const shown = photos.slice(0, 5);
+    const rest = photos.length - shown.length;
     return (
-      <div className="cover-strip pad">
-        {photos.slice(0, 6).map((ph, i) => (
-          <img key={i} src={ph.src} alt={ph.alt} loading="lazy" referrerPolicy="no-referrer" />
-        ))}
-      </div>
+      <>
+        <div className={`gallery pad count-${shown.length}`}>
+          {shown.map((ph, i) => (
+            <button type="button" key={i} className={`gallery-cell${i === 0 ? ' is-main' : ''}`} onClick={() => setViewer(i)} aria-label={`사진 ${i + 1} 크게 보기`}>
+              <img src={ph.src} alt={ph.alt} loading={i === 0 ? 'eager' : 'lazy'} referrerPolicy="no-referrer"
+                onError={(e) => { (e.currentTarget.parentElement as HTMLElement).classList.add('is-broken'); }} />
+              {i === shown.length - 1 && rest > 0 && <span className="gallery-more">{rest > 998 ? '999+' : `+${rest}`}</span>}
+            </button>
+          ))}
+        </div>
+        {viewer != null && <PhotoViewer photos={photos} start={viewer} onClose={() => setViewer(null)} />}
+      </>
     );
   }
   const sig = signature(p, 3);
@@ -452,6 +466,52 @@ function Cover({ place: p }: { place: Place }) {
           <span className="cover-lbl">{FACILITIES.items[k].short}</span>
         </span>
       ))}
+    </div>
+  );
+}
+
+type PhotoItem = ReturnType<typeof photoList>[number];
+
+/** 전체 화면 사진 보기: 옆으로 넘기기, 출처 링크, 닫기(Esc) */
+function PhotoViewer({ photos, start, onClose }: { photos: PhotoItem[]; start: number; onClose: () => void }) {
+  const [idx, setIdx] = useState(start);
+  const [track, setTrack] = useState<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (track) track.scrollTo({ left: track.clientWidth * start });
+    // 처음 한 번만 시작 사진으로 옮겨요
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [track]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (track && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) track.scrollBy({ left: (e.key === 'ArrowRight' ? 1 : -1) * track.clientWidth, behavior: 'smooth' });
+    };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [onClose, track]);
+  const cur = photos[idx];
+  return (
+    <div className="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+      <div className="viewer-top">
+        <span className="viewer-count">{`${idx + 1} / ${photos.length}`}</span>
+        <button type="button" className="viewer-close" onClick={onClose} aria-label="닫기">✕</button>
+      </div>
+      <div className="viewer-track" ref={setTrack} onScroll={(e) => {
+        const el = e.currentTarget;
+        setIdx(Math.min(photos.length - 1, Math.max(0, Math.round(el.scrollLeft / el.clientWidth))));
+      }}>
+        {photos.map((ph, i) => (
+          <div className="viewer-slide" key={i}>
+            <img src={ph.src} alt={ph.alt} loading={Math.abs(i - start) < 2 ? 'eager' : 'lazy'} referrerPolicy="no-referrer" />
+          </div>
+        ))}
+      </div>
+      <div className="viewer-bottom">
+        {cur?.credit && <span>{cur.credit}</span>}
+        {cur?.link && <a href={cur.link} target="_blank" rel="noopener noreferrer">원본 보기</a>}
+      </div>
     </div>
   );
 }
