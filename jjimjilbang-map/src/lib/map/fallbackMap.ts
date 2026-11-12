@@ -176,7 +176,22 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   }
 
   private clampK(k: number) {
-    return Math.max(this.minK * 0.8, Math.min(this.minK * 40, k));
+    return Math.max(this.minK, Math.min(this.minK * 40, k));
+  }
+
+  // 손으로 끌거나 확대·축소해도 서울 지도 밖으로 멀리 벗어나지 않게 화면 중심을 묶어요.
+  // 지도 가장자리가 화면 안쪽으로 최대 48px까지만 들어올 수 있어요.
+  private clampView() {
+    const v = this.view, b = this.bounds;
+    if (!isFinite(b.minX) || this.w < 2) return;
+    const slack = 48 / v.k;
+    const clampAxis = (c: number, lo: number, hi: number, half: number) => {
+      const a = lo + half - slack, z = hi - half + slack;
+      if (a > z) return (lo + hi) / 2; // 지도가 화면보다 작으면 가운데에 고정해요
+      return Math.min(z, Math.max(a, c));
+    };
+    v.cx = clampAxis(v.cx, b.minX, b.maxX, this.w / 2 / v.k);
+    v.cy = clampAxis(v.cy, b.minY, b.maxY, this.h / 2 / v.k);
   }
 
   private zoomAt(factor: number, pt: { x: number; y: number }) {
@@ -200,6 +215,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   }
 
   private render() {
+    this.clampView();
     const v = this.view;
     const vw = this.w / v.k, vh = this.h / v.k;
     this.svgEl.setAttribute('viewBox', [v.cx - vw / 2, v.cy - vh / 2, vw, vh].map((n) => n.toFixed(3)).join(' '));
