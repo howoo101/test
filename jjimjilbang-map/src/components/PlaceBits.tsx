@@ -79,27 +79,30 @@ export function PriceTag({ place }: { place: Place }) {
 // "선릉역 8번 출구 도보 3분" -> "선릉역"
 const shortStation = (s?: string | null) => (s ? /[가-힣A-Za-z0-9]+역/.exec(s)?.[0] ?? null : null);
 
-/** 목록 한 줄 */
-export function PlaceRow({ place, onClick, withReview = true }: { place: Place; onClick: () => void; withReview?: boolean }) {
-  const meta = [category(place), place.gu, shortStation(place.station)].filter(Boolean).join(' · ');
+/** 목록 한 줄: 이름 / 영업 상태 / (추천 배지) 동네·역 — 줄 수와 높이를 항상 같게 맞춰요 */
+export function PlaceRow({ place, onClick }: { place: Place; onClick: () => void; withReview?: boolean }) {
+  const cat = category(place);
+  const where = [cat !== '찜질방' ? cat : '', place.gu, shortStation(place.station)].filter(Boolean).join(' · ');
   const badge = snsBadge(place);
+  const rec = !badge && place.reviews.recommend ? `추천 ${place.reviews.recommend}` : '';
   return (
     <ListRow
       onClick={onClick}
       withTouchEffect
-      verticalPadding="large"
+      verticalPadding="medium"
       left={<PlaceThumb place={place} />}
       contents={
         <ListRow.Texts
           type="3RowTypeA"
-          top={badge ? (
-            <span className="row-title">
-              <span className="row-name">{place.name}</span>
-              <Badge size="xsmall" variant="weak" color="red">{badge}</Badge>
+          top={<span className="row-line row-name">{place.name}</span>}
+          middle={<span className="row-line"><StatusText place={place} withReview={false} withDistance /></span>}
+          bottom={
+            <span className="row-line row-meta">
+              {badge && <Badge size="xsmall" variant="weak" color="red">{badge}</Badge>}
+              {rec && <span className="row-rec">{rec}</span>}
+              <span className="row-where">{where}</span>
             </span>
-          ) : place.name}
-          middle={<StatusText place={place} withReview={withReview} withDistance />}
-          bottom={meta}
+          }
         />
       }
       right={<PriceTag place={place} />}
