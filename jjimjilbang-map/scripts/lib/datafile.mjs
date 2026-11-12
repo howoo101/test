@@ -30,3 +30,28 @@ export function stripTags(s) {
 }
 
 export const norm = (s) => String(s || '').toLowerCase().replace(/[\s·()\-_.]/g, '');
+
+/**
+ * API 한도를 아끼려고 이번에 다시 받을 장소만 골라요.
+ * - 마지막으로 받은 지 days 일이 안 지난 곳은 건너뛰어요.
+ * - 오래된 곳(한 번도 안 받은 곳 먼저)부터 max 곳까지만 받아요.
+ * 명령줄: --days N, --max N, --all(날짜·개수 제한 없이 전부), --only 장소id
+ */
+export function pickStale(places, lastFetched, { days, max }) {
+  const args = process.argv.slice(2);
+  const val = (k) => (args.includes(k) ? args[args.indexOf(k) + 1] : null);
+  const only = val('--only');
+  if (only) return places.filter((p) => p.id === only);
+  if (args.includes('--all')) return places;
+  const d = Number(val('--days') ?? process.env.REFRESH_DAYS ?? days);
+  const m = Number(val('--max') ?? process.env.REFRESH_MAX ?? max);
+  const today = Date.now();
+  const age = (p) => {
+    const t = lastFetched(p.id);
+    return t ? (today - Date.parse(t)) / 86400000 : Infinity;
+  };
+  const due = places.filter((p) => age(p) >= d).sort((a, b) => age(b) - age(a));
+  const pick = due.slice(0, m);
+  console.log(`이번에 받을 곳 ${pick.length}곳 (받은 지 ${d}일 넘은 곳 ${due.length}곳 중 최대 ${m}곳, 나머지는 다음 실행에)`);
+  return pick;
+}

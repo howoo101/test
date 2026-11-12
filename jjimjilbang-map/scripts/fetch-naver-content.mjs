@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // 장소마다 네이버 블로그 후기와 이미지 검색 결과를 모아 data/naver-content.json 을 만듭니다.
 //
-//   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/fetch-naver-content.mjs [--only 장소id]
+//   NAVER_CLIENT_ID=... NAVER_CLIENT_SECRET=... node scripts/fetch-naver-content.mjs [--only 장소id | --all | --days 7 --max 80]
+//
+// 한도를 아끼려고 받은 지 7일이 안 된 곳은 건너뛰고, 한 번에 최대 80곳(장소당 2회 호출)만 받아요.
 //
 // 화면에는 제목·요약·링크만 보여주고 원문으로 연결합니다(본문 복사 금지).
-import { file, readJson, writeJson, stripTags, norm } from './lib/datafile.mjs';
+import { file, readJson, writeJson, stripTags, norm, pickStale } from './lib/datafile.mjs';
 import { credentials, search } from './lib/naver-search.mjs';
 
-const args = process.argv.slice(2);
-const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
 const cred = credentials();
 
 const outFile = file('data', 'naver-content.json');
@@ -21,8 +21,8 @@ function mentions(place, text) {
 }
 
 const byPlace = { ...(prev.byPlace || {}) };
-for (const place of places) {
-  if (only && place.id !== only) continue;
+const targets = pickStale(places, (id) => prev.byPlace?.[id]?.fetchedAt, { days: 7, max: 80 });
+for (const place of targets) {
   const q = place.naverQuery || place.name;
   try {
     const blog = await search('blog.json', { query: `${q} 후기`, display: 30, sort: 'sim' }, cred);
@@ -48,6 +48,8 @@ for (const place of places) {
   } catch (e) {
     console.error(`✗ ${place.name}: ${e.message}`);
     process.exitCode = 1;
+    // 한도 초과(429)면 더 부르지 않고 지금까지 받은 것만 저장해요.
+    if (/\(429\)/.test(e.message)) { console.error('네이버 호출 한도에 걸려 멈춰요. 나머지는 다음 실행에 받아요.'); break; }
   }
 }
 
