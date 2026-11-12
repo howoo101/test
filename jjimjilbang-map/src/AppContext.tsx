@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { useToast } from './ui';
 import type { LatLng } from './lib/map/types';
 import { getUserLocation, haptic, LocationDeniedError, storage } from './lib/device';
+import { VISIT_KEY, newVisitId, parseVisits, sortVisits, type Visit, type VisitMap } from './lib/visits';
 
 interface AppState {
   favs: Set<string>;
@@ -11,6 +12,11 @@ interface AppState {
   /** 다른 곳(예: 길찾기)에서 받은 현재 위치를 기억해 거리 표시에 써요 */
   rememberPos: (pos: LatLng) => void;
   toast: (message: string) => void;
+  /** 내 방문 기록 (장소 id → 최근순 목록) */
+  visits: VisitMap;
+  /** 기록을 새로 넣거나(id 없음) 고쳐요 */
+  saveVisit: (placeId: string, v: Omit<Visit, 'id' | 'updatedAt'> & { id?: string }) => void;
+  removeVisit: (placeId: string, visitId: string) => void;
 }
 
 const Ctx = createContext<AppState | null>(null);
@@ -20,6 +26,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const { openToast } = useToast();
   const [favs, setFavs] = useState<Set<string>>(new Set());
   const [userPos, setUserPos] = useState<LatLng | null>(null);
+  const [visits, setVisits] = useState<VisitMap>({});
 
   useEffect(() => {
     storage.get(FAV_KEY).then((v) => {
@@ -27,6 +34,39 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       try { setFavs(new Set(JSON.parse(v) as string[])); } catch { /* 깨진 값은 무시 */ }
     }).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    storage.get(VISIT_KEY).then((v) => setVisits(parseVisits(v))).catch(() => {});
+  }, []);
+
+  const writeVisits = useCallback((update: (prev: VisitMap) => VisitMap) => {
+    setVisits((prev) => {
+      const next = update(prev);
+      storage.set(VISIT_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  const saveVisit = useCallback<AppState['saveVisit']>((placeId, v) => {
+    writeVisits((prev) => {
+      const list = prev[placeId] ?? [];
+      const item: Visit = { id: v.id ?? newVisitId(), date: v.date, rating: v.rating, text: v.text.trim(), updatedAt: new Date().toISOString() };
+      const rest = list.filter((x) => x.id !== item.id);
+      return { ...prev, [placeId]: sortVisits([...rest, item]) };
+    });
+    haptic();
+    openToast(v.id ? '기록을 고쳤어요' : '기록을 남겼어요');
+  }, [writeVisits, openToast]);
+
+  const removeVisit = useCallback((placeId: string, visitId: string) => {
+    writeVisits((prev) => {
+      const list = (prev[placeId] ?? []).filter((x) => x.id !== visitId);
+      const next = { ...prev };
+      if (list.length) next[placeId] = list; else delete next[placeId];
+      return next;
+    });
+    openToast('기록을 지웠어요');
+  }, [writeVisits, openToast]);
 
   const toast = useCallback((message: string) => openToast(message), [openToast]);
 
@@ -55,7 +95,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
   const rememberPos = useCallback((pos: LatLng) => setUserPos(pos), []);
 
-  const value = useMemo(() => ({ favs, toggleFav, userPos, locate, rememberPos, toast }), [favs, toggleFav, userPos, locate, rememberPos, toast]);
+  const value = useMemo(
+    () => ({ favs, toggleFav, userPos, locate, rememberPos, toast, visits, saveVisit, removeVisit }),
+    [favs, toggleFav, userPos, locate, rememberPos, toast, visits, saveVisit, removeVisit],
+  );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

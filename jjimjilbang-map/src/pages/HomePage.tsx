@@ -25,12 +25,14 @@ const CHIPS: { id: string; label: string }[] = [
   { id: 'open24h', label: '24시간' },
   { id: 'under15k', label: '1.5만원 이하' },
   { id: 'fav', label: '찜한 곳' },
+  { id: 'visited', label: '다녀온 곳' },
   { id: 'female', label: '여성전용' },
   ...FACILITIES.quickFilters.map((k) => ({ id: k, label: FACILITIES.items[k].short })),
 ];
 
 export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; active: boolean }) {
-  const { favs, userPos, locate } = useApp();
+  const { favs, userPos, locate, visits } = useApp();
+  const visited = useMemo(() => new Set(Object.keys(visits)), [visits]);
   const [q, setQ] = useState('');
   const [chips, setChips] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState<SortKey>('rec');
@@ -38,7 +40,7 @@ export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; act
   const [view, setView] = useState<View>('map');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const places = useMemo(() => filterPlaces({ q, chips, favs, sort, userPos }), [q, chips, favs, sort, userPos]);
+  const places = useMemo(() => filterPlaces({ q, chips, favs, visited, sort, userPos }), [q, chips, favs, visited, sort, userPos]);
   const fitKey = `${q}|${[...chips].sort().join(',')}`;
 
   const toggleChip = (id: string) => {
@@ -123,8 +125,17 @@ export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; act
           </List>
         ) : (
           <div className="empty pad">
-            <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>조건에 맞는 찜질방이 없어요</Paragraph.Text>
-            <Paragraph.Text typography="t6" color={colors.grey600}>필터를 줄여서 다시 찾아보세요.</Paragraph.Text>
+            {chips.has('visited') && !visited.size ? (
+              <>
+                <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>아직 남긴 기록이 없어요</Paragraph.Text>
+                <Paragraph.Text typography="t6" color={colors.grey600}>찜질방 상세에서 "기록 남기기"를 누르면 별점과 메모가 여기 모여요.</Paragraph.Text>
+              </>
+            ) : (
+              <>
+                <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>조건에 맞는 찜질방이 없어요</Paragraph.Text>
+                <Paragraph.Text typography="t6" color={colors.grey600}>필터를 줄여서 다시 찾아보세요.</Paragraph.Text>
+              </>
+            )}
             <Button size="medium" variant="weak" onClick={resetFilters}>필터 초기화</Button>
           </div>
         )}

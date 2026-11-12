@@ -18,6 +18,7 @@ import { colors } from '../ui';
 import { useApp } from '../AppContext';
 import { Icon, type IconName } from '../components/Icon';
 import { StatusText } from '../components/PlaceBits';
+import { MyVisits } from '../components/MyVisits';
 import {
   FACILITIES,
   PLATFORM_LABEL,
@@ -136,6 +137,9 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
           </TextButton>
         )}
       </div>
+
+      <Border variant="height16" />
+      <MyVisits place={p} />
 
       <ReviewSection place={p} open={open} />
 
