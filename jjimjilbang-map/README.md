@@ -68,14 +68,16 @@ npm run preview    # 빌드한 결과 미리 보기
 npm run validate
 ```
 
-네이버 검색 API(하루 25,000회 무료) 키가 있으면 블로그 후기·이미지와 좌표를 자동으로 채울 수 있어요.
+네이버 검색 API 키가 있으면 블로그 후기·이미지와 좌표를 자동으로 채울 수 있어요.
+
+검색 API는 developers.naver.com 에서 NAVER API HUB(네이버 클라우드 플랫폼 콘솔)로 옮겨졌어요. 콘솔에서 **NAVER API HUB → Application 등록**을 하고 **블로그·이미지·지역 검색**을 고른 뒤 나오는 Client ID / Client Secret 을 넣으면 돼요. 스크립트는 API HUB 주소(`naverapihub.apigw.ntruss.com`)를 기본으로 쓰고, 예전 developers.naver.com 키라면 `NAVER_API=devcenter` 를 함께 넣어요.
 
 ```bash
 NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:content   # data/naver-content.json
 NAVER_CLIENT_ID=아이디 NAVER_CLIENT_SECRET=시크릿 npm run naver:enrich    # 좌표·전화번호 비교표 (--write 로 반영)
 ```
 
-유튜브 영상도 자동으로 모을 수 있어요. Google Cloud 콘솔에서 **YouTube Data API v3** 키를 만들어 넣어요 (하루 무료 10,000단위, 17곳 검색에 약 1,700단위).
+유튜브 영상도 자동으로 모을 수 있어요. Google Cloud 콘솔에서 **YouTube Data API v3** 키를 만들어 넣어요 (하루 무료 10,000단위, 72곳 검색에 약 7,200단위).
 
 ```bash
 YOUTUBE_API_KEY=키 npm run youtube   # data/youtube-content.json
