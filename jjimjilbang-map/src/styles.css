@@ -64,7 +64,7 @@ body {
 .chip-row::-webkit-scrollbar { display: none; }
 .chip-row > * { flex-wrap: nowrap; width: max-content; }
 .seg { padding-top: 12px; padding-bottom: 12px; }
-.home-map { flex: 1; min-height: 0; position: relative; }
+.home-map { flex: 1; min-height: 0; position: relative; isolation: isolate; }
 .home-list { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .sort-btn { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; }
 .empty { display: grid; gap: 8px; justify-items: start; padding-top: 16px; padding-bottom: 16px; }
@@ -614,7 +614,8 @@ body {
   }
   .home-detail { box-shadow: 4px 0 12px rgb(0 0 0 / 0.06); }
   .home-side .home-head { position: sticky; top: 0; z-index: 3; padding-bottom: 8px; border-bottom: 1px solid var(--grey100); }
-  .home.is-wide .home-map { position: relative; min-width: 0; height: 100%; }
+  /* 지도는 자기 층 안에서만 핀을 쌓아요 (선택 핀이 목록·상세·사진 위로 올라오지 않게) */
+  .home.is-wide .home-map { position: relative; z-index: 0; isolation: isolate; min-width: 0; height: 100%; }
   .home.is-wide .map-view { height: 100%; }
   .home-list .ui-row.is-current { background: var(--blue50, #e8f3ff); }
   .home-list .ui-row.is-current .row-name { color: var(--blue500); }
