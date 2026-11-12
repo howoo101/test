@@ -8,6 +8,8 @@ interface AppState {
   toggleFav: (id: string) => void;
   userPos: LatLng | null;
   locate: () => Promise<LatLng | null>;
+  /** 다른 곳(예: 길찾기)에서 받은 현재 위치를 기억해 거리 표시에 써요 */
+  rememberPos: (pos: LatLng) => void;
   toast: (message: string) => void;
 }
 
@@ -51,7 +53,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }
   }, [openToast]);
 
-  const value = useMemo(() => ({ favs, toggleFav, userPos, locate, toast }), [favs, toggleFav, userPos, locate, toast]);
+  const rememberPos = useCallback((pos: LatLng) => setUserPos(pos), []);
+
+  const value = useMemo(() => ({ favs, toggleFav, userPos, locate, rememberPos, toast }), [favs, toggleFav, userPos, locate, rememberPos, toast]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

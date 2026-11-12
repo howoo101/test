@@ -27,6 +27,7 @@ import {
   naverInfo,
   naverPlaceUrl,
   naverRouteScheme,
+  naverRouteWebUrl,
   num,
   photoList,
   platformOf,
@@ -43,12 +44,12 @@ import {
   type ReviewPlatform,
   type Verdict,
 } from '../lib/data';
-import { copyText, openAppWithFallback, openExternal, sharePlace } from '../lib/device';
+import { copyText, openExternal, openNaverDirections, sharePlace } from '../lib/device';
 
 const GROUP_TITLES: Record<string, string> = { 찜질: '찜질 이용 (찜질+목욕)', 목욕: '목욕·사우나만', 기타: '기타 요금' };
 
 export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => void }) {
-  const { favs, toggleFav, toast } = useApp();
+  const { favs, toggleFav, toast, userPos, rememberPos } = useApp();
   const fav = favs.has(p.id);
 
   const open = (url: string) => { openExternal(url).catch(() => toast('링크를 열지 못했어요')); };
@@ -58,9 +59,12 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
   const share = () => {
     sharePlace(p.id, p.name).then((r) => { if (r === 'copied') toast('링크를 복사했어요'); }).catch(() => {});
   };
-  // 네이버 지도 앱의 대중교통 길찾기를 현재 위치 출발로 바로 열어요. 앱이 없으면 네이버 지도 웹의 장소 화면으로.
+  // 네이버 지도 길찾기를 현재 위치 출발로 열어요. 휴대폰은 네이버 지도 앱(앱이 현재 위치를 출발지로 넣어요),
+  // 컴퓨터는 브라우저 위치를 받아 네이버 지도 웹 길찾기의 출발지에 넣어요.
   const route = () => {
-    openAppWithFallback(naverRouteScheme(p), naverPlaceUrl(p)).catch(() => toast('네이버 지도를 열지 못했어요'));
+    openNaverDirections(naverRouteScheme(p), (from) => naverRouteWebUrl(p, from), userPos)
+      .then((pos) => { if (pos && !userPos) rememberPos(pos); })
+      .catch(() => toast('네이버 지도를 열지 못했어요'));
   };
 
   const groups = (['찜질', '목욕', '기타'] as const)

@@ -50,6 +50,44 @@ export async function openAppWithFallback(appUrl: string, webUrl: string) {
   window.location.href = appUrl;
 }
 
+/**
+ * 네이버 지도 길찾기를 현재 위치 출발로 열어요.
+ * - 휴대폰: 네이버 지도 앱(출발지를 비우면 앱이 현재 위치에서 출발해요). 앱이 없으면 웹 길찾기로.
+ * - 컴퓨터: 새 탭을 먼저 열어 두고(팝업 차단 방지), 브라우저 위치를 받아 출발지에 넣은 웹 길찾기로 보내요.
+ *   위치를 못 받으면 출발지를 비운 채로 열어요.
+ * 받은 위치를 돌려줘요(못 받았으면 null).
+ */
+export async function openNaverDirections(
+  appUrl: string,
+  webUrl: (from: { lat: number; lng: number } | null) => string,
+  knownPos: { lat: number; lng: number } | null,
+): Promise<{ lat: number; lng: number } | null> {
+  if (isMobile()) {
+    await openAppWithFallback(appUrl, webUrl(knownPos));
+    return knownPos;
+  }
+  const tab = window.open('', '_blank');
+  if (tab) {
+    try {
+      tab.document.title = '네이버 지도로 이동 중';
+      tab.document.body.style.cssText = 'font: 15px/1.5 system-ui, sans-serif; color: #4e5968; padding: 24px;';
+      tab.document.body.textContent = '현재 위치를 확인하고 네이버 지도 길찾기로 이동하고 있어요…';
+    } catch { /* 빈 탭에 글을 못 써도 괜찮아요 */ }
+  }
+  let from = knownPos;
+  if (!from) {
+    try { from = await getUserLocation(); } catch { from = null; }
+  }
+  const url = webUrl(from);
+  if (tab) {
+    tab.opener = null;
+    tab.location.replace(url);
+  } else {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+  return from;
+}
+
 export async function copyText(text: string) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);

@@ -3,6 +3,7 @@ import placesJson from '../../data/places.json';
 import naverJson from '../../data/naver-content.json';
 import youtubeJson from '../../data/youtube-content.json';
 import facilitiesJson from '../../data/facilities.json';
+import type { LatLng } from './map/types';
 
 export type PriceType = '찜질' | '목욕' | '기타';
 
@@ -419,14 +420,39 @@ export const naverBlogSearchUrl = (p: Place) => 'https://search.naver.com/search
 export const instaTagUrl = (tag: string) => 'https://www.instagram.com/explore/tags/' + encodeURIComponent(tag.replace(/^#/, '')) + '/';
 export const youtubeSearchUrl = (p: Place) => 'https://www.youtube.com/results?search_query=' + encodeURIComponent((p.naverQuery || p.name) + ' 찜질방');
 
-// 네이버 지도 앱 URL Scheme의 appname (호출한 서비스 이름, 필수)
-const NAVER_APPNAME = 'seoul-jjimjilbang-map';
+// 네이버 지도 앱 URL Scheme의 appname(필수): 웹에서 부를 때는 웹 페이지 주소를 넣어요.
+const naverAppName = () => (typeof location !== 'undefined' ? location.origin : 'seoul-jjimjilbang-map');
 
 /**
  * 네이버 지도 앱에서 이 찜질방까지 길찾기를 바로 여는 주소.
- * 출발지(slat·slng)를 비우면 네이버 지도가 현재 위치에서 출발해요.
+ * 출발지(slat·slng)를 비우면 네이버 지도 앱이 현재 위치에서 출발해요.
  * mode: public 대중교통, car 자동차, walk 도보
  */
 export function naverRouteScheme(p: Place, mode: 'public' | 'car' | 'walk' = 'public') {
-  return `nmap://route/${mode}?dlat=${p.lat}&dlng=${p.lng}&dname=${encodeURIComponent(p.name)}&appname=${encodeURIComponent(NAVER_APPNAME)}`;
+  return `nmap://route/${mode}?dlat=${p.lat}&dlng=${p.lng}&dname=${encodeURIComponent(p.name)}&appname=${encodeURIComponent(naverAppName())}`;
+}
+
+// 위도·경도(WGS84) → 네이버 지도 웹 주소가 쓰는 웹 메르카토르(EPSG:3857) 좌표
+function toWebMercator(lat: number, lng: number) {
+  const R = 6378137;
+  return {
+    x: (lng * Math.PI / 180) * R,
+    y: Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI / 180) / 2)) * R,
+  };
+}
+
+// 길찾기 주소의 지점 하나: x,y,이름,장소ID,종류 (장소 ID가 없으면 좌표 지점으로)
+function naverWebPoint(lat: number, lng: number, name: string, placeId?: string | null) {
+  const { x, y } = toWebMercator(lat, lng);
+  return [x.toFixed(6), y.toFixed(6), encodeURIComponent(name), placeId ? encodeURIComponent(placeId) : '', placeId ? 'PLACE_POI' : 'ADDRESS_POI'].join(',');
+}
+
+/**
+ * 네이버 지도 웹(map.naver.com) 길찾기 주소: /p/directions/{출발}/{도착}/{경유}/{수단}
+ * from 을 넘기면 그 위치("내 위치")에서 출발하고, 없으면 출발지를 비워 둬요(-).
+ */
+export function naverRouteWebUrl(p: Place, from?: LatLng | null, mode: 'transit' | 'car' | 'walk' = 'transit') {
+  const start = from ? naverWebPoint(from.lat, from.lng, '내 위치') : '-';
+  const goal = naverWebPoint(p.lat, p.lng, p.name, p.naverPlaceId);
+  return `https://map.naver.com/p/directions/${start}/${goal}/-/${mode}`;
 }
