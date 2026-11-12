@@ -326,9 +326,10 @@ export const PLATFORM_LABEL: Record<ReviewPlatform, string> = { youtube: '유튜
 export const VERDICT_LABEL: Record<Verdict, string> = { recommend: '추천', mixed: '장단점', negative: '아쉬움' };
 
 export function photoList(p: Place) {
-  if (p.photos?.length) return p.photos.map((ph) => ({ src: ph.url, alt: `${p.name} ${ph.caption || '사진'}`, credit: ph.credit || '', link: null as string | null }));
+  // src: 원본(크게 보기용), thumb: 작은 미리보기(원본이 안 열리면 대신 써요)
+  if (p.photos?.length) return p.photos.map((ph) => ({ src: ph.url, thumb: ph.url, alt: `${p.name} ${ph.caption || '사진'}`, credit: ph.credit || '', link: null as string | null }));
   const nv = naverInfo(p);
-  if (nv?.images?.length) return nv.images.map((im) => ({ src: im.thumbnail, alt: im.title || p.name, credit: '', link: im.link }));
+  if (nv?.images?.length) return nv.images.map((im) => ({ src: im.link || im.thumbnail, thumb: im.thumbnail || im.link, alt: im.title || p.name, credit: '', link: im.link }));
   return [];
 }
 
