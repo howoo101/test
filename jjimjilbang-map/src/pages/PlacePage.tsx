@@ -53,6 +53,9 @@ const GROUP_TITLES: Record<string, string> = { 찜질: '찜질 이용 (찜질+�
 export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => void }) {
   const { favs, toggleFav, toast, userPos, rememberPos } = useApp();
   const fav = favs.has(p.id);
+  const photoCount = photoList(p).length;
+  const [viewer, setViewer] = useState<number | null>(null);
+  const [grid, setGrid] = useState(false);
 
   const open = (url: string) => { openExternal(url).catch(() => toast('링크를 열지 못했어요')); };
   const copy = (text: string, what: string) => {
@@ -95,11 +98,13 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
         <Button size="medium" variant={fav ? 'fill' : 'weak'} color={fav ? 'primary' : 'dark'} onClick={() => toggleFav(p.id)} aria-pressed={fav}>
           {fav ? '찜했어요' : '찜하기'}
         </Button>
-        <Button size="medium" variant="weak" color="dark" onClick={() => open(naverPlaceUrl(p, 'photo'))}>사진</Button>
+        <Button size="medium" variant="weak" color="dark" onClick={() => (photoCount ? setGrid(true) : open(naverPlaceUrl(p, 'photo')))}>
+          {photoCount ? `사진 ${photoCount}` : '사진'}
+        </Button>
         {p.phone && <Button size="medium" variant="weak" color="dark" onClick={() => open(`tel:${p.phone!.replace(/[^0-9+]/g, '')}`)}>전화</Button>}
         <Button size="medium" variant="weak" color="dark" onClick={share}>공유</Button>
       </div>
-      <Cover place={p} />
+      <Cover place={p} viewer={viewer} setViewer={setViewer} grid={grid} setGrid={setGrid} />
 
       <Border variant="height16" />
       <ListHeader
@@ -440,9 +445,10 @@ function InfoRow({ icon, label, value, sub, action }: { icon: IconName; label: s
  * 사진: 네이버 지도처럼 큰 사진 1장 + 작은 사진 4장. 마지막 칸에 남은 장수(+N)를 보여주고,
  * 누르면 전체 화면으로 넘겨 볼 수 있어요. 사진이 없으면 대표 시설 타일을 보여줘요.
  */
-function Cover({ place: p }: { place: Place }) {
+function Cover({ place: p, viewer, setViewer, grid, setGrid }: {
+  place: Place; viewer: number | null; setViewer: (i: number | null) => void; grid: boolean; setGrid: (on: boolean) => void;
+}) {
   const photos = photoList(p);
-  const [viewer, setViewer] = useState<number | null>(null);
   if (photos.length) {
     const shown = photos.slice(0, 5);
     const rest = photos.length - shown.length;
@@ -450,14 +456,22 @@ function Cover({ place: p }: { place: Place }) {
       <>
         <div className={`gallery pad count-${shown.length}`}>
           {shown.map((ph, i) => (
-            <button type="button" key={i} className={`gallery-cell${i === 0 ? ' is-main' : ''}`} onClick={() => setViewer(i)} aria-label={`사진 ${i + 1} 크게 보기`}>
-              <img src={ph.src} alt={ph.alt} loading={i === 0 ? 'eager' : 'lazy'} referrerPolicy="no-referrer"
-                onError={(e) => { (e.currentTarget.parentElement as HTMLElement).classList.add('is-broken'); }} />
+            <button type="button" key={i} className={`gallery-cell${i === 0 ? ' is-main' : ''}`}
+              onClick={() => (i === shown.length - 1 && rest > 0 ? setGrid(true) : setViewer(i))}
+              aria-label={i === shown.length - 1 && rest > 0 ? `사진 ${photos.length}장 모두 보기` : `사진 ${i + 1} 크게 보기`}>
+              <Photo photo={ph} prefer={i === 0 ? 'full' : 'thumb'} eager={i === 0} />
               {i === shown.length - 1 && rest > 0 && <span className="gallery-more">{rest > 998 ? '999+' : `+${rest}`}</span>}
             </button>
           ))}
         </div>
-        {viewer != null && <PhotoViewer photos={photos} start={viewer} onClose={() => setViewer(null)} />}
+        {photos.length > 1 && (
+          <button type="button" className="gallery-all" onClick={() => setGrid(true)}>
+            {`사진 더보기 ${photos.length}`}
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+        )}
+        {grid && <PhotoGrid title={p.name} photos={photos} onOpen={setViewer} onClose={() => setGrid(false)} />}
+        {viewer != null && <PhotoViewer title={p.name} photos={photos} start={viewer} onClose={() => setViewer(null)} />}
       </>
     );
   }
@@ -476,45 +490,142 @@ function Cover({ place: p }: { place: Place }) {
 
 type PhotoItem = ReturnType<typeof photoList>[number];
 
-/** 전체 화면 사진 보기: 옆으로 넘기기, 출처 링크, 닫기(Esc) */
-function PhotoViewer({ photos, start, onClose }: { photos: PhotoItem[]; start: number; onClose: () => void }) {
+/** 사진 더보기: 모든 사진을 바둑판으로 (네이버 지도 장소의 사진 탭처럼). 누르면 크게 보기 */
+function PhotoGrid({ title, photos, onOpen, onClose }: { title: string; photos: PhotoItem[]; onOpen: (i: number) => void; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // 크게 보기가 열려 있으면 그쪽이 먼저 닫혀요
+      if (e.key === 'Escape' && !document.querySelector('.viewer')) onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [onClose]);
+  return (
+    <div className="pgrid" role="dialog" aria-modal="true" aria-label={`${title} 사진 ${photos.length}장`}>
+      <div className="pgrid-top">
+        <button type="button" className="pgrid-back" onClick={onClose} aria-label="뒤로">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <h2 className="pgrid-title">{title}</h2>
+        <span className="pgrid-back" aria-hidden="true" />
+      </div>
+      <div className="pgrid-body">
+        <p className="pgrid-sub">{`사진 ${photos.length}`}<span>네이버 이미지 검색 결과예요</span></p>
+        <ul className="pgrid-list">
+          {photos.map((ph, i) => (
+            <li key={i}>
+              <button type="button" className="pgrid-cell" onClick={() => onOpen(i)} aria-label={`사진 ${i + 1} 크게 보기`}>
+                <Photo photo={ph} prefer="full" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/** 원본을 먼저 열고, 안 열리면 작은 미리보기로, 그것도 안 되면 빈 칸으로 둬요 */
+function Photo({ photo, prefer, eager }: { photo: PhotoItem; prefer: 'full' | 'thumb'; eager?: boolean }) {
+  const order = prefer === 'full' ? [photo.src, photo.thumb] : [photo.thumb, photo.src];
+  const [step, setStep] = useState(0);
+  const src = order[step];
+  if (!src || step >= order.length) return <span className="photo-broken" aria-hidden="true" />;
+  return (
+    <img src={src} alt={photo.alt} loading={eager ? 'eager' : 'lazy'} referrerPolicy="no-referrer" decoding="async"
+      onError={() => setStep((s) => s + 1)} />
+  );
+}
+
+/**
+ * 전체 화면 사진 보기 (네이버 지도 사진 보기처럼)
+ * - 검은 화면에 사진을 화면 크기에 맞춰 크게, 위에 닫기·장소 이름·순서
+ * - 휴대폰: 옆으로 밀어 넘기기 / 컴퓨터: 양옆 화살표, 키보드 ←→, Esc 로 닫기
+ * - 아래 작은 사진 줄을 눌러 바로 이동
+ */
+function PhotoViewer({ title, photos, start, onClose }: { title: string; photos: PhotoItem[]; start: number; onClose: () => void }) {
   const [idx, setIdx] = useState(start);
   const [track, setTrack] = useState<HTMLDivElement | null>(null);
+  const [strip, setStrip] = useState<HTMLDivElement | null>(null);
+  const go = (i: number, smooth = true) => {
+    if (!track) return;
+    const n = Math.min(photos.length - 1, Math.max(0, i));
+    track.scrollTo({ left: track.clientWidth * n, behavior: smooth ? 'smooth' : 'auto' });
+  };
   useEffect(() => {
     if (track) track.scrollTo({ left: track.clientWidth * start });
     // 처음 한 번만 시작 사진으로 옮겨요
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [track]);
   useEffect(() => {
+    // 창 크기가 바뀌어도 보던 사진에 머물러요
+    const onResize = () => track?.scrollTo({ left: track.clientWidth * idx });
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [track, idx]);
+  useEffect(() => {
+    strip?.querySelector<HTMLElement>(`[data-i="${idx}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }, [strip, idx]);
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
-      if (track && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) track.scrollBy({ left: (e.key === 'ArrowRight' ? 1 : -1) * track.clientWidth, behavior: 'smooth' });
+      if (e.key === 'ArrowRight') go(idx + 1);
+      if (e.key === 'ArrowLeft') go(idx - 1);
     };
     window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+  useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
-  }, [onClose, track]);
+    return () => { document.body.style.overflow = prev; };
+  }, []);
   const cur = photos[idx];
   return (
-    <div className="viewer" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+    <div className="viewer" role="dialog" aria-modal="true" aria-label={`${title} 사진`}>
       <div className="viewer-top">
-        <span className="viewer-count">{`${idx + 1} / ${photos.length}`}</span>
-        <button type="button" className="viewer-close" onClick={onClose} aria-label="닫기">✕</button>
+        <button type="button" className="viewer-close" onClick={onClose} aria-label="닫기">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+        <div className="viewer-head">
+          <span className="viewer-title">{title}</span>
+          <span className="viewer-count">{`${idx + 1} / ${photos.length}`}</span>
+        </div>
+        <span className="viewer-close" aria-hidden="true" />
       </div>
-      <div className="viewer-track" ref={setTrack} onScroll={(e) => {
-        const el = e.currentTarget;
-        setIdx(Math.min(photos.length - 1, Math.max(0, Math.round(el.scrollLeft / el.clientWidth))));
-      }}>
-        {photos.map((ph, i) => (
-          <div className="viewer-slide" key={i}>
-            <img src={ph.src} alt={ph.alt} loading={Math.abs(i - start) < 2 ? 'eager' : 'lazy'} referrerPolicy="no-referrer" />
-          </div>
-        ))}
+      <div className="viewer-stage">
+        <div className="viewer-track" ref={setTrack} onScroll={(e) => {
+          const el = e.currentTarget;
+          setIdx(Math.min(photos.length - 1, Math.max(0, Math.round(el.scrollLeft / el.clientWidth))));
+        }}>
+          {photos.map((ph, i) => (
+            <div className="viewer-slide" key={i}>
+              {Math.abs(i - idx) <= 2 ? <Photo photo={ph} prefer="full" eager /> : null}
+            </div>
+          ))}
+        </div>
+        {idx > 0 && (
+          <button type="button" className="viewer-nav is-prev" onClick={() => go(idx - 1)} aria-label="이전 사진">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+        )}
+        {idx < photos.length - 1 && (
+          <button type="button" className="viewer-nav is-next" onClick={() => go(idx + 1)} aria-label="다음 사진">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+        )}
       </div>
       <div className="viewer-bottom">
-        {cur?.credit && <span>{cur.credit}</span>}
-        {cur?.link && <a href={cur.link} target="_blank" rel="noopener noreferrer">원본 보기</a>}
+        <div className="viewer-strip" ref={setStrip}>
+          {photos.map((ph, i) => (
+            <button type="button" key={i} data-i={i} className={i === idx ? 'viewer-thumb is-on' : 'viewer-thumb'} onClick={() => go(i)} aria-label={`사진 ${i + 1}`} aria-current={i === idx}>
+              <Photo photo={ph} prefer="thumb" />
+            </button>
+          ))}
+        </div>
+        {cur?.link && <a className="viewer-src" href={cur.link} target="_blank" rel="noopener noreferrer">원본 보기</a>}
       </div>
     </div>
   );
