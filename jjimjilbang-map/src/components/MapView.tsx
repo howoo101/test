@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { List } from '@toss/tds-mobile';
+import { List } from '../ui';
 import { useApp } from '../AppContext';
 import { BY_ID, PLACES, type Place } from '../lib/data';
 import { FallbackMap } from '../lib/map/fallbackMap';

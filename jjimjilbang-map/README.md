@@ -1,91 +1,66 @@
-# 서울 찜질방 지도 — 앱인토스 미니앱
+# 서울 찜질방 지도
 
-서울 찜질방의 **요금 · 영업 상태 · 시설 · 후기 · 사진 바로가기**를 한 화면에서 비교하는 토스 미니앱이에요.
-[앱인토스 개발자 가이드](https://developers-apps-in-toss.toss.im/)의 **WebView 방식**을 그대로 따라 만들었어요.
+서울 찜질방의 **요금 · 영업 상태 · 시설 · 후기(유튜브·인스타·블로그) · 길찾기**를 한 화면에서 비교하는 모바일 웹이에요.
+화면과 문구는 **토스 UI/UX 디자인 가이드**의 원칙을 따라 만들었어요.
 
 | 항목 | 이 프로젝트에서 쓰는 것 |
 | --- | --- |
 | 웹 프레임워크 | Vite + React 18 + TypeScript |
-| 앱인토스 SDK | `@apps-in-toss/web-framework` 3.x (설정 파일 `apps-in-toss.config.ts`) |
-| 디자인 시스템 | TDS — `@toss/tds-mobile`, `@toss/tds-mobile-ait` (`TDSMobileAITProvider`) |
-| 개발 도구 | `@apps-in-toss/devtools` — 브라우저에서 SDK를 흉내 내는 공식 mock + AIT 패널 |
-| 빌드 결과 | `ait build` → `seoul-jjimjilbang-map.ait` (콘솔에 올리는 파일) |
+| 화면 컴포넌트 | 직접 만든 컴포넌트 `src/ui` (외부 디자인 시스템 패키지 없이 어느 웹에서나 동작) |
+| 배포 | Vercel (`vercel.json`) |
+| 데이터 | `data/*.json` + 검사기 + GitHub Actions 자동 갱신 |
 
-기획 배경과 화면·데이터 설계, 정책 검토는 [docs/기획서.md](docs/기획서.md)에 있어요.
+기획 배경과 화면·데이터 설계는 [docs/기획서.md](docs/기획서.md)에 있어요.
 
-## 1. 준비
+## 1. 개발하기
 
-- Node.js **24 이상**을 권장해요 (`@apps-in-toss/devtools`와 `.ait` 포맷 도구가 Node 24를 요구해요).
-- 처음 한 번 `npm install`
-
-## 2. 브라우저에서 개발하기
+Node.js 20 이상이 필요해요.
 
 ```bash
+npm install
 npm run dev        # http://localhost:5173
+npm run build      # 타입 검사 + 빌드 → dist/
+npm run preview    # 빌드한 결과 미리 보기
 ```
 
-- 토스 앱이 없어도 공식 mock SDK가 위치·저장소·공유 같은 기능을 흉내 내요.
-- 화면 오른쪽 아래 **AIT** 버튼을 누르면 패널이 열려요. 위치 권한 거부, 내 위치 좌표, 기기 화면(내비게이션 바 포함) 같은 상황을 바꿔 가며 확인할 수 있어요.
-- 휴대폰 화면 기준이라 브라우저 개발자 도구의 모바일 보기로 확인하는 게 편해요.
+휴대폰 화면 기준이라 브라우저 개발자 도구의 모바일 보기로 확인하는 게 편해요. 넓은 화면에서는 휴대폰 폭(600px)으로 가운데에 보여요.
 
-## 3. 앱인토스 콘솔에 앱 등록하고 휴대폰에서 확인하기
+## 2. Vercel에 올리기
 
-1. 앱인토스 콘솔에서 미니앱을 만들고 **앱 이름을 `seoul-jjimjilbang-map`** 으로 등록해요. 이름을 바꾸려면 `apps-in-toss.config.ts`의 `appName`과 `src/lib/toss.ts`의 `APP_NAME`도 같이 바꿔요. 표시 이름과 아이콘은 콘솔에서 정해요.
-2. 아래 4번처럼 빌드해서 올리면 그 버전을 여는 `intoss-private://` 주소가 출력돼요. 콘솔 안내에 따라 휴대폰에서 열어 확인해요. 개발 서버를 샌드박스 앱에 바로 붙이는 방법은 개발자센터의 WebView 튜토리얼을 따라요.
-3. 휴대폰에서 콘솔 로그를 봐야 하면 `@apps-in-toss/debugger`와 `@apps-in-toss/debug-console`을 써요 (devtools 패키지 README에 안내가 있어요).
+`vercel.json`이 Vercel에 설치(`npm ci`) → 빌드(`npm run build`) → `dist/` 배포를 알려줘요.
 
-## 4. 빌드하고 배포하기
-
-```bash
-npm run build      # 타입 검사 → vite build → ait build → seoul-jjimjilbang-map.ait
-npm run deploy     # ait deploy (콘솔에서 발급한 API 키가 필요해요)
-```
-
-- API 키는 `npx ait token add`로 한 번 저장해 두면 다음부터 묻지 않아요.
-- 업로드한 뒤 콘솔에서 **검수**를 요청해요. 요청 전에 콘솔의 **비게임 출시 가이드 체크리스트**를 꼭 확인하세요.
-- `.ait` 파일은 커밋하지 않아요 (`.gitignore`에 있어요).
-
-## 5. 토스 앱 밖에서 보여줄 미리보기 만들기
-
-```bash
-npm run build:preview   # preview-dist/ — 공식 mock SDK를 넣어 일반 브라우저에서도 동작
-```
-
-실제 배포 번들(`dist/`)은 토스 앱 밖에서 열면 SDK 대신 웹 기능(브라우저 위치, localStorage 등)으로 동작하도록 만들어 두었어요.
-
-### 웹사이트로 올리기 (Vercel)
-
-토스 앱 밖에서도 같은 번들이 웹 기능으로 동작해서 웹사이트로 올릴 수 있어요. `vercel.json`이 Vercel에 웹 번들만 빌드하라고 알려줘요 (`npm run build:web` → `dist/`, `.ait`는 만들지 않아요).
-
-- **GitHub 연결:** Vercel에서 이 저장소를 가져오고(Import) **Root Directory를 `jjimjilbang-map`** 으로 지정해요. 그다음부터는 push할 때마다 자동으로 배포되고, PR마다 미리보기 주소가 생겨요.
+- **GitHub 연결:** Vercel에서 이 저장소를 가져오고(Import) **Root Directory를 `jjimjilbang-map`** 으로 지정해요. 그다음부터는 main에 push할 때마다 자동으로 배포되고, PR마다 미리보기 주소가 생겨요.
 - **명령어로:** `npx vercel --cwd jjimjilbang-map` (미리보기), `npx vercel --cwd jjimjilbang-map --prod` (실서비스)
+- Vercel 프로젝트에 **Deployment Protection(Vercel Authentication)** 이 켜져 있으면 로그인한 팀원만 볼 수 있어요. 누구나 보게 하려면 Settings → Deployment Protection에서 꺼요.
 
-⚠️ TDS(`@toss/tds-mobile`) 패키지에는 공개 라이선스가 없어요. 토스가 앱인토스 미니앱용으로 제공하는 디자인 시스템이라, 누구나 볼 수 있는 웹사이트로 공개하기 전에 이용 조건을 확인하세요. 확인 전에는 Vercel의 Deployment Protection으로 접근을 제한해 두는 게 안전해요.
+## 3. 화면 원칙 (토스 UI/UX 디자인 가이드)
 
-## 6. 토스 SDK를 쓰는 곳
+- **한 화면에 하나의 목적:** 홈은 찾기(검색·필터·지도/목록), 상세는 한 곳 살펴보기(요금 → 후기 평가 → 기본 정보 → 시설 → 길찾기)예요.
+- **크게, 넉넉하게:** 큰 굵은 제목, 넓은 여백, 회색 단계와 파랑 하나만 쓰는 색, 둥근 모서리.
+- **다음 행동은 하나로:** 상세 화면 아래에 "네이버 지도로 길찾기" 버튼 하나를 고정해요. 정렬처럼 고르는 일은 바텀시트로, 결과는 토스트로 짧게 알려요.
+- **문구:** 해요체로, 짧게, 필요 없는 말은 빼고, 다음에 할 일을 알려줘요. 예: "찜 목록에 담았어요", "위치 권한을 허용하면 가까운 찜질방을 보여드려요".
 
-모든 SDK 호출은 `src/lib/toss.ts` 한 파일에 모여 있어요. 토스 앱 밖에서는 같은 함수가 웹 API로 대신 동작해요.
+`src/ui/index.tsx`에 화면 조각이 모여 있어요: `Top`(화면 제목), `ListRow`·`ListHeader`·`TableRow`(목록), `SearchField`, `Chip`, `SegmentedControl`, `Badge`, `Button`, `TextButton`, `FixedBottomCTA`(하단 고정 버튼), `BottomSheet`, 토스트(`ToastProvider`, `useToast`).
 
-| 기능 | SDK | 권한(`apps-in-toss.config.ts`) |
-| --- | --- | --- |
-| 내 위치·가까운순 정렬 | `Device.getLocation` (거부하면 `openPermissionDialog`로 다시 요청) | `geolocation` |
-| 주소·전화번호 복사 | `Clipboard.setText` | `clipboard` (write) |
-| 공유 | `Share.createLink` (`intoss://seoul-jjimjilbang-map?place=장소id`) + `Share.sendMessage` | — |
-| 찜 목록 저장 | `Storage.getItem` / `Storage.setItem` | — |
-| 네이버 지도·블로그·유튜브·인스타 열기 | `Device.openURL` | — |
-| 네이버 지도 길찾기 (하단 버튼) | `Device.openURL('nmap://route/public?…')` → 네이버 지도 앱이 현재 위치에서 대중교통 길찾기를 열어요. 앱이 없으면 네이버 지도 웹의 장소 화면으로 | — |
-| 가벼운 진동 | `Device.triggerHaptic` | — |
-| 상세 화면에서 뒤로 가기 | `graniteEvent`의 `backEvent` | — |
+## 4. 기기 기능
 
-공유 링크로 들어오면 `?place=장소id`를 읽어 바로 그 찜질방 상세를 열어요.
+모든 기기 기능은 `src/lib/device.ts`에 모여 있고 브라우저 기능만 써요.
 
-## 7. 지도
+| 기능 | 쓰는 것 |
+| --- | --- |
+| 내 위치·가까운순 정렬 | 브라우저 위치(Geolocation). 위치는 기기 안에서 거리 계산에만 쓰고 저장하지 않아요 |
+| 찜 목록 저장 | 브라우저 저장소(localStorage) |
+| 공유 | 휴대폰 공유 시트(Web Share). 없으면 주소 복사. 공유 주소 `?place=장소id`로 들어오면 그 찜질방 상세가 바로 열려요 |
+| 주소·전화번호 복사 | 클립보드 |
+| 네이버 지도·블로그·유튜브·인스타 열기 | 새 탭 |
+| 네이버 지도 길찾기 (하단 버튼) | 휴대폰: 네이버 지도 앱 주소 `nmap://route/public?…`로 현재 위치에서 대중교통 길찾기를 바로 열고, 앱이 없으면 네이버 지도 웹으로. 컴퓨터: 네이버 지도 웹 |
+
+## 5. 지도
 
 - 기본은 **간이 지도**예요. 외부 지도 키 없이 서울 25개 구 경계, 한강, 주요 지하철역을 그려요.
-- 네이버 지도를 쓰려면 프로젝트 폴더에 `.env` 파일을 만들고 `VITE_NAVER_MAP_KEY_ID=발급받은_Client_ID` 를 넣어요.
-- ⚠️ 미니앱 안에서 외부 지도 API를 쓸 수 있는지는 **지도 제공사와 앱인토스 정책을 먼저 확인**하세요. 카카오맵은 "토스 앱 안의 서비스에는 입점사 자체 앱 키를 쓸 수 없다"고 답한 사례가 있어요. 그래서 기본값을 간이 지도로 두었어요.
+- 네이버 지도를 쓰려면 `VITE_NAVER_MAP_KEY_ID=발급받은_Client_ID`를 `.env`(Vercel은 Environment Variables)에 넣어요. NCP 콘솔의 Maps 애플리케이션에 서비스 주소(예: Vercel 도메인, `http://localhost:5173`)를 등록해야 지도가 떠요. 인증에 실패하면 간이 지도로 자동으로 바뀌어요.
 
-## 8. 찜질방 정보 고치기·추가하기
+## 6. 찜질방 정보 고치기·추가하기
 
 장소 정보는 `data/places.json`에 있어요. 고친 뒤에는 검사기를 돌리세요 (push·PR 때 GitHub Actions도 같은 검사를 해요).
 
@@ -173,19 +148,20 @@ YOUTUBE_API_KEY=키 npm run youtube   # data/youtube-content.json
 
 ```
 jjimjilbang-map/
-├── apps-in-toss.config.ts   앱 이름·권한·번들 폴더 (ait init 형식)
-├── vite.config.ts           React + 앱인토스 devtools 플러그인
+├── vercel.json              Vercel 빌드 설정
+├── vite.config.ts
 ├── index.html
 ├── src/
-│   ├── main.tsx             TDS Provider + 앱 상태
-│   ├── App.tsx              홈 ↔ 상세 화면 전환 (#장소id)
+│   ├── main.tsx             토스트 + 앱 상태
+│   ├── AppContext.tsx       찜 · 내 위치 · 토스트
+│   ├── App.tsx              홈 ↔ 상세 전환 (#장소id, ?place=장소id)
+│   ├── ui/                  토스 UI/UX 디자인 가이드 스타일 컴포넌트
 │   ├── pages/HomePage.tsx   검색·필터 칩·지도/목록·정렬
-│   ├── pages/PlacePage.tsx  상세 (요금표·기본 정보·시설·후기·하단 버튼)
+│   ├── pages/PlacePage.tsx  상세 (상단 바·요금표·후기 평가·기본 정보·시설·길찾기)
 │   ├── components/          지도, 목록 줄, 아이콘
-│   └── lib/
-│       ├── data.ts          데이터 정리·영업 상태·필터
-│       ├── toss.ts          앱인토스 SDK 호출 (브라우저 대체 포함)
-│       └── map/             간이 지도(SVG)·네이버 지도 어댑터
+│   ├── lib/data.ts          데이터 정리·영업 상태·후기 평가·추천순·필터
+│   ├── lib/device.ts        위치·공유·복사·저장·외부 링크·길찾기
+│   └── lib/map/             간이 지도(SVG)·네이버 지도 어댑터
 ├── data/                    places.json, facilities.json, naver-content.json, youtube-content.json, seoul-geo.json, seoul-stations.json
 ├── scripts/                 데이터 검사, 네이버 검색 API·YouTube Data API 수집
 └── docs/기획서.md
@@ -196,5 +172,4 @@ jjimjilbang-map/
 - 찜질방 정보는 2026년 11월 공개 자료(기사, 여행 가이드, 후기)로 정리했어요. 장소마다 출처와 날짜가 `priceSource`, `reviewLinks`에 있어요.
 - 요금과 운영 시간은 자주 바뀌어요. 화면에도 "방문 전 확인" 안내를 넣었어요.
 - 지도 위치는 아직 추정값이에요. 네이버 지역 검색 스크립트로 보정하세요.
-- TDS는 토스가 앱인토스 파트너에게 제공하는 디자인 시스템이에요. 앱인토스 미니앱 용도로 쓰세요.
 - 구 경계: 통계청 2013 센서스 경계 ([southkorea/seoul-maps](https://github.com/southkorea/seoul-maps))

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Badge,
   Border,
@@ -12,8 +12,8 @@ import {
   TableRow,
   TextButton,
   Top,
-} from '@toss/tds-mobile';
-import { colors } from '@toss/tds-colors';
+} from '../ui';
+import { colors } from '../ui';
 import { useApp } from '../AppContext';
 import { Icon, type IconName } from '../components/Icon';
 import { StatusText } from '../components/PlaceBits';
@@ -43,16 +43,13 @@ import {
   type ReviewPlatform,
   type Verdict,
 } from '../lib/data';
-import { copyText, openAppWithFallback, openExternal, sharePlace, subscribeBack } from '../lib/toss';
+import { copyText, openAppWithFallback, openExternal, sharePlace } from '../lib/device';
 
 const GROUP_TITLES: Record<string, string> = { 찜질: '찜질 이용 (찜질+목욕)', 목욕: '목욕·사우나만', 기타: '기타 요금' };
 
 export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => void }) {
   const { favs, toggleFav, toast } = useApp();
   const fav = favs.has(p.id);
-
-  // 토스 내비게이션 바의 뒤로 가기를 누르면 미니앱을 닫지 않고 홈으로 돌아가요.
-  useEffect(() => subscribeBack(onBack), [onBack]);
 
   const open = (url: string) => { openExternal(url).catch(() => toast('링크를 열지 못했어요')); };
   const copy = (text: string, what: string) => {
@@ -71,6 +68,11 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
     .filter((g) => g.rows.length);
   return (
     <article className="place">
+      <nav className="place-nav" aria-label="상단 메뉴">
+        <button type="button" className="nav-btn" onClick={onBack} aria-label="뒤로 가기"><Icon name="back" size={24} /></button>
+        <span className="nav-title">{p.name}</span>
+        <button type="button" className="nav-btn" onClick={share} aria-label="공유하기"><Icon name="share" size={20} /></button>
+      </nav>
       <Top
         upper={<div className="badges pad">{badges(p)}</div>}
         subtitleTop={<Top.SubtitleParagraph size={15}>{`${category(p)} · ${p.gu}`}</Top.SubtitleParagraph>}

@@ -1,5 +1,5 @@
-/* 화면 구성은 TDS 컴포넌트가 맡고, 이 파일은 지도·레이아웃·작은 조각만 다뤄요.
-   색은 TDS 팔레트 값을 그대로 써요 (토스 미니앱은 라이트 테마 기준). */
+/* 화면 조각은 src/ui 컴포넌트가 맡고, 이 파일은 지도·레이아웃·상세 화면 조각을 다뤄요.
+   색은 토스 UI/UX 디자인 가이드처럼 회색 단계와 파랑 하나를 중심으로 써요 (라이트 테마). */
 :root {
   --grey50: #f9fafb;
   --grey100: #f2f4f6;
@@ -295,6 +295,22 @@ body {
 
 /* ------------------------------------------------------------ 상세 */
 .place { padding-bottom: env(safe-area-inset-bottom, 0px); }
+/* 상단 바: 뒤로 가기 · 이름 · 공유 (스크롤해도 위에 붙어 있어요) */
+.place-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 52px;
+  padding: 0 max(8px, env(safe-area-inset-right, 0px)) 0 max(8px, env(safe-area-inset-left, 0px));
+  background: rgb(255 255 255 / 0.96);
+  backdrop-filter: saturate(1.4) blur(8px);
+}
+.nav-btn { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: none; color: var(--grey800); cursor: pointer; }
+.nav-btn:active { background: var(--grey100); }
+.nav-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; font-size: 16px; font-weight: 600; color: var(--grey900); }
 .badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .callout {
   margin: 4px 0 0;
@@ -327,7 +343,6 @@ body {
 
 .group-title { margin: 8px 0 0; font-size: 13px; font-weight: 600; color: var(--grey600); }
 .price-group + .price-group { margin-top: 8px; }
-/* TableRow 왼쪽 칸은 line-height 0 인 문단으로 감싸여 있어서 줄 높이를 직접 정해요 */
 .price-left { display: inline-flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 1.45; color: var(--grey800); }
 .price-left > span { line-height: 1.45; }
 .price-sub { font-size: 12px; line-height: 1.4; color: var(--grey500); }
@@ -411,3 +426,17 @@ body {
 .cta-note { margin: 0 0 8px; text-align: center; font-size: 12px; line-height: 1.4; color: var(--grey500); }
 /* 영상·글 제목은 두 줄까지만 */
 .rv-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; word-break: keep-all; overflow-wrap: anywhere; }
+
+/* 넓은 화면(데스크톱)에서는 휴대폰 화면 폭으로 가운데에 보여줘요 */
+@media (min-width: 720px) {
+  html, body { background: var(--grey100); }
+  #root {
+    max-width: 600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: 0 0 0 1px var(--grey200);
+  }
+  .ui-cta { left: 50%; right: auto; width: 600px; transform: translateX(-50%); box-sizing: border-box; }
+  .ui-sheet-backdrop .ui-sheet { max-width: 600px; }
+}

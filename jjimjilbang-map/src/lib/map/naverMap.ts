@@ -1,8 +1,8 @@
 // 네이버 지도(NAVER Maps JavaScript API v3) 어댑터 — 선택 사항이에요.
 // .env 에 VITE_NAVER_MAP_KEY_ID 를 넣으면 간이 지도 대신 이 어댑터를 써요.
 //
-// ⚠️ 앱인토스 미니앱 안에서 외부 지도 API 키를 써도 되는지는 지도 제공사·토스 정책을 먼저 확인해야 해요.
-//    (카카오맵은 "토스 앱 안 서비스에는 입점사 자체 앱 키를 쓸 수 없다"고 답한 사례가 있어요.)
+// NCP 콘솔의 Maps 애플리케이션에 서비스 주소(예: Vercel 도메인, 개발용 localhost)를 등록해야 지도가 떠요.
+// 인증에 실패하면 간이 지도로 자동으로 바꿔요.
 import type { LatLng, MapAdapter, MapHandlers, Padding, PinHtml, PinPlace } from './types';
 
 declare global {

@@ -10,8 +10,8 @@ import {
   SearchField,
   SegmentedControl,
   Top,
-} from '@toss/tds-mobile';
-import { colors } from '@toss/tds-colors';
+} from '../ui';
+import { colors } from '../ui';
 import { useApp } from '../AppContext';
 import { MapView } from '../components/MapView';
 import { PlaceRow } from '../components/PlaceBits';

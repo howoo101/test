@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BY_ID } from './lib/data';
-import { initialPlaceId } from './lib/toss';
+import { initialPlaceId } from './lib/device';
 import { HomePage } from './pages/HomePage';
 import { PlacePage } from './pages/PlacePage';
 
@@ -39,7 +39,8 @@ export function App() {
     if ((history.state as { place?: string } | null)?.place) {
       history.back();
     } else {
-      history.replaceState(null, '', location.pathname + location.search);
+      // 공유 주소(?place=…)로 들어왔다면 주소에서 지워서, 새로고침해도 홈으로 열리게 해요.
+      history.replaceState(null, '', location.pathname);
       setPlaceId(null);
     }
   }, []);

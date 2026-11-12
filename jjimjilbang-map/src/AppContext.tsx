@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { useToast } from '@toss/tds-mobile';
+import { useToast } from './ui';
 import type { LatLng } from './lib/map/types';
-import { getUserLocation, haptic, LocationDeniedError, storage } from './lib/toss';
+import { getUserLocation, haptic, LocationDeniedError, storage } from './lib/device';
 
 interface AppState {
   favs: Set<string>;

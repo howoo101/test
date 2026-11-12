@@ -1,6 +1,7 @@
-// 지도 버튼 등에 쓰는 선 아이콘 (TDS 컴포넌트 밖에서 쓰는 몇 개만)
+// 지도 버튼·상단 바·후기 목록에 쓰는 선 아이콘
 const PATHS = {
   locate: '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22"/>',
+  back: '<path d="M15 5.5L8.5 12l6.5 6.5"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',
   expand: '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>',

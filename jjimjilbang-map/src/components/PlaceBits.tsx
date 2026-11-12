@@ -1,6 +1,6 @@
 // 목록·지도·상세에서 같이 쓰는 작은 조각들
-import { Badge, ListRow } from '@toss/tds-mobile';
-import { colors } from '@toss/tds-colors';
+import { Badge, ListRow } from '../ui';
+import { colors } from '../ui';
 import { useApp } from '../AppContext';
 import {
   FACILITIES,
