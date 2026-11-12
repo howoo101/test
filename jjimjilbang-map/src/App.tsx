@@ -3,6 +3,7 @@ import { BY_ID } from './lib/data';
 import { initialPlaceId } from './lib/device';
 import { HomePage } from './pages/HomePage';
 import { PlacePage } from './pages/PlacePage';
+import { useWide } from './lib/useWide';
 
 // 화면은 두 개예요: 홈(지도·목록)과 찜질방 상세.
 // 주소 해시(#장소id)로 상세를 열어 뒤로 가기가 자연스럽게 동작해요. 홈은 상태(필터·지도 위치)를 지키려고 숨겨만 둬요.
@@ -17,6 +18,7 @@ export function App() {
     return id && BY_ID[id] ? id : null;
   });
   const homeScroll = useRef(0);
+  const wide = useWide();
 
   useEffect(() => {
     const onPop = () => setPlaceId(hashId());
@@ -25,13 +27,17 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    // 넓은 화면은 목록·상세가 각자 스크롤해요
+    if (wide) return;
     if (placeId) window.scrollTo(0, 0);
     else window.scrollTo(0, homeScroll.current);
-  }, [placeId]);
+  }, [placeId, wide]);
 
   const openPlace = useCallback((id: string) => {
     homeScroll.current = window.scrollY;
-    history.pushState({ place: id }, '', `#${id}`);
+    // 넓은 화면에서 상세를 연 채로 다른 곳을 고르면 뒤로 가기 기록을 쌓지 않고 바꿔요
+    if ((history.state as { place?: string } | null)?.place) history.replaceState({ place: id }, '', `#${id}`);
+    else history.pushState({ place: id }, '', `#${id}`);
     setPlaceId(id);
   }, []);
 
@@ -45,12 +51,13 @@ export function App() {
     }
   }, []);
 
+  const detail = placeId ? <PlacePage key={placeId} place={BY_ID[placeId]} onBack={closePlace} wide={wide} /> : null;
   return (
     <>
-      <div hidden={!!placeId}>
-        <HomePage onOpen={openPlace} active={!placeId} />
+      <div hidden={!wide && !!placeId}>
+        <HomePage onOpen={openPlace} active={wide || !placeId} wide={wide} openId={placeId} detail={wide ? detail : null} />
       </div>
-      {placeId && <PlacePage key={placeId} place={BY_ID[placeId]} onBack={closePlace} />}
+      {!wide && detail}
     </>
   );
 }

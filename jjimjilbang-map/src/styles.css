@@ -589,3 +589,37 @@ body {
   .pgrid-list { grid-template-columns: repeat(4, 1fr); gap: 4px; padding-left: 16px; padding-right: 16px; }
   .pgrid-cell { border-radius: 8px; }
 }
+
+/* ------------------------------------------------------------ 넓은 화면 (네이버 지도처럼)
+   왼쪽: 검색·필터·목록 칸 | 가운데: 상세 칸(열렸을 때) | 오른쪽: 화면을 채우는 지도 */
+@media (min-width: 1024px) {
+  html, body { background: var(--white); }
+  #root { max-width: none; margin: 0; box-shadow: none; }
+  .home.is-wide {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .home.is-wide.has-detail { grid-template-columns: 400px 420px 1fr; }
+  .home-side, .home-detail {
+    position: relative;
+    z-index: 2;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--white);
+    border-right: 1px solid var(--grey200);
+  }
+  .home-detail { box-shadow: 4px 0 12px rgb(0 0 0 / 0.06); }
+  .home-side .home-head { position: sticky; top: 0; z-index: 3; padding-bottom: 8px; border-bottom: 1px solid var(--grey100); }
+  .home.is-wide .home-map { position: relative; min-width: 0; height: 100%; }
+  .home.is-wide .map-view { height: 100%; }
+  .home-list .ui-row.is-current { background: var(--blue50, #e8f3ff); }
+  .home-list .ui-row.is-current .row-name { color: var(--blue500); }
+  /* 상세 칸 안에서는 길찾기 버튼이 칸 아래에 붙어요 */
+  .home-detail .ui-cta { position: sticky; left: auto; right: auto; width: auto; transform: none; }
+  .home-detail .place-nav { top: 0; }
+  .ui-sheet-backdrop .ui-sheet { max-width: 480px; margin-bottom: auto; margin-top: auto; border-radius: 24px; }
+}

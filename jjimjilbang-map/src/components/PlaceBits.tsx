@@ -1,4 +1,5 @@
 // 목록·지도·상세에서 같이 쓰는 작은 조각들
+import { useState } from 'react';
 import { Badge, ListRow } from '../ui';
 import { colors } from '../ui';
 import { useApp } from '../AppContext';
@@ -46,10 +47,13 @@ export function StatusText({ place, withReview = true, withDistance = false }: {
 /** 사진이 있으면 사진, 없으면 대표 시설 아이콘 타일 */
 export function PlaceThumb({ place, size = 56 }: { place: Place; size?: number }) {
   const photo = photoList(place)[0];
-  if (photo) {
+  const [broken, setBroken] = useState(0);
+  // 목록에는 작은 미리보기를 먼저 쓰고, 안 열리면 원본, 그것도 안 되면 시설 아이콘으로 바꿔요
+  const srcs = photo ? [photo.thumb, photo.src].filter((s, i, a) => s && a.indexOf(s) === i) : [];
+  if (photo && broken < srcs.length) {
     return (
       <span className="thumb" style={{ width: size, height: size }}>
-        <img src={photo.src} alt="" loading="lazy" referrerPolicy="no-referrer" />
+        <img src={srcs[broken]} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken((n) => n + 1)} />
       </span>
     );
   }
@@ -81,7 +85,7 @@ export function PriceTag({ place }: { place: Place }) {
 const shortStation = (s?: string | null) => (s ? /[가-힣A-Za-z0-9]+역/.exec(s)?.[0] ?? null : null);
 
 /** 목록 한 줄: 이름 / 영업 상태 / (추천 배지) 동네·역 — 줄 수와 높이를 항상 같게 맞춰요 */
-export function PlaceRow({ place, onClick }: { place: Place; onClick: () => void; withReview?: boolean }) {
+export function PlaceRow({ place, onClick, current }: { place: Place; onClick: () => void; withReview?: boolean; current?: boolean }) {
   const { visits } = useApp();
   const mine = myRating(visits[place.id]);
   const cat = category(place);
@@ -91,6 +95,7 @@ export function PlaceRow({ place, onClick }: { place: Place; onClick: () => void
   return (
     <ListRow
       onClick={onClick}
+      className={current ? 'is-current' : undefined}
       withTouchEffect
       verticalPadding="medium"
       left={<PlaceThumb place={place} />}

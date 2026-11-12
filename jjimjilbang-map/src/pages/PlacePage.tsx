@@ -50,7 +50,7 @@ import { copyText, openExternal, openNaverDirections, sharePlace } from '../lib/
 
 const GROUP_TITLES: Record<string, string> = { 찜질: '찜질 이용 (찜질+목욕)', 목욕: '목욕·사우나만', 기타: '기타 요금' };
 
-export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => void }) {
+export function PlacePage({ place: p, onBack, wide = false }: { place: Place; onBack: () => void; wide?: boolean }) {
   const { favs, toggleFav, toast, userPos, rememberPos } = useApp();
   const fav = favs.has(p.id);
   const photoCount = photoList(p).length;
@@ -82,9 +82,14 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
   return (
     <article className="place">
       <nav className="place-nav" aria-label="상단 메뉴">
-        <button type="button" className="nav-btn" onClick={onBack} aria-label="뒤로 가기"><Icon name="back" size={24} /></button>
+        {wide ? <span className="nav-btn" aria-hidden="true" /> : <button type="button" className="nav-btn" onClick={onBack} aria-label="뒤로 가기"><Icon name="back" size={24} /></button>}
         <span className="nav-title">{p.name}</span>
         <button type="button" className="nav-btn" onClick={share} aria-label="공유하기"><Icon name="share" size={20} /></button>
+        {wide && (
+          <button type="button" className="nav-btn" onClick={onBack} aria-label="상세 닫기">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+        )}
       </nav>
       <Top
         upper={<div className="badges pad">{badges(p)}</div>}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import {
   BottomSheet,
   Button,
@@ -30,7 +30,15 @@ const CHIPS: { id: string; label: string }[] = [
   ...FACILITIES.quickFilters.map((k) => ({ id: k, label: FACILITIES.items[k].short })),
 ];
 
-export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; active: boolean }) {
+export function HomePage({ onOpen, active, wide = false, openId = null, detail = null }: {
+  onOpen: (id: string) => void;
+  active: boolean;
+  /** 넓은 화면: 왼쪽 목록(+상세) · 오른쪽 지도 */
+  wide?: boolean;
+  /** 넓은 화면에서 지금 상세가 열린 장소 */
+  openId?: string | null;
+  detail?: ReactNode;
+}) {
   const { favs, userPos, locate, visits } = useApp();
   const visited = useMemo(() => new Set(Object.keys(visits)), [visits]);
   const [q, setQ] = useState('');
@@ -63,98 +71,126 @@ export function HomePage({ onOpen, active }: { onOpen: (id: string) => void; act
 
   const resetFilters = () => { setQ(''); setChips(new Set()); };
 
+  const headEl = (
+        <header className="home-head">
+          {(wide || view === 'list') && (
+            <Top
+              title={<Top.TitleParagraph size={22}>서울 찜질방, 요금부터 비교해요</Top.TitleParagraph>}
+              subtitleBottom={<Top.SubtitleParagraph size={15}>{`${PLACES.length}곳의 요금·시설·후기를 한곳에 모았어요`}</Top.SubtitleParagraph>}
+            />
+          )}
+          <SearchField
+            placeholder="찜질방, 동네, 역 이름으로 찾기"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onDeleteClick={() => setQ('')}
+            aria-label="찜질방 검색"
+          />
+          <div className="chip-row">
+            <Chip kind="select" size="medium">
+              <ChipItem selected={chips.size === 0} onClick={() => toggleChip('all')}>전체</ChipItem>
+              {CHIPS.map((c) => (
+                <ChipItem key={c.id} selected={chips.has(c.id)} onClick={() => toggleChip(c.id)}>{c.label}</ChipItem>
+              ))}
+            </Chip>
+          </div>
+          {!wide && <div className="pad seg">
+            <SegmentedControl name="view" value={view} onChange={(v) => setView(v as View)} size="large">
+              <SegmentedControl.Item value="map">지도</SegmentedControl.Item>
+              <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
+            </SegmentedControl>
+          </div>}
+        </header>
+  );
+  const mapEl = (
+        <div className="home-map" hidden={!wide && view !== 'map'}>
+          <MapView
+            places={places}
+            selectedId={wide ? openId : selectedId && places.some((p) => p.id === selectedId) ? selectedId : null}
+            onSelect={wide ? (id) => { if (id) onOpen(id); } : setSelectedId}
+            card={!wide}
+            onOpen={onOpen}
+            active={active && (wide || view === 'map')}
+            fitKey={fitKey}
+          />
+        </div>
+  );
+  const listEl = (
+        <section className="home-list" hidden={!wide && view !== 'list'}>
+          <ListHeader
+            title={<ListHeader.TitleParagraph fontWeight="bold">{`찜질방 ${places.length}곳`}</ListHeader.TitleParagraph>}
+            description={sort === 'rec'
+              ? <ListHeader.DescriptionParagraph>유튜브·인스타·블로그 추천과 후기 평가를 합친 순서예요</ListHeader.DescriptionParagraph>
+              : undefined}
+            descriptionPosition="bottom"
+            right={
+              <button type="button" className="sort-btn" onClick={() => setSortOpen(true)} aria-haspopup="dialog">
+                <ListHeader.RightArrow>{SORT_LABELS[sort]}</ListHeader.RightArrow>
+              </button>
+            }
+          />
+          {places.length ? (
+            <List>
+              {places.map((p) => <PlaceRow key={p.id} place={p} current={wide && p.id === openId} onClick={() => onOpen(p.id)} />)}
+            </List>
+          ) : (
+            <div className="empty pad">
+              {chips.has('visited') && !visited.size ? (
+                <>
+                  <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>아직 남긴 기록이 없어요</Paragraph.Text>
+                  <Paragraph.Text typography="t6" color={colors.grey600}>찜질방 상세에서 "기록 남기기"를 누르면 별점과 메모가 여기 모여요.</Paragraph.Text>
+                </>
+              ) : (
+                <>
+                  <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>조건에 맞는 찜질방이 없어요</Paragraph.Text>
+                  <Paragraph.Text typography="t6" color={colors.grey600}>필터를 줄여서 다시 찾아보세요.</Paragraph.Text>
+                </>
+              )}
+              <Button size="medium" variant="weak" onClick={resetFilters}>필터 초기화</Button>
+            </div>
+          )}
+          <p className="fineprint pad">
+            {`요금은 ${DATA_UPDATED_AT.slice(0, 7).replace('-', '년 ')}월까지 모은 공개 자료 기준이에요. 방문 전에 한 번 더 확인해 주세요.`}
+          </p>
+        </section>
+  );
+  const sheetEl = (
+    <>
+
+        <BottomSheet
+          open={sortOpen}
+          onClose={() => setSortOpen(false)}
+          header={<BottomSheet.Header>정렬</BottomSheet.Header>}
+        >
+          <BottomSheet.Select
+            options={(Object.keys(SORT_LABELS) as SortKey[]).map((k) => ({ name: SORT_LABELS[k], value: k }))}
+            value={sort}
+            onChange={(e) => changeSort(e.target.value as SortKey)}
+          />
+        </BottomSheet>
+    </>
+  );
+
+  if (wide) {
+    return (
+      <div className={`home is-wide${detail ? ' has-detail' : ''}`}>
+        <aside className="home-side" aria-label="찜질방 목록">
+          {headEl}
+          {listEl}
+        </aside>
+        {detail && <aside className="home-detail" aria-label="찜질방 상세">{detail}</aside>}
+        {mapEl}
+        {sheetEl}
+      </div>
+    );
+  }
+
   return (
     <div className={`home is-${view}`}>
-      <header className="home-head">
-        {view === 'list' && (
-          <Top
-            title={<Top.TitleParagraph size={22}>서울 찜질방, 요금부터 비교해요</Top.TitleParagraph>}
-            subtitleBottom={<Top.SubtitleParagraph size={15}>{`${PLACES.length}곳의 요금·시설·후기를 한곳에 모았어요`}</Top.SubtitleParagraph>}
-          />
-        )}
-        <SearchField
-          placeholder="찜질방, 동네, 역 이름으로 찾기"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          onDeleteClick={() => setQ('')}
-          aria-label="찜질방 검색"
-        />
-        <div className="chip-row">
-          <Chip kind="select" size="medium">
-            <ChipItem selected={chips.size === 0} onClick={() => toggleChip('all')}>전체</ChipItem>
-            {CHIPS.map((c) => (
-              <ChipItem key={c.id} selected={chips.has(c.id)} onClick={() => toggleChip(c.id)}>{c.label}</ChipItem>
-            ))}
-          </Chip>
-        </div>
-        <div className="pad seg">
-          <SegmentedControl name="view" value={view} onChange={(v) => setView(v as View)} size="large">
-            <SegmentedControl.Item value="map">지도</SegmentedControl.Item>
-            <SegmentedControl.Item value="list">목록</SegmentedControl.Item>
-          </SegmentedControl>
-        </div>
-      </header>
-
-      <div className="home-map" hidden={view !== 'map'}>
-        <MapView
-          places={places}
-          selectedId={selectedId && places.some((p) => p.id === selectedId) ? selectedId : null}
-          onSelect={setSelectedId}
-          onOpen={onOpen}
-          active={active && view === 'map'}
-          fitKey={fitKey}
-        />
-      </div>
-
-      <section className="home-list" hidden={view !== 'list'}>
-        <ListHeader
-          title={<ListHeader.TitleParagraph fontWeight="bold">{`찜질방 ${places.length}곳`}</ListHeader.TitleParagraph>}
-          description={sort === 'rec'
-            ? <ListHeader.DescriptionParagraph>유튜브·인스타·블로그 추천과 후기 평가를 합친 순서예요</ListHeader.DescriptionParagraph>
-            : undefined}
-          descriptionPosition="bottom"
-          right={
-            <button type="button" className="sort-btn" onClick={() => setSortOpen(true)} aria-haspopup="dialog">
-              <ListHeader.RightArrow>{SORT_LABELS[sort]}</ListHeader.RightArrow>
-            </button>
-          }
-        />
-        {places.length ? (
-          <List>
-            {places.map((p) => <PlaceRow key={p.id} place={p} onClick={() => onOpen(p.id)} />)}
-          </List>
-        ) : (
-          <div className="empty pad">
-            {chips.has('visited') && !visited.size ? (
-              <>
-                <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>아직 남긴 기록이 없어요</Paragraph.Text>
-                <Paragraph.Text typography="t6" color={colors.grey600}>찜질방 상세에서 "기록 남기기"를 누르면 별점과 메모가 여기 모여요.</Paragraph.Text>
-              </>
-            ) : (
-              <>
-                <Paragraph.Text typography="t5" fontWeight="bold" color={colors.grey800}>조건에 맞는 찜질방이 없어요</Paragraph.Text>
-                <Paragraph.Text typography="t6" color={colors.grey600}>필터를 줄여서 다시 찾아보세요.</Paragraph.Text>
-              </>
-            )}
-            <Button size="medium" variant="weak" onClick={resetFilters}>필터 초기화</Button>
-          </div>
-        )}
-        <p className="fineprint pad">
-          {`요금은 ${DATA_UPDATED_AT.slice(0, 7).replace('-', '년 ')}월까지 모은 공개 자료 기준이에요. 방문 전에 한 번 더 확인해 주세요.`}
-        </p>
-      </section>
-
-      <BottomSheet
-        open={sortOpen}
-        onClose={() => setSortOpen(false)}
-        header={<BottomSheet.Header>정렬</BottomSheet.Header>}
-      >
-        <BottomSheet.Select
-          options={(Object.keys(SORT_LABELS) as SortKey[]).map((k) => ({ name: SORT_LABELS[k], value: k }))}
-          value={sort}
-          onChange={(e) => changeSort(e.target.value as SortKey)}
-        />
-      </BottomSheet>
+      {headEl}
+      {mapEl}
+      {listEl}
+      {sheetEl}
     </div>
   );
 }

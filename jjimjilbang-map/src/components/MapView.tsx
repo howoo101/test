@@ -19,9 +19,11 @@ interface Props {
   onOpen: (id: string) => void;
   active: boolean;
   fitKey: string;
+  /** false 면 아래 장소 카드 대신 핀을 누르면 바로 상세를 열어요 (넓은 화면) */
+  card?: boolean;
 }
 
-export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }: Props) {
+export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, card = true }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<MapAdapter<Place> | null>(null);
   const { favs, userPos, locate } = useApp();
@@ -136,12 +138,20 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }
 
   useEffect(() => {
     if (!ready || !selectedId) return;
-    map.current?.focus(BY_ID[selectedId], 0, CARD_SPACE / 2);
-  }, [ready, selectedId]);
+    map.current?.focus(BY_ID[selectedId], 0, card ? CARD_SPACE / 2 : 0);
+  }, [ready, selectedId, card]);
 
   useEffect(() => {
     if (active) map.current?.resize();
   }, [active]);
+
+  // 넓은 화면: 상세 칸이 열리고 닫히며 지도 폭이 바뀌어도 보던 곳을 지켜요
+  useEffect(() => {
+    if (!ready || !el.current || !('ResizeObserver' in window)) return;
+    const ro = new ResizeObserver(() => map.current?.resize());
+    ro.observe(el.current);
+    return () => ro.disconnect();
+  }, [ready]);
 
   const selected = selectedId ? BY_ID[selectedId] : null;
 
@@ -161,7 +171,7 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }
         </div>
         <button type="button" className="mc-btn mc-solo" onClick={() => map.current?.fit(places.length ? places : PLACES, { top: 48, right: 56, bottom: 40, left: 40 })} aria-label="찜질방 전체 보기"><Icon name="expand" /></button>
       </div>
-      {selected ? (
+      {!card ? null : selected ? (
         <div className="map-card">
           <List>
             <PlaceRow place={selected} onClick={() => onOpen(selected.id)} withReview={false} />
