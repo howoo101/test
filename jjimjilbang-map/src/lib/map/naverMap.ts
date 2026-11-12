@@ -27,7 +27,7 @@ export function loadNaverMaps(keyId: string, timeoutMs = 8000): Promise<void> {
   });
 }
 
-interface Marker<T> { marker: any; place: T; selected: boolean; compact: boolean }
+interface Marker<T> { marker: any; place: T; selected: boolean; count: number; grouped: boolean }
 
 export class NaverMap<T extends PinPlace> implements MapAdapter<T> {
   private maps: any;
@@ -58,9 +58,9 @@ export class NaverMap<T extends PinPlace> implements MapAdapter<T> {
     this.container.classList.toggle('show-labels', this.map.getZoom() >= LABEL_ZOOM);
   }
 
-  private icon(p: T, selected: boolean, compact: boolean) {
-    const cls = 'pin-anchor' + (selected ? ' is-selected' : '') + (compact && !selected ? ' is-compact' : '');
-    return { content: `<div class="${cls}">${this.pinHtml(p, selected, compact)}</div>`, anchor: new this.maps.Point(0, 0) };
+  private icon(p: T, selected: boolean, count: number, grouped: boolean) {
+    const cls = 'pin-anchor' + (selected ? ' is-selected' : '') + (grouped && !selected ? ' is-grouped' : '');
+    return { content: `<div class="${cls}">${this.pinHtml(p, selected, count)}</div>`, anchor: new this.maps.Point(0, 0) };
   }
 
   setPlaces(places: T[], pinHtml: PinHtml<T>) {
@@ -71,17 +71,17 @@ export class NaverMap<T extends PinPlace> implements MapAdapter<T> {
       const marker = new this.maps.Marker({
         position: new this.maps.LatLng(p.lat, p.lng),
         map: this.map,
-        icon: this.icon(p, false, false),
+        icon: this.icon(p, false, 1, false),
         zIndex: 10,
       });
       this.maps.Event.addListener(marker, 'click', () => this.handlers.onMarkerClick?.(p.id));
-      this.markers.set(p.id, { marker, place: p, selected: false, compact: false });
+      this.markers.set(p.id, { marker, place: p, selected: false, count: 1, grouped: false });
     }
   }
 
   private paint(m: Marker<T>) {
-    m.marker.setIcon(this.icon(m.place, m.selected, m.compact));
-    m.marker.setZIndex(m.selected ? 1000 : m.compact ? 5 : 10);
+    m.marker.setIcon(this.icon(m.place, m.selected, m.count, m.grouped));
+    m.marker.setZIndex(m.selected ? 1000 : m.count > 1 ? 20 : 10);
   }
 
   update(visibleIds: string[], selectedId: string | null) {
@@ -95,10 +95,10 @@ export class NaverMap<T extends PinPlace> implements MapAdapter<T> {
 
   refreshAll() { this.markers.forEach((m) => this.paint(m)); }
 
-  setCompact(ids: Set<string>) {
+  setGroups(hidden: Set<string>, counts: Map<string, number>) {
     this.markers.forEach((m, id) => {
-      const c = ids.has(id);
-      if (c !== m.compact) { m.compact = c; this.paint(m); }
+      const g = hidden.has(id), c = counts.get(id) ?? 1;
+      if (g !== m.grouped || c !== m.count) { m.grouped = g; m.count = c; this.paint(m); }
     });
   }
 
@@ -126,7 +126,7 @@ export class NaverMap<T extends PinPlace> implements MapAdapter<T> {
     this.map.panTo(target);
   }
 
-  fit(points: LatLng[], padding?: Padding) {
+  fit(points: LatLng[], padding?: Padding, _close?: boolean) {
     if (!points.length) return;
     const b = new this.maps.LatLngBounds(new this.maps.LatLng(points[0].lat, points[0].lng), new this.maps.LatLng(points[0].lat, points[0].lng));
     points.forEach((p) => b.extend(new this.maps.LatLng(p.lat, p.lng)));

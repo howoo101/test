@@ -31,7 +31,7 @@ const place = (node: HTMLElement, s: { x: number; y: number }) => {
   node.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`;
 };
 
-interface Marker<T> { node: HTMLDivElement; p: { x: number; y: number }; place: T; selected: boolean; compact: boolean; dirty: boolean }
+interface Marker<T> { node: HTMLDivElement; p: { x: number; y: number }; place: T; selected: boolean; count: number; grouped: boolean; dirty: boolean }
 
 export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   private root: HTMLDivElement;
@@ -269,23 +269,23 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     this.markers.clear();
     for (const pl of places) {
       const node = div('pin-anchor');
-      node.innerHTML = pinHtml(pl, false, false);
+      node.innerHTML = pinHtml(pl, false, 1);
       node.addEventListener('click', (e) => {
         if (!(e.target as HTMLElement).closest('.pin')) return;
         e.stopPropagation();
         this.handlers.onMarkerClick?.(pl.id);
       });
       this.pinLayer.appendChild(node);
-      this.markers.set(pl.id, { node, p: project(pl.lng, pl.lat), place: pl, selected: false, compact: false, dirty: false });
+      this.markers.set(pl.id, { node, p: project(pl.lng, pl.lat), place: pl, selected: false, count: 1, grouped: false, dirty: false });
     }
     if (this.me) this.pinLayer.appendChild(this.me.node);
     this.render();
   }
 
   private paint(m: Marker<T>) {
-    m.node.innerHTML = this.pinHtml(m.place, m.selected, m.compact);
+    m.node.innerHTML = this.pinHtml(m.place, m.selected, m.count);
     m.node.classList.toggle('is-selected', m.selected);
-    m.node.classList.toggle('is-compact', m.compact && !m.selected);
+    m.node.classList.toggle('is-grouped', m.grouped && !m.selected);
     m.dirty = false;
   }
 
@@ -302,10 +302,10 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     this.markers.forEach((m) => this.paint(m));
   }
 
-  setCompact(ids: Set<string>) {
+  setGroups(hidden: Set<string>, counts: Map<string, number>) {
     this.markers.forEach((m, id) => {
-      const c = ids.has(id);
-      if (c !== m.compact) { m.compact = c; this.paint(m); }
+      const g = hidden.has(id), c = counts.get(id) ?? 1;
+      if (g !== m.grouped || c !== m.count) { m.grouped = g; m.count = c; this.paint(m); }
     });
   }
 
@@ -324,7 +324,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     this.animateTo(q.x - offsetX / k, q.y + offsetY / k, k);
   }
 
-  fit(points: LatLng[], padding: Padding = { top: 40, right: 40, bottom: 40, left: 40 }) {
+  fit(points: LatLng[], padding: Padding = { top: 40, right: 40, bottom: 40, left: 40 }, close = false) {
     if (!points.length) return this.fitSeoul();
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     for (const pt of points) {
@@ -335,7 +335,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     const availW = Math.max(40, this.w - padding.left - padding.right);
     const availH = Math.max(40, this.h - padding.top - padding.bottom);
     let k = Math.min(availW / Math.max(4, maxX - minX), availH / Math.max(4, maxY - minY));
-    k = this.clampK(Math.min(k, this.minK * 6));
+    k = this.clampK(Math.min(k, this.minK * (close ? 40 : 6)));
     this.animateTo((minX + maxX) / 2 - (padding.left - padding.right) / 2 / k, (minY + maxY) / 2 - (padding.top - padding.bottom) / 2 / k, k);
   }
 
