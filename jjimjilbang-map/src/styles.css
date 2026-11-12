@@ -462,3 +462,8 @@ body {
   box-sizing: border-box;
 }
 .pin.is-selected .pin-count { background: var(--grey900); }
+
+/* 길찾기 확인 시트 */
+.route-sheet { display: grid; gap: 16px; padding-top: 4px; padding-bottom: 8px; }
+.route-sheet p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--grey700); }
+.route-sheet .ui-btn { width: 100%; }
