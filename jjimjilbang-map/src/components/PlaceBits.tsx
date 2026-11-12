@@ -111,19 +111,22 @@ export function PlaceRow({ place, onClick, withReview = true }: { place: Place; 
 const STEAM_SVG = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 3.5c-1.3 1.6 1.3 2.6 0 4.2s1.3 2.6 0 4.2M12 3c-1.3 1.6 1.3 2.6 0 4.2s1.3 2.6 0 4.2M16 3.5c-1.3 1.6 1.3 2.6 0 4.2s1.3 2.6 0 4.2"/><path d="M4.5 15.5c1.8 3.6 13.2 3.6 15 0"/></svg>';
 const HEART_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 20s-7-4.4-9-9.1C1.8 7.6 4 4.5 7.3 4.5c2 0 3.4 1.1 4.7 2.8 1.3-1.7 2.7-2.8 4.7-2.8 3.3 0 5.5 3.1 4.3 6.4C19 15.6 12 20 12 20z"/></svg>';
 
-/** 지도 핀 HTML (지도 어댑터가 DOM으로 넣어요) */
-export function pinHtml(p: Place, selected: boolean, compact: boolean, fav: boolean) {
+/**
+ * 지도 핀 HTML (지도 어댑터가 DOM으로 넣어요).
+ * groupCount 가 2 이상이면 가까이 겹친 핀들을 대표하는 핀이에요: 오른쪽 위에 "+N" 을 달아요.
+ */
+export function pinHtml(p: Place, selected: boolean, groupCount: number, fav: boolean) {
   const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
   const price = p.minPrice ? shortWon(p.minPrice) : '확인 중';
-  const label = `${p.name}, ${p.minPrice ? won(p.minPrice) + '부터' : '요금 확인 중'}`;
+  const more = groupCount > 1 ? groupCount - 1 : 0;
+  const label = `${p.name}, ${p.minPrice ? won(p.minPrice) + '부터' : '요금 확인 중'}${more ? `, 근처 ${more}곳 더 있음. 누르면 펼쳐요` : ''}`;
   const female = p.gender === 'female';
   const mark = fav ? HEART_SVG : STEAM_SVG;
-  if (compact && !selected) {
-    return `<button type="button" class="pin is-compact${female ? ' is-female' : ''}" aria-label="${esc(label)}"><span class="pin-dot" aria-hidden="true">${mark}</span></button>`;
-  }
-  return `<button type="button" class="pin${selected ? ' is-selected' : ''}${female ? ' is-female' : ''}" aria-label="${esc(label)}">` +
+  return `<button type="button" class="pin${selected ? ' is-selected' : ''}${female ? ' is-female' : ''}${more ? ' is-group' : ''}" aria-label="${esc(label)}">` +
     `<span class="pin-dot" aria-hidden="true">${mark}</span>` +
     (female ? '<span class="pin-tag">여성</span>' : '') +
-    `<span class="pin-price">${esc(price)}</span></button>` +
-    `<span class="pin-label" aria-hidden="true">${esc(p.name)}</span>`;
+    `<span class="pin-price">${esc(price)}</span>` +
+    (more ? `<span class="pin-count" aria-hidden="true">+${more}</span>` : '') +
+    `</button>` +
+    `<span class="pin-label" aria-hidden="true">${esc(p.name)}${more ? ` 외 ${more}곳` : ''}</span>`;
 }

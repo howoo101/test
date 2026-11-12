@@ -440,3 +440,30 @@ body {
   .ui-cta { left: 50%; right: auto; width: 600px; transform: translateX(-50%); box-sizing: border-box; }
   .ui-sheet-backdrop .ui-sheet { max-width: 600px; }
 }
+
+/* 겹친 핀 묶기: 묶인 핀은 숨기고, 대표 핀 오른쪽 위에 "+N" */
+.pin-anchor.is-grouped { display: none; }
+.pin.is-group { padding-right: 12px; }
+.pin-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 2px solid var(--white);
+  border-radius: 10px;
+  background: var(--grey800);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.pin.is-selected .pin-count { background: var(--grey900); }
+
+/* 길찾기 확인 시트 */
+.route-sheet { display: grid; gap: 16px; padding-top: 4px; padding-bottom: 8px; }
+.route-sheet p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--grey700); }
+.route-sheet .ui-btn { width: 100%; }

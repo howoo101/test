@@ -32,7 +32,9 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }
   const latest = useRef({ visibleIds, selectedId, favs, onSelect });
   latest.current = { visibleIds, selectedId, favs, onSelect };
 
-  // 핀이 겹치면 추천순이 낮은 쪽을 작은 점으로 줄여요. 확대하면 다시 펼쳐져요.
+  // 핀이 겹치면 하나로 묶어요: 추천순이 높은 핀이 대표로 남고 "+N" 을 달아요.
+  // 대표 핀을 누르면 묶인 곳들이 다 보이게 확대해서 펼쳐요. 확대하면 저절로 풀려요.
+  const groups = useRef(new Map<string, string[]>());
   const timer = useRef(0);
   const declutter = useCallback(() => {
     const m = map.current;
@@ -41,21 +43,29 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }
     const visible = new Set(ids);
     const order = PLACES.filter((p) => visible.has(p.id))
       .sort((a, b) => Number(b.id === sel) - Number(a.id === sel) || a.index - b.index);
-    const boxes: { x1: number; x2: number; y1: number; y2: number }[] = [];
-    const compact = new Set<string>();
+    const leaders: { id: string; box: { x1: number; x2: number; y1: number; y2: number } }[] = [];
+    const next = new Map<string, string[]>();
     const labels = m.labelsShown();
     for (const p of order) {
       const pt = m.toPixel(p.lat, p.lng);
       if (!pt) continue;
       // 이름표가 보이면(확대했거나 선택한 핀) 핀 아래 이름표 자리까지 겹침 판단에 넣어요.
       const withLabel = labels || p.id === sel;
-      const pinW = p.id === sel ? 104 : (p.minPrice ? 70 : 84) + (p.gender === 'female' ? 26 : 0);
-      const w = withLabel ? Math.max(pinW, p.name.length * 12 + 8) : pinW;
-      const r = { x1: pt.x - w / 2, x2: pt.x + w / 2, y1: pt.y - 42, y2: pt.y + (withLabel ? 20 : -6) };
-      if (p.id !== sel && boxes.some((b) => r.x1 < b.x2 && r.x2 > b.x1 && r.y1 < b.y2 && r.y2 > b.y1)) compact.add(p.id);
-      else boxes.push(r);
+      const pinW = (p.id === sel ? 104 : (p.minPrice ? 70 : 84) + (p.gender === 'female' ? 26 : 0)) + 24; // +N 배지 자리
+      const w = withLabel ? Math.max(pinW, p.name.length * 12 + 40) : pinW;
+      const box = { x1: pt.x - w / 2, x2: pt.x + w / 2, y1: pt.y - 44, y2: pt.y + (withLabel ? 20 : -4) };
+      const hit = p.id === sel ? undefined : leaders.find((l) => box.x1 < l.box.x2 && box.x2 > l.box.x1 && box.y1 < l.box.y2 && box.y2 > l.box.y1);
+      if (hit) next.get(hit.id)!.push(p.id);
+      else { leaders.push({ id: p.id, box }); next.set(p.id, [p.id]); }
     }
-    m.setCompact(compact);
+    groups.current = next;
+    const hidden = new Set<string>();
+    const counts = new Map<string, number>();
+    next.forEach((members, leader) => {
+      counts.set(leader, members.length);
+      members.forEach((id) => { if (id !== leader) hidden.add(id); });
+    });
+    m.setGroups(hidden, counts);
   }, []);
   const scheduleDeclutter = useCallback(() => {
     window.clearTimeout(timer.current);
@@ -66,11 +76,19 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey }
     const container = el.current!;
     let cancelled = false;
     const handlers: MapHandlers = {
-      onMarkerClick: (id) => latest.current.onSelect(id),
+      onMarkerClick: (id) => {
+        const members = groups.current.get(id);
+        if (members && members.length > 1 && map.current) {
+          // 묶인 핀: 묶인 곳들이 모두 보이게 가까이 확대해요(선택은 하지 않아요).
+          map.current.fit(members.map((mid) => BY_ID[mid]), { top: 90, right: 90, bottom: 90, left: 90 }, true);
+          return;
+        }
+        latest.current.onSelect(id);
+      },
       onMapClick: () => latest.current.onSelect(null),
       onZoomChange: scheduleDeclutter,
     };
-    const html = (p: Place, sel: boolean, compact: boolean) => pinHtml(p, sel, compact, latest.current.favs.has(p.id));
+    const html = (p: Place, sel: boolean, count: number) => pinHtml(p, sel, count, latest.current.favs.has(p.id));
     const start = (adapter: MapAdapter<Place>) => {
       if (cancelled) { adapter.destroy(); return; }
       map.current = adapter;

@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
   Badge,
+  BottomSheet,
   Border,
   Button,
   FixedBottomCTA,
@@ -61,9 +62,13 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
   };
   // 네이버 지도 길찾기를 현재 위치 출발로 열어요. 휴대폰은 네이버 지도 앱(앱이 현재 위치를 출발지로 넣어요),
   // 컴퓨터는 브라우저 위치를 받아 네이버 지도 웹 길찾기의 출발지에 넣어요.
+  const [pendingRoute, setPendingRoute] = useState<{ url: string; fromHere: boolean } | null>(null);
   const route = () => {
     openNaverDirections(naverRouteScheme(p), (from) => naverRouteWebUrl(p, from), userPos)
-      .then((pos) => { if (pos && !userPos) rememberPos(pos); })
+      .then(({ from, needsTap }) => {
+        if (from && !userPos) rememberPos(from);
+        if (needsTap) setPendingRoute({ url: needsTap, fromHere: !!from });
+      })
       .catch(() => toast('네이버 지도를 열지 못했어요'));
   };
 
@@ -185,6 +190,14 @@ export function PlacePage({ place: p, onBack }: { place: Place; onBack: () => vo
       >
         네이버 지도로 길찾기
       </FixedBottomCTA>
+      <BottomSheet open={!!pendingRoute} onClose={() => setPendingRoute(null)} header={<BottomSheet.Header>네이버 지도로 길찾기</BottomSheet.Header>}>
+        <div className="pad route-sheet">
+          <p>{pendingRoute?.fromHere ? '현재 위치를 출발지로 넣었어요.' : '위치를 알 수 없어서 출발지는 네이버 지도에서 정해 주세요.'}</p>
+          <Button size="large" onClick={() => { if (pendingRoute) window.open(pendingRoute.url, '_blank', 'noopener,noreferrer'); setPendingRoute(null); }}>
+            네이버 지도에서 열기
+          </Button>
+        </div>
+      </BottomSheet>
     </article>
   );
 }
