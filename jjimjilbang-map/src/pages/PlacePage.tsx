@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Badge,
   BottomSheet,
@@ -475,8 +476,9 @@ function Cover({ place: p, viewer, setViewer, grid, setGrid }: {
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
           </button>
         )}
-        {grid && <PhotoGrid title={p.name} photos={photos} onOpen={setViewer} onClose={() => setGrid(false)} />}
-        {viewer != null && <PhotoViewer title={p.name} photos={photos} start={viewer} onClose={() => setViewer(null)} />}
+        {/* 전체 화면 사진은 페이지 맨 위층(body)에 그려서 지도 핀·다른 칸에 가리지 않게 해요 */}
+        {grid && createPortal(<PhotoGrid title={p.name} photos={photos} onOpen={setViewer} onClose={() => setGrid(false)} />, document.body)}
+        {viewer != null && createPortal(<PhotoViewer title={p.name} photos={photos} start={viewer} onClose={() => setViewer(null)} />, document.body)}
       </>
     );
   }
