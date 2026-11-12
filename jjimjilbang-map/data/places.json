@@ -2102,10 +2102,33 @@
       "station": "북한산우이역에서 걸어서 20분",
       "lat": 37.6745,
       "lng": 127.0095,
-      "open24h": false,
-      "hours": "확인 중",
-      "prices": [],
-      "priceSource": null,
+      "open24h": true,
+      "hours": "24시간 영업 (후기 기준)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간 (목욕+찜질)",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 15000,
+          "note": null
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 20000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/cong_sun/224426450500",
+        "label": "네이버 블로그 후기",
+        "date": "2026-09"
+      },
       "facilities": [
         "bulgama",
         "bath"
@@ -2347,7 +2370,10 @@
     },
     {
       "category": "찜질방",
-      "schedule": null,
+      "schedule": {
+        "open": "05:00",
+        "close": "23:00"
+      },
       "closed": [],
       "aliases": [
         "봉일온천",
@@ -2418,7 +2444,7 @@
       "lat": 37.4845,
       "lng": 126.9417,
       "open24h": false,
-      "hours": "확인 중",
+      "hours": "매일 05:00~23:00 (후기 기준)",
       "prices": [
         {
           "type": "찜질",
@@ -2576,7 +2602,11 @@
         "parking"
       ],
       "confidence": "medium",
-      "operatingEvidence": "2025년 4월 업데이트된 맘맘 페이지에 24시간 연중무휴 찜질방으로 안내됨"
+      "operatingEvidence": "2025년 4월 업데이트된 맘맘 페이지에 24시간 연중무휴 찜질방으로 안내됨",
+      "naverExclude": [
+        "경기광주",
+        "황금스파랜드"
+      ]
     },
     {
       "category": "찜질방",
@@ -2916,8 +2946,8 @@
       "station": "회기역·외대앞역 인근",
       "lat": 37.5872,
       "lng": 127.061,
-      "open24h": false,
-      "hours": null,
+      "open24h": true,
+      "hours": "24시간 영업 (후기 기준)",
       "prices": [
         {
           "type": "찜질",
@@ -3080,8 +3110,22 @@
       "lng": 127.0975,
       "open24h": true,
       "hours": "24시간 연중무휴",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "찜질복·수건 2장 포함"
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/love_minvely/224429830464",
+        "label": "네이버 블로그 후기",
+        "date": "2026-10"
+      },
       "facilities": [
         "bulgama",
         "hwangto",
@@ -3136,10 +3180,33 @@
       "station": "용마산역 인근",
       "lat": 37.5995,
       "lng": 127.093,
-      "open24h": false,
-      "hours": null,
-      "prices": [],
-      "priceSource": null,
+      "open24h": true,
+      "hours": "24시간 영업 (후기 기준)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 10000,
+          "note": "찜질복 2,000원 별도"
+        },
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 7000,
+          "note": "7세 이하, 24개월 미만 무료"
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/ssongmi91/224207152571",
+        "label": "네이버 블로그 후기",
+        "date": "2026-03"
+      },
       "facilities": [
         "bulgama",
         "bath"
@@ -3421,8 +3488,22 @@
       "lng": 127.009,
       "open24h": true,
       "hours": "24시간 연중무휴",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/rararal9/223309438136",
+        "label": "네이버 블로그 후기",
+        "date": "2024-01"
+      },
       "facilities": [
         "bulgama",
         "bath"
@@ -3591,8 +3672,22 @@
       "lng": 127.041,
       "open24h": true,
       "hours": "24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질+스파",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/chorokline/224430839336",
+        "label": "네이버 블로그 후기",
+        "date": "2026-10"
+      },
       "facilities": [
         "hwangto",
         "bulgama",
@@ -3660,7 +3755,13 @@
         "bath"
       ],
       "confidence": "low",
-      "operatingEvidence": "모두의사우나·로컬맵 등 업체 정보 사이트에 찜질시설 영업으로 등재되어 있으나 날짜가 확인된 최근 후기는 찾지 못함"
+      "operatingEvidence": "모두의사우나·로컬맵 등 업체 정보 사이트에 찜질시설 영업으로 등재되어 있으나 날짜가 확인된 최근 후기는 찾지 못함",
+      "naverQuery": "수유 대림불가마사우나",
+      "naverExclude": [
+        "문래",
+        "영등포",
+        "선유로"
+      ]
     },
     {
       "category": "찜질방",
@@ -4284,8 +4385,22 @@
       "lng": 127.115,
       "open24h": true,
       "hours": "연중무휴 24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방 포함",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 14000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/prologue510/224390055359",
+        "label": "네이버 블로그 후기",
+        "date": "2026-08"
+      },
       "facilities": [
         "bulgama",
         "hwangto",
@@ -4449,10 +4564,33 @@
       "station": "석촌역 인근",
       "lat": 37.504,
       "lng": 127.1035,
-      "open24h": false,
-      "hours": null,
-      "prices": [],
-      "priceSource": null,
+      "open24h": true,
+      "hours": "24시간 영업 (후기 기준)",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 11000,
+          "note": "찜질복·수건 2장 포함"
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "찜질복·수건 2장 포함"
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/1greenday/224452762752",
+        "label": "네이버 블로그 후기",
+        "date": "2026-10"
+      },
       "facilities": [
         "salt",
         "bath"
@@ -4678,8 +4816,31 @@
       "lng": 127.0305,
       "open24h": true,
       "hours": "연중무휴 24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000,
+          "note": null
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 16000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/hunlee110/224034066873",
+        "label": "네이버 블로그 후기",
+        "date": "2025-10"
+      },
       "facilities": [
         "sleep",
         "femaleSleep",
@@ -4936,8 +5097,31 @@
       "lng": 127.1215,
       "open24h": true,
       "hours": "연중무휴 24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "목욕",
+          "label": "사우나 주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "찜질복 2,000원 별도"
+        },
+        {
+          "type": "목욕",
+          "label": "사우나 야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 14000,
+          "note": "찜질복 2,000원 별도"
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/amanwww/224187279975",
+        "label": "네이버 블로그 후기",
+        "date": "2026-02"
+      },
       "facilities": [
         "bath"
       ],
@@ -5158,7 +5342,10 @@
     },
     {
       "category": "찜질방",
-      "schedule": null,
+      "schedule": {
+        "open": "05:00",
+        "close": "22:00"
+      },
       "closed": [],
       "aliases": [],
       "nameEn": null,
@@ -5206,7 +5393,7 @@
       "lat": 37.4705,
       "lng": 126.889,
       "open24h": false,
-      "hours": null,
+      "hours": "매일 05:00~22:00 (후기 기준)",
       "prices": [
         {
           "type": "찜질",
@@ -5901,8 +6088,22 @@
       "lng": 126.9058,
       "open24h": true,
       "hours": "24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "목욕+찜질복",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/hey_miu__/224470472498",
+        "label": "네이버 블로그 후기",
+        "date": "2026-11"
+      },
       "facilities": [
         "bulgama",
         "bath"
@@ -6317,8 +6518,31 @@
       "lng": 126.9525,
       "open24h": true,
       "hours": "24시간",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질방",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000,
+          "note": null
+        },
+        {
+          "type": "목욕",
+          "label": "목욕",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 11000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/naduljjea/224457751799",
+        "label": "네이버 블로그 후기",
+        "date": "2026-10"
+      },
       "facilities": [
         "bulgama",
         "bath",
@@ -6393,7 +6617,9 @@
         "close": "00:00"
       },
       "closed": [],
-      "aliases": [],
+      "aliases": [
+        "대림불가마사우나"
+      ],
       "nameEn": null,
       "phone": "02-2677-8281",
       "includes": [],
@@ -6442,7 +6668,12 @@
         "food"
       ],
       "confidence": "medium",
-      "operatingEvidence": "2025년 영등포 찜질방 추천 글에 매일 04:00~24:00 영업(수요일 불가마 휴무)으로 소개"
+      "operatingEvidence": "2025년 영등포 찜질방 추천 글에 매일 04:00~24:00 영업(수요일 불가마 휴무)으로 소개",
+      "naverQuery": "문래 대림불가마사우나",
+      "naverExclude": [
+        "수유",
+        "강북구"
+      ]
     }
   ]
 }

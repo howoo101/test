@@ -15,8 +15,10 @@ const outFile = file('data', 'naver-content.json');
 const { places } = readJson(file('data', 'places.json'));
 const prev = readJson(outFile, { byPlace: {} });
 
+// 제목·요약에 장소 이름(또는 별칭)이 들어 있고, 같은 이름의 다른 지점을 가리키는 말(naverExclude)이 없어야 해요.
 function mentions(place, text) {
   const t = norm(text);
+  if ((place.naverExclude || []).some((w) => w && t.includes(norm(w)))) return false;
   return [place.name, ...(place.aliases || [])].some((n) => n && t.includes(norm(n)));
 }
 
@@ -37,9 +39,10 @@ for (const place of targets) {
       .filter((it) => mentions(place, it.title + ' ' + it.description))
       .slice(0, 8);
 
-    const img = await search('image', { query: q, display: 20, sort: 'sim', filter: 'large' }, cred);
+    const img = await search('image', { query: q, display: 60, sort: 'sim', filter: 'large' }, cred);
     const images = (img.items || [])
-      .filter((it) => Number(it.sizewidth) >= 400)
+      // 이미지 검색은 비슷한 이름의 다른 찜질방 사진도 섞여 나와요. 제목에 이 장소 이름이 있는 사진만 써요.
+      .filter((it) => Number(it.sizewidth) >= 400 && mentions(place, it.title))
       .map((it) => ({ title: stripTags(it.title), link: it.link, thumbnail: it.thumbnail }))
       .slice(0, 8);
 
