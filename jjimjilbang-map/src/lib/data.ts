@@ -387,6 +387,8 @@ export interface FilterState {
   q: string;
   chips: Set<string>;
   favs: Set<string>;
+  /** 내 기록이 있는 장소 id */
+  visited?: Set<string>;
   sort: SortKey;
   userPos: { lat: number; lng: number } | null;
 }
@@ -397,6 +399,7 @@ export function filterPlaces(f: FilterState, now: KstNow = kstNow()): Place[] {
     if (q && !p.haystack.includes(q)) return false;
     for (const c of f.chips) {
       if (c === 'fav') { if (!f.favs.has(p.id)) return false; }
+      else if (c === 'visited') { if (!f.visited?.has(p.id)) return false; }
       else if (c === 'open') { const k = openStatus(p, now).key; if (k !== 'open' && k !== 'closing') return false; }
       else if (c === 'open24h') { if (!p.open24h) return false; }
       else if (c === 'female') { if (p.gender !== 'female') return false; }

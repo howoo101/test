@@ -515,3 +515,33 @@ body {
 .viewer-slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .viewer-bottom { display: flex; gap: 12px; justify-content: center; min-height: 48px; align-items: center; padding-bottom: env(safe-area-inset-bottom, 0px); font-size: 13px; color: var(--grey400); }
 .viewer-bottom a { color: var(--white); }
+
+/* ---------------------------------------------------------------- 내 기록 */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.stars { display: inline-flex; gap: 1px; line-height: 1; }
+.star { color: var(--grey200); }
+.star.is-on { color: #ffb800; }
+.row-mine { flex: none; color: #e09b00; font-weight: 700; }
+.visit-list { margin: 0; padding: 0 0 8px; list-style: none; }
+.visit-item { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 12px 24px; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; }
+.visit-item:active { background: var(--grey50); }
+.visit-top { display: flex; align-items: center; gap: 8px; }
+.visit-date { font-size: 13px; color: var(--grey500); }
+.visit-text { font-size: 15px; line-height: 1.55; color: var(--grey800); white-space: pre-wrap; word-break: break-word; }
+.visit-text.is-empty { color: var(--grey400); }
+.visit-empty { padding-bottom: 16px; }
+.visit-form { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; padding-bottom: 8px; }
+.visit-place { margin: 0; font-size: 15px; color: var(--grey600); }
+.star-pick { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; border: 0; }
+.star-btn { width: 44px; height: 44px; padding: 0; border: 0; background: none; font-size: 34px; line-height: 1; color: var(--grey200); cursor: pointer; }
+.star-btn.is-on { color: #ffb800; }
+.star-btn:focus-visible { outline: 2px solid var(--blue500); border-radius: 8px; }
+.star-word { margin-left: 8px; font-size: 15px; font-weight: 600; color: var(--grey700); }
+.visit-field { position: relative; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--grey600); }
+.visit-field input, .visit-field textarea { width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--grey200); border-radius: 12px; background: var(--grey50); color: var(--grey900); font: inherit; font-size: 16px; }
+.visit-field textarea { resize: vertical; min-height: 96px; line-height: 1.5; }
+.visit-field input:focus, .visit-field textarea:focus { outline: none; border-color: var(--blue500); background: var(--white); }
+.visit-count { align-self: flex-end; font-size: 12px; color: var(--grey400); }
+.visit-delete { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; color: var(--grey700); }
+.ui-btn:disabled { opacity: 0.4; cursor: default; }
+.ui-sheet { max-height: 92vh; max-height: 92dvh; overflow-y: auto; }

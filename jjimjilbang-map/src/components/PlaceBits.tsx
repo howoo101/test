@@ -2,6 +2,7 @@
 import { Badge, ListRow } from '../ui';
 import { colors } from '../ui';
 import { useApp } from '../AppContext';
+import { myRating } from '../lib/visits';
 import {
   FACILITIES,
   category,
@@ -81,6 +82,8 @@ const shortStation = (s?: string | null) => (s ? /[가-힣A-Za-z0-9]+역/.exec(s
 
 /** 목록 한 줄: 이름 / 영업 상태 / (추천 배지) 동네·역 — 줄 수와 높이를 항상 같게 맞춰요 */
 export function PlaceRow({ place, onClick }: { place: Place; onClick: () => void; withReview?: boolean }) {
+  const { visits } = useApp();
+  const mine = myRating(visits[place.id]);
   const cat = category(place);
   const where = [cat !== '찜질방' ? cat : '', place.gu, shortStation(place.station)].filter(Boolean).join(' · ');
   const badge = snsBadge(place);
@@ -98,6 +101,7 @@ export function PlaceRow({ place, onClick }: { place: Place; onClick: () => void
           middle={<span className="row-line"><StatusText place={place} withReview={false} withDistance /></span>}
           bottom={
             <span className="row-line row-meta">
+              {mine !== null && <span className="row-mine" aria-label={`내 별점 ${mine}점`}>★ {mine}</span>}
               {badge && <Badge size="xsmall" variant="weak" color="red">{badge}</Badge>}
               {rec && <span className="row-rec">{rec}</span>}
               <span className="row-where">{where}</span>
