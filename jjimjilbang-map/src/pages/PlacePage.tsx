@@ -282,8 +282,8 @@ function ReviewSection({ place: p, open }: { place: Place; open: (url: string) =
               {items.map((r) => <ReviewRow key={urlKey(r.url)} item={r} platform={g.pf} onClick={() => open(r.url)} />)}
               {g.pf === 'instagram' && ig?.location && (
                 <InstaRow
-                  top={ig.location.posts ? `이 장소를 태그한 게시물 ${num(ig.location.posts)}개` : '이 장소를 태그한 게시물 보기'}
-                  bottom={['인스타그램 위치 태그', ig.location.checkedAt ? `${fmtDate(ig.location.checkedAt.slice(0, 7))} 기준` : ''].filter(Boolean).join(' · ')}
+                  top={ig.location.posts ? `이 장소를 태그한 게시물 ${num(ig.location.posts)}개 이상` : '이 장소를 태그한 게시물 보기'}
+                  bottom="인스타그램 위치 태그 · 게시물 모두 보기"
                   onClick={() => open(ig.location!.url)}
                 />
               )}
