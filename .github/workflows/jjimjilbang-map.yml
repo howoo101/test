@@ -7,7 +7,7 @@
 #   수동 실행에서 "all" 을 켜면 날짜·개수 제한 없이 전부 다시 받아요.
 #   저장소 Settings > Secrets and variables > Actions 에 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, YOUTUBE_API_KEY 를 등록해야 동작해요.
 #   NAVER_CLIENT_ID/SECRET 은 NAVER API HUB(네이버 클라우드 플랫폼 콘솔)에서 블로그·이미지·지역 검색을 고른 Application 의 Client ID/Secret 이에요.
-#   (키가 없는 쪽은 건너뛰어요)
+#   (Secrets 를 먼저 보고, 없으면 Variables 에 넣은 같은 이름 값을 써요. 키가 없는 쪽은 건너뛰어요)
 #   (예약 실행은 기본 브랜치에서만 돌아갑니다)
 name: jjimjilbang-map data
 
@@ -47,9 +47,9 @@ jobs:
     permissions:
       contents: write
     env:
-      NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
-      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
-      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID || vars.NAVER_CLIENT_ID }}
+      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET || vars.NAVER_CLIENT_SECRET }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY || vars.YOUTUBE_API_KEY }}
       ALL_FLAG: ${{ inputs.all && '--all' || '' }}
     steps:
       - uses: actions/checkout@v4
