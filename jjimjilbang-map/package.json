@@ -1,16 +1,13 @@
 {
   "name": "seoul-jjimjilbang-map",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "서울 찜질방 요금·시설·후기를 비교하는 앱인토스(토스 미니앱) WebView 앱",
+  "description": "서울 찜질방 요금·시설·후기(유튜브·인스타·블로그)를 비교하는 모바일 웹 (토스 UI/UX 디자인 가이드 스타일)",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit -p . && vite build && ait build",
-    "build:web": "tsc --noEmit -p . && vite build",
-    "build:preview": "vite build --mode preview",
+    "build": "tsc --noEmit -p . && vite build",
     "preview": "vite preview",
-    "deploy": "ait deploy",
     "validate": "node scripts/validate-data.mjs",
     "naver:content": "node scripts/fetch-naver-content.mjs",
     "naver:enrich": "node scripts/enrich-naver-local.mjs",
@@ -20,10 +17,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@apps-in-toss/web-framework": "^3.10.0",
-    "@emotion/react": "^11.14.0",
-    "@toss/tds-mobile": "^2.5.1",
-    "@toss/tds-mobile-ait": "^2.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -32,7 +25,6 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.5.2",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5",
-    "@apps-in-toss/devtools": "^3.10.0"
+    "vite": "^6.3.5"
   }
 }
