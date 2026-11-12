@@ -1,6 +1,10 @@
 # 서울 찜질방 지도: 데이터 검사 + 네이버 후기·이미지, 유튜브 영상 자동 갱신
 # - push / PR: data/places.json 형식과 좌표, 후기·추천 링크를 검사합니다.
-# - 매일 새벽(한국시간 03:17) 또는 수동 실행: 네이버 검색 API로 후기·이미지를, YouTube Data API로 영상을 다시 모아 커밋합니다.
+# - 매주 월요일 새벽(한국시간 03:17) 또는 수동 실행: 네이버 검색 API로 후기·이미지를, YouTube Data API로 영상을 다시 모아 커밋합니다.
+#   API 한도를 아끼려고 오래된 곳만 다시 받아요.
+#   · 네이버: 받은 지 7일 넘은 곳, 한 번에 최대 80곳 (장소당 2회 → 최대 160회/주)
+#   · 유튜브: 받은 지 25일 넘은 곳, 한 번에 최대 30곳 (장소당 약 101단위 → 최대 약 3,000단위/주, 하루 한도 10,000)
+#   수동 실행에서 "all" 을 켜면 날짜·개수 제한 없이 전부 다시 받아요.
 #   저장소 Settings > Secrets and variables > Actions 에 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, YOUTUBE_API_KEY 를 등록해야 동작해요.
 #   NAVER_CLIENT_ID/SECRET 은 NAVER API HUB(네이버 클라우드 플랫폼 콘솔)에서 블로그·이미지·지역 검색을 고른 Application 의 Client ID/Secret 이에요.
 #   (키가 없는 쪽은 건너뛰어요)
@@ -13,8 +17,13 @@ on:
   pull_request:
     paths: ['jjimjilbang-map/**']
   schedule:
-    - cron: '17 18 * * *'
+    - cron: '17 18 * * 0'
   workflow_dispatch:
+    inputs:
+      all:
+        description: '제한 없이 전부 다시 받기 (API 사용량이 많아요)'
+        type: boolean
+        default: false
 
 concurrency:
   group: jjimjilbang-map-${{ github.ref }}
@@ -41,6 +50,7 @@ jobs:
       NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
       NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      ALL_FLAG: ${{ inputs.all && '--all' || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -51,10 +61,10 @@ jobs:
         run: echo "NAVER_CLIENT_ID 비밀값이 없어 후기 갱신을 건너뜁니다."
       - name: 네이버 블로그 후기·이미지 가져오기
         if: env.NAVER_CLIENT_ID != ''
-        run: node jjimjilbang-map/scripts/fetch-naver-content.mjs
+        run: node jjimjilbang-map/scripts/fetch-naver-content.mjs $ALL_FLAG
       - name: 유튜브 영상 가져오기
         if: env.YOUTUBE_API_KEY != ''
-        run: node jjimjilbang-map/scripts/fetch-youtube.mjs
+        run: node jjimjilbang-map/scripts/fetch-youtube.mjs $ALL_FLAG
       - name: 바뀐 내용 커밋
         if: env.NAVER_CLIENT_ID != '' || env.YOUTUBE_API_KEY != ''
         run: |

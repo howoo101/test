@@ -85,7 +85,7 @@ YOUTUBE_API_KEY=키 npm run youtube   # data/youtube-content.json
 
 이 스크립트는 `reviewLinks`에 넣은 추천 영상도 확인해요. 비어 있는 채널 이름과 올린 날짜를 채우고, 지워졌거나 비공개로 바뀐 영상은 화면과 추천순에서 빼요.
 
-저장소 **Settings → Secrets and variables → Actions**에 같은 이름(`NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`, `YOUTUBE_API_KEY`)으로 넣으면 매일 새벽 후기와 영상이 자동으로 갱신돼요. 키는 앱 코드에 절대 넣지 마세요.
+저장소 **Settings → Secrets and variables → Actions**에 같은 이름(`NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`, `YOUTUBE_API_KEY`)으로 넣으면 매주 월요일 새벽 후기와 영상이 자동으로 갱신돼요. API 한도를 아끼려고 오래된 곳만 다시 받아요(네이버: 7일 지난 곳 최대 80곳, 유튜브: 25일 지난 곳 최대 30곳). 전부 다시 받으려면 Actions에서 Run workflow 할 때 "all"을 켜거나 스크립트에 `--all` 을 붙여요. 키는 앱 코드에 절대 넣지 마세요.
 
 ### 유튜브·인스타 추천 넣기
 

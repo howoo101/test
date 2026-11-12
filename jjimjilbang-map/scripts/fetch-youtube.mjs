@@ -1,25 +1,24 @@
 #!/usr/bin/env node
 // 장소마다 유튜브 영상 검색 결과를 모아 data/youtube-content.json 을 만듭니다.
 //
-//   YOUTUBE_API_KEY=... node scripts/fetch-youtube.mjs [--only 장소id]
+//   YOUTUBE_API_KEY=... node scripts/fetch-youtube.mjs [--only 장소id | --all | --days 25 --max 30]
 //
 // - YouTube Data API v3 를 써요 (Google Cloud 콘솔에서 API 키 발급, 하루 무료 10,000 단위).
-//   검색 1번에 100단위라 17곳이면 하루 1,700단위 정도예요.
+//   검색 1번에 100단위라 비싸요. 그래서 받은 지 25일이 안 된 곳은 건너뛰고 한 번에 최대 30곳(약 3,000단위)만 받아요.
+//   주 1회 실행이면 72곳이 한 달 안에 한 바퀴 돌아요.
 // - 화면에는 제목·채널·날짜·조회수와 링크만 보여주고 영상은 유튜브에서 열어요.
 // - 자동 수집 결과에는 평가(추천·아쉬움)가 없어요. 추천 영상으로 보여주려면
 //   data/places.json 의 reviewLinks 에 verdict·note 와 함께 직접 옮겨 주세요.
 // - reviewLinks 에 있는 추천 영상은 채널·날짜·조회수를 채워 두고(videos),
 //   지워졌거나 비공개가 된 영상은 unavailable 에 적어 화면과 추천순에서 빼요.
-// - YouTube API 정책상 저장한 데이터는 주기적으로 새로 받아야 해요. GitHub Actions 가 매일 다시 받아요.
-import { file, readJson, writeJson, norm, sleep } from './lib/datafile.mjs';
+// - YouTube API 정책상 저장한 데이터는 30일 안에 새로 받아야 해요. GitHub Actions 가 주 1회 오래된 곳부터 다시 받아요.
+import { file, readJson, writeJson, norm, sleep, pickStale } from './lib/datafile.mjs';
 
 const KEY = process.env.YOUTUBE_API_KEY;
 if (!KEY) {
   console.error('YOUTUBE_API_KEY 가 없어요. Google Cloud 콘솔에서 YouTube Data API v3 키를 만들어 넣어 주세요.');
   process.exit(1);
 }
-const args = process.argv.slice(2);
-const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
 
 const API = 'https://www.googleapis.com/youtube/v3';
 const outFile = file('data', 'youtube-content.json');
@@ -44,8 +43,9 @@ function mentions(place, text) {
 }
 
 const byPlace = { ...(prev.byPlace || {}) };
-for (const place of places) {
-  if (only && place.id !== only) continue;
+const fetched = { ...(prev.fetched || {}) };
+const targets = pickStale(places, (id) => fetched[id], { days: 25, max: 30 });
+for (const place of targets) {
   const q = `${place.naverQuery || place.name} 찜질방`;
   try {
     const search = await get('search', {
@@ -66,16 +66,20 @@ for (const place of places) {
       publishedAt: h.snippet.publishedAt ? h.snippet.publishedAt.slice(0, 10) : null,
       views: stats[h.id.videoId] ?? null,
     }));
+    fetched[place.id] = new Date().toISOString().slice(0, 10);
     console.log(`✓ ${place.name}: 영상 ${hits.length}개`);
     await sleep(200);
   } catch (e) {
     console.error(`✗ ${place.name}: ${e.message}`);
     process.exitCode = 1;
+    // 오늘 한도를 다 썼으면 더 부르지 않고 지금까지 받은 것만 저장해요.
+    if (/quota/i.test(e.message)) { console.error('유튜브 하루 한도를 다 써서 멈춰요. 나머지는 다음 실행에 받아요.'); break; }
   }
 }
 
 const ids = new Set(places.map((p) => p.id));
 Object.keys(byPlace).forEach((id) => { if (!ids.has(id)) delete byPlace[id]; });
+Object.keys(fetched).forEach((id) => { if (!ids.has(id)) delete fetched[id]; });
 
 // 사람이 고른 추천 영상(reviewLinks)도 확인해요: 채널·날짜·조회수를 채우고, 지워졌거나 비공개로 바뀐 영상을 찾아요.
 const ytId = (u) => /(?:youtu\.be\/|[?&]v=|\/shorts\/)([\w-]{11})/.exec(u)?.[1] ?? null;
@@ -103,5 +107,5 @@ for (let i = 0; i < curated.length; i += 50) {
 }
 if (unavailable.length) console.warn(`볼 수 없는 추천 영상 ${unavailable.length}개 (화면에서 빼요): ${unavailable.join(', ')}`);
 
-writeJson(outFile, { updatedAt: new Date().toISOString().slice(0, 10), byPlace, videos, unavailable });
+writeJson(outFile, { updatedAt: new Date().toISOString().slice(0, 10), byPlace, fetched, videos, unavailable });
 console.log(`저장: ${outFile} (추천 영상 ${Object.keys(videos).length}개 확인)`);
