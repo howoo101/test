@@ -7,7 +7,8 @@
 #   수동 실행에서 "all" 을 켜면 날짜·개수 제한 없이 전부 다시 받아요.
 #   저장소 Settings > Secrets and variables > Actions 에 NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, YOUTUBE_API_KEY 를 등록해야 동작해요.
 #   NAVER_CLIENT_ID/SECRET 은 NAVER API HUB(네이버 클라우드 플랫폼 콘솔)에서 블로그·이미지·지역 검색을 고른 Application 의 Client ID/Secret 이에요.
-#   (Secrets 를 먼저 보고, 없으면 Variables 에 넣은 같은 이름 값을 써요. 키가 없는 쪽은 건너뛰어요)
+#   NAVER_CLIENT_SECRET·YOUTUBE_API_KEY 는 반드시 Secrets 탭에 넣어요. Variables 값은 로그에 그대로 찍혀요 (Client ID 만 Variables 도 읽어요).
+#   (키가 없는 쪽은 건너뛰어요)
 #   (예약 실행은 기본 브랜치에서만 돌아갑니다)
 name: jjimjilbang-map data
 
@@ -24,6 +25,10 @@ on:
         description: '제한 없이 전부 다시 받기 (API 사용량이 많아요)'
         type: boolean
         default: false
+      discover:
+        description: '네이버 지도에 등록된 찜질방·사우나 찾기 (예: 진접,오남,별내). 적으면 이것만 실행해요'
+        type: string
+        default: ''
 
 concurrency:
   group: jjimjilbang-map-${{ github.ref }}
@@ -41,15 +46,15 @@ jobs:
         run: node jjimjilbang-map/scripts/validate-data.mjs
 
   refresh-naver:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.discover == '')
     needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
       NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID || vars.NAVER_CLIENT_ID }}
-      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET || vars.NAVER_CLIENT_SECRET }}
-      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY || vars.YOUTUBE_API_KEY }}
+      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       ALL_FLAG: ${{ inputs.all && '--all' || '' }}
     steps:
       - uses: actions/checkout@v4
@@ -77,3 +82,19 @@ jobs:
             git commit -m "data: 네이버 후기·이미지, 유튜브 영상 갱신"
             git push
           fi
+
+  # 수동 실행에서 discover 에 동네를 적으면: 네이버 지역 검색으로 그 동네 찜질방·사우나 목록을 로그에 찍어요 (커밋하지 않아요)
+  discover:
+    if: github.event_name == 'workflow_dispatch' && inputs.discover != ''
+    runs-on: ubuntu-latest
+    env:
+      NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID || vars.NAVER_CLIENT_ID }}
+      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      DISCOVER: ${{ inputs.discover }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 네이버 지역 검색으로 찾기
+        run: node jjimjilbang-map/scripts/discover-naver-local.mjs
