@@ -6746,7 +6746,12 @@
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
       "confidence": "medium",
-      "operatingEvidence": "2025년 8~10월 당근 이용 후기, 2025년 5월·10월 방송/자체 콘텐츠 촬영지로 소개됨"
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건",
+      "naverQuery": "남양주 골드스파 불가마사우나",
+      "naverExclude": [
+        "파주",
+        "금촌"
+      ]
     },
     {
       "id": "onam-bulgama-sauna",
@@ -6824,7 +6829,7 @@
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
       "confidence": "medium",
-      "operatingEvidence": "2024년 8월 새 운영자로 재개장(당근 업체 소개), 2025년 1월 블로그 정리글"
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     },
     {
       "id": "jinjeop-janghyeon-sauna",
@@ -6901,8 +6906,8 @@
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개. 그 뒤 후기는 찾지 못함"
+      "confidence": "medium",
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     },
     {
       "id": "byeollae-noblesse-spa-24",
@@ -6987,8 +6992,8 @@
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개"
+      "confidence": "medium",
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     },
     {
       "id": "geumgok-hongyu-spaland",
@@ -7074,8 +7079,8 @@
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개"
+      "confidence": "medium",
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     },
     {
       "id": "dasan-king-jjimjilbang",
@@ -7158,7 +7163,7 @@
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
       "confidence": "medium",
-      "operatingEvidence": "2026년 1월 무렵 재방문 후기 정리글, 2024년 2월 기사"
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     },
     {
       "id": "dasan-spadium24",
@@ -7284,7 +7289,7 @@
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
       "confidence": "high",
-      "operatingEvidence": "2026년 1월 요금 기사, 2026년 8월 추천 기사"
+      "operatingEvidence": "2026년 11월 네이버 블로그 방문 후기 여러 건"
     }
   ]
 }

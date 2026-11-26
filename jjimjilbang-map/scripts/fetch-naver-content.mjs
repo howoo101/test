@@ -17,9 +17,12 @@ const { places } = readJson(file('data', 'places.json'));
 const prev = readJson(outFile, { byPlace: {} });
 
 // 제목·요약에 장소 이름(또는 별칭)이 들어 있고, 같은 이름의 다른 지점을 가리키는 말(naverExclude)이 없어야 해요.
+// 채용 공고·광고처럼 장소 이름만 걸친 결과는 늘 빼요
+const ALWAYS_EXCLUDE = ['알바천국', '알바몬', '채용', '구인', '영화 리뷰'];
+
 function mentions(place, text) {
   const t = norm(text);
-  if ((place.naverExclude || []).some((w) => w && t.includes(norm(w)))) return false;
+  if ([...ALWAYS_EXCLUDE, ...(place.naverExclude || [])].some((w) => w && t.includes(norm(w)))) return false;
   return [place.name, ...(place.aliases || [])].some((n) => n && t.includes(norm(n)));
 }
 
