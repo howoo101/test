@@ -6,6 +6,7 @@
 // 한도를 아끼려고 받은 지 7일이 안 된 곳은 건너뛰고, 한 번에 최대 80곳(장소당 2회 호출)만 받아요.
 //
 // 화면에는 제목·요약·링크만 보여주고 원문으로 연결합니다(본문 복사 금지).
+// 이미지는 한 번에 100장(요청 1회)을 받아 제목에 장소 이름이 있는 사진을 최대 40장 남겨요.
 import { file, readJson, writeJson, stripTags, norm, pickStale } from './lib/datafile.mjs';
 import { credentials, search } from './lib/naver-search.mjs';
 
@@ -39,12 +40,12 @@ for (const place of targets) {
       .filter((it) => mentions(place, it.title + ' ' + it.description))
       .slice(0, 8);
 
-    const img = await search('image', { query: q, display: 60, sort: 'sim', filter: 'large' }, cred);
+    const img = await search('image', { query: q, display: 100, sort: 'sim', filter: 'large' }, cred);
     const images = (img.items || [])
       // 이미지 검색은 비슷한 이름의 다른 찜질방 사진도 섞여 나와요. 제목에 이 장소 이름이 있는 사진만 써요.
       .filter((it) => Number(it.sizewidth) >= 400 && mentions(place, it.title))
       .map((it) => ({ title: stripTags(it.title), link: it.link, thumbnail: it.thumbnail }))
-      .slice(0, 8);
+      .slice(0, 40);
 
     byPlace[place.id] = { blogTotal: blog.total || 0, blog: posts, images, fetchedAt: new Date().toISOString().slice(0, 10) };
     console.log(`✓ ${place.name}: 블로그 ${posts.length}/${blog.total}건, 이미지 ${images.length}장`);

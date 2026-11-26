@@ -477,7 +477,7 @@ function Cover({ place: p, viewer, setViewer, grid, setGrid }: {
           </button>
         )}
         {/* 전체 화면 사진은 페이지 맨 위층(body)에 그려서 지도 핀·다른 칸에 가리지 않게 해요 */}
-        {grid && createPortal(<PhotoGrid title={p.name} photos={photos} onOpen={setViewer} onClose={() => setGrid(false)} />, document.body)}
+        {grid && createPortal(<PhotoGrid title={p.name} photos={photos} moreUrl={naverPlaceUrl(p, 'photo')} onOpen={setViewer} onClose={() => setGrid(false)} />, document.body)}
         {viewer != null && createPortal(<PhotoViewer title={p.name} photos={photos} start={viewer} onClose={() => setViewer(null)} />, document.body)}
       </>
     );
@@ -498,7 +498,7 @@ function Cover({ place: p, viewer, setViewer, grid, setGrid }: {
 type PhotoItem = ReturnType<typeof photoList>[number];
 
 /** 사진 더보기: 모든 사진을 바둑판으로 (네이버 지도 장소의 사진 탭처럼). 누르면 크게 보기 */
-function PhotoGrid({ title, photos, onOpen, onClose }: { title: string; photos: PhotoItem[]; onOpen: (i: number) => void; onClose: () => void }) {
+function PhotoGrid({ title, photos, moreUrl, onOpen, onClose }: { title: string; photos: PhotoItem[]; moreUrl: string; onOpen: (i: number) => void; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       // 크게 보기가 열려 있으면 그쪽이 먼저 닫혀요
@@ -529,6 +529,13 @@ function PhotoGrid({ title, photos, onOpen, onClose }: { title: string; photos: 
             </li>
           ))}
         </ul>
+        <div className="pgrid-more">
+          <p>업체 사진과 방문자 리뷰 사진은 네이버 지도에 더 많아요.</p>
+          <a className="pgrid-more-btn" href={moreUrl} target="_blank" rel="noopener noreferrer">
+            네이버 지도에서 사진 전체 보기
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </div>
       </div>
     </div>
   );
