@@ -75,3 +75,19 @@ for (const r of list) {
 }
 console.log('');
 for (const r of list) console.log('FOUND\t' + JSON.stringify(r));
+
+// 간이 지도에 쓰는 역 좌표도 네이버 지도 기준으로 확인해요 (data/seoul-stations.json 의 근사값을 고칠 때 써요)
+const STATIONS = { 진접: ['진접역'], 오남: ['오남역'], 별내: ['별내별가람역', '별내역'] };
+for (const area of areas) {
+  for (const st of STATIONS[area] || []) {
+    try {
+      const res = await search('local.json', { query: st, display: 5 }, cred);
+      const hit = (res.items || []).map((it) => ({ ...it, title: stripTags(it.title) }))
+        .find((it) => /지하철|전철|역/.test(it.category || '') && it.title.startsWith(st));
+      if (hit) console.log(`STATION\t${st}\t${toDeg(hit.mapy)?.toFixed(5)}\t${toDeg(hit.mapx)?.toFixed(5)}\t${hit.category}\t${hit.roadAddress || hit.address}`);
+      else console.log(`STATION\t${st}\t찾지 못함`);
+    } catch (e) {
+      console.error(`✗ ${st}: ${e.message}`);
+    }
+  }
+}

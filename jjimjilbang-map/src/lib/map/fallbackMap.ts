@@ -39,7 +39,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   private root: HTMLDivElement;
   private svgEl: SVGSVGElement;
   private pinLayer: HTMLDivElement;
-  private labels: { node: HTMLElement; p: { x: number; y: number } }[] = [];
+  private labels: { node: HTMLElement; p: { x: number; y: number }; len: number }[] = [];
   private stations: { node: HTMLElement; p: { x: number; y: number }; len: number; near: boolean }[] = [];
   private markers = new Map<string, Marker<T>>();
   private me: { node: HTMLDivElement; p: { x: number; y: number } } | null = null;
@@ -88,7 +88,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
       node.className = 'fmap-gu-label';
       node.textContent = d.name;
       labelLayer.appendChild(node);
-      return { node, p: project(d.label[0], d.label[1]) };
+      return { node, p: project(d.label[0], d.label[1]), len: d.name.length };
     });
 
     const stationLayer = div('fmap-layer');
@@ -224,9 +224,9 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     const vw = this.w / v.k, vh = this.h / v.k;
     this.svgEl.setAttribute('viewBox', [v.cx - vw / 2, v.cy - vh / 2, vw, vh].map((n) => n.toFixed(3)).join(' '));
     const zoom = v.k / this.minK;
-    this.root.classList.toggle('show-stations', zoom >= 1.25);
+    this.root.classList.toggle('show-stations', zoom >= 1.6);
     this.root.classList.toggle('show-labels', zoom >= 2.4);
-    this.root.classList.toggle('show-stn-labels', zoom >= 2.2);
+    this.root.classList.toggle('show-stn-labels', zoom >= 3);
     this.root.classList.toggle('hide-gu', zoom >= 3.4);
     this.labels.forEach((l) => place(l.node, this.toScreen(l.p)));
     this.stations.forEach((s) => place(s.node, this.toScreen(s.p)));
@@ -246,22 +246,32 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   private declutterStations() {
     const labelsOn = this.root.classList.contains('show-stn-labels');
     const pinLabels = this.root.classList.contains('show-labels');
-    const boxes: { x1: number; x2: number; y1: number; y2: number }[] = [];
+    const guShown = !this.root.classList.contains('hide-gu');
+    type Box = { x1: number; x2: number; y1: number; y2: number };
+    const boxes: Box[] = [];
     this.markers.forEach((m) => {
       if (m.node.hidden || (m.grouped && !m.selected)) return;
       const s = this.toScreen(m.p);
       const withLabel = pinLabels || m.selected;
       boxes.push({ x1: s.x - 46, x2: s.x + 46, y1: s.y - 46, y2: s.y + (withLabel ? 22 : 0) });
     });
+    // 구 이름(예: 은평구)도 피해요
+    if (guShown) this.labels.forEach((l) => { const s = this.toScreen(l.p); const w = l.len * 13; boxes.push({ x1: s.x - w / 2, x2: s.x + w / 2, y1: s.y - 9, y2: s.y + 9 }); });
+    const hits = (b: Box) => boxes.some((o) => b.x1 < o.x2 && b.x2 > o.x1 && b.y1 < o.y2 && b.y2 > o.y1);
     const order = [...this.stations].sort((a, b) => Number(b.near) - Number(a.near));
     for (const st of order) {
-      if (!labelsOn && !st.near) { st.node.classList.remove('stn-hide-label'); continue; }
+      st.node.classList.remove('stn-hide-label', 'stn-left');
+      if (!labelsOn && !st.near) continue;
       const s = this.toScreen(st.p);
-      const fs = st.near ? 14 : 13;
-      const box = { x1: s.x - 10, x2: s.x + 14 + st.len * fs, y1: s.y - 10, y2: s.y + 10 };
-      const hit = !st.near && boxes.some((b) => box.x1 < b.x2 && box.x2 > b.x1 && box.y1 < b.y2 && box.y2 > b.y1);
-      st.node.classList.toggle('stn-hide-label', hit);
-      if (!hit) boxes.push(box);
+      const w = st.len * (st.near ? 12.5 : 12) + 4;
+      const dot = { x1: s.x - 8, x2: s.x + 8, y1: s.y - 8, y2: s.y + 8 };
+      // 오른쪽에 먼저 두고, 겹치면 왼쪽으로, 그래도 겹치면 이름만 숨겨요 (동그라미는 남겨요)
+      const right = { x1: s.x + 8, x2: s.x + 10 + w, y1: s.y - 8, y2: s.y + 8 };
+      const left = { x1: s.x - 10 - w, x2: s.x - 8, y1: s.y - 8, y2: s.y + 8 };
+      if (!hits(right)) { boxes.push(right, dot); continue; }
+      if (!hits(left)) { st.node.classList.add('stn-left'); boxes.push(left, dot); continue; }
+      st.node.classList.add('stn-hide-label');
+      boxes.push(dot);
     }
   }
 
