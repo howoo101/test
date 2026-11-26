@@ -280,17 +280,17 @@ body {
   white-space: nowrap;
 }
 .hide-gu .fmap-gu-label { opacity: 0.35; }
-.stn { position: absolute; z-index: 1; left: 0; top: 0; translate: -8px -8px; display: none; align-items: center; gap: 4px; white-space: nowrap; pointer-events: none; }
+.stn { position: absolute; z-index: 1; left: 0; top: 0; translate: -6px -6px; display: none; align-items: center; gap: 3px; white-space: nowrap; pointer-events: none; }
 .show-stations .stn, .stn.is-near { display: flex; }
-/* 노선 색 동그라미 + 호선 번호 */
-.stn i { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: var(--stn, var(--grey500)); border: 2px solid var(--white); box-sizing: border-box; box-shadow: 0 1px 3px rgb(0 0 0 / 0.25); font-style: normal; font-size: 9px; font-weight: 800; line-height: 1; color: var(--white); }
-/* 역 이름: 흰 테두리 글씨로 지도 위에서도 잘 읽혀요 */
-.stn b { display: none; font-size: 12.5px; font-weight: 700; color: var(--grey900); paint-order: stroke; -webkit-text-stroke: 3px var(--white); text-shadow: 0 0 4px rgb(255 255 255 / 0.9); letter-spacing: -0.2px; }
+/* 노선 색 작은 동그라미 + 호선 번호 (핀보다 눈에 덜 띄게) */
+.stn i { display: grid; place-items: center; width: 13px; height: 13px; border-radius: 50%; background: var(--stn, var(--grey500)); border: 1.5px solid var(--white); box-sizing: border-box; font-style: normal; font-size: 7.5px; font-weight: 800; line-height: 1; color: var(--white); }
+/* 역 이름: 회색 보통 글씨 + 흰 그림자 (지명처럼 배경에 가깝게) */
+.stn b { display: none; font-size: 11.5px; font-weight: 500; color: var(--grey600); text-shadow: 0 0 2px var(--white), 0 0 2px var(--white), 0 0 3px var(--white); letter-spacing: -0.2px; }
 .show-stn-labels .stn b, .stn.is-near b { display: inline; }
-/* 고른 찜질방 근처 역은 더 크게 */
-.stn.is-near { z-index: 2; translate: -10px -10px; }
-.stn.is-near i { width: 20px; height: 20px; font-size: 11px; }
-.stn.is-near b { font-size: 13.5px; }
+/* 고른 찜질방 근처 역만 조금 진하게 */
+.stn.is-near { z-index: 2; translate: -7px -7px; }
+.stn.is-near i { width: 15px; height: 15px; font-size: 8.5px; }
+.stn.is-near b { font-size: 12px; font-weight: 600; color: var(--grey800); }
 .fmap-credit {
   position: absolute;
   left: max(10px, env(safe-area-inset-left, 0px));
@@ -635,3 +635,6 @@ body {
 .pgrid-more-btn { display: inline-flex; align-items: center; gap: 4px; height: 48px; padding: 0 20px; border-radius: 14px; background: #03c75a; color: var(--white); font-size: 15px; font-weight: 700; text-decoration: none; }
 .pgrid-more-btn:active { opacity: 0.85; }
 .stn.stn-hide-label b { display: none; }
+/* 역 이름을 동그라미 왼쪽에 둘 때 */
+.stn.stn-left { flex-direction: row-reverse; translate: calc(-100% + 6px) -6px; }
+.stn.is-near.stn-left { translate: calc(-100% + 7px) -7px; }
