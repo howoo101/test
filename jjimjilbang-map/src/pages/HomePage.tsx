@@ -24,6 +24,7 @@ const CHIPS: { id: string; label: string }[] = [
   { id: 'sns', label: '유튜브·인스타 추천' },
   { id: 'open24h', label: '24시간' },
   { id: 'under15k', label: '1.5만원 이하' },
+  { id: 'nyj', label: '남양주' },
   { id: 'fav', label: '찜한 곳' },
   { id: 'visited', label: '다녀온 곳' },
   { id: 'female', label: '여성전용' },
@@ -75,7 +76,7 @@ export function HomePage({ onOpen, active, wide = false, openId = null, detail =
         <header className="home-head">
           {(wide || view === 'list') && (
             <Top
-              title={<Top.TitleParagraph size={22}>서울 찜질방, 요금부터 비교해요</Top.TitleParagraph>}
+              title={<Top.TitleParagraph size={22}>서울·남양주 찜질방, 요금부터 비교해요</Top.TitleParagraph>}
               subtitleBottom={<Top.SubtitleParagraph size={15}>{`${PLACES.length}곳의 요금·시설·후기를 한곳에 모았어요`}</Top.SubtitleParagraph>}
             />
           )}

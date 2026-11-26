@@ -13,6 +13,8 @@ const COS0 = Math.cos((LAT0 * Math.PI) / 180);
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 // 경위도 -> 평면 좌표 (단위 약 0.001도, y는 아래로 증가)
+/** 1.5km 쯤 (지도 좌표는 위도 1도 = 1000) */
+const NEAR_STATION = 13.5;
 const project = (lng: number, lat: number) => ({ x: (lng - LNG0) * COS0 * 1000, y: (LAT0 - lat) * 1000 });
 
 function svg(tag: string, attrs: Record<string, string>) {
@@ -38,7 +40,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
   private svgEl: SVGSVGElement;
   private pinLayer: HTMLDivElement;
   private labels: { node: HTMLElement; p: { x: number; y: number } }[] = [];
-  private stations: { node: HTMLElement; p: { x: number; y: number } }[] = [];
+  private stations: { node: HTMLElement; p: { x: number; y: number }; len: number; near: boolean }[] = [];
   private markers = new Map<string, Marker<T>>();
   private me: { node: HTMLDivElement; p: { x: number; y: number } } | null = null;
   private pinHtml: PinHtml<T> = () => '';
@@ -95,10 +97,12 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
       const node = document.createElement('span');
       node.className = 'stn';
       if (sd.lineColors[line]) node.style.setProperty('--stn', sd.lineColors[line]);
+      // 노선 색 동그라미 안에 호선 번호, 옆에 "OO역" 이름
       node.innerHTML = '<i></i><b></b>';
-      (node.lastChild as HTMLElement).textContent = name;
+      (node.firstChild as HTMLElement).textContent = /^\d$/.test(line) ? line : '';
+      (node.lastChild as HTMLElement).textContent = name.endsWith('역') ? name : `${name}역`;
       stationLayer.appendChild(node);
-      return { node, p: project(lng, lat) };
+      return { node, p: project(lng, lat), len: (name.endsWith('역') ? name : `${name}역`).length, near: false };
     });
 
     this.pinLayer = div('fmap-layer fmap-pins');
@@ -220,17 +224,44 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
     const vw = this.w / v.k, vh = this.h / v.k;
     this.svgEl.setAttribute('viewBox', [v.cx - vw / 2, v.cy - vh / 2, vw, vh].map((n) => n.toFixed(3)).join(' '));
     const zoom = v.k / this.minK;
-    this.root.classList.toggle('show-stations', zoom >= 1.7);
+    this.root.classList.toggle('show-stations', zoom >= 1.25);
     this.root.classList.toggle('show-labels', zoom >= 2.4);
-    this.root.classList.toggle('show-stn-labels', zoom >= 3.4);
+    this.root.classList.toggle('show-stn-labels', zoom >= 2.2);
     this.root.classList.toggle('hide-gu', zoom >= 3.4);
     this.labels.forEach((l) => place(l.node, this.toScreen(l.p)));
     this.stations.forEach((s) => place(s.node, this.toScreen(s.p)));
     this.markers.forEach((m) => place(m.node, this.toScreen(m.p)));
     if (this.me) place(this.me.node, this.toScreen(this.me.p));
+    this.declutterStations();
     if (this.lastK !== v.k) {
       this.lastK = v.k;
       this.handlers.onZoomChange?.();
+    }
+  }
+
+  /**
+   * 역 이름이 찜질방 핀·이름표나 다른 역 이름과 겹치면 그 역 이름만 숨겨요 (동그라미는 남겨요).
+   * 고른 찜질방 근처 역을 먼저 자리 잡게 해요.
+   */
+  private declutterStations() {
+    const labelsOn = this.root.classList.contains('show-stn-labels');
+    const pinLabels = this.root.classList.contains('show-labels');
+    const boxes: { x1: number; x2: number; y1: number; y2: number }[] = [];
+    this.markers.forEach((m) => {
+      if (m.node.hidden || (m.grouped && !m.selected)) return;
+      const s = this.toScreen(m.p);
+      const withLabel = pinLabels || m.selected;
+      boxes.push({ x1: s.x - 46, x2: s.x + 46, y1: s.y - 46, y2: s.y + (withLabel ? 22 : 0) });
+    });
+    const order = [...this.stations].sort((a, b) => Number(b.near) - Number(a.near));
+    for (const st of order) {
+      if (!labelsOn && !st.near) { st.node.classList.remove('stn-hide-label'); continue; }
+      const s = this.toScreen(st.p);
+      const fs = st.near ? 14 : 13;
+      const box = { x1: s.x - 10, x2: s.x + 14 + st.len * fs, y1: s.y - 10, y2: s.y + 10 };
+      const hit = !st.near && boxes.some((b) => box.x1 < b.x2 && box.x2 > b.x1 && box.y1 < b.y2 && box.y2 > b.y1);
+      st.node.classList.toggle('stn-hide-label', hit);
+      if (!hit) boxes.push(box);
     }
   }
 
@@ -296,6 +327,14 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
       m.node.hidden = !visible.has(id) && !sel;
       if (sel !== m.selected || m.dirty) { m.selected = sel; this.paint(m); }
     });
+    // 고른 찜질방에서 1.5km 안의 역은 축척과 상관없이 이름까지 또렷하게 보여줘요
+    const selP = selectedId ? this.markers.get(selectedId)?.p : null;
+    this.stations.forEach((s) => {
+      const near = !!selP && Math.hypot(s.p.x - selP.x, s.p.y - selP.y) < NEAR_STATION;
+      s.near = near;
+      s.node.classList.toggle('is-near', near);
+    });
+    this.declutterStations();
   }
 
   refreshAll() {
@@ -307,6 +346,7 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
       const g = hidden.has(id), c = counts.get(id) ?? 1;
       if (g !== m.grouped || c !== m.count) { m.grouped = g; m.count = c; this.paint(m); }
     });
+    this.declutterStations();
   }
 
   toPixel(lat: number, lng: number) {

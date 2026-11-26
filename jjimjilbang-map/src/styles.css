@@ -280,11 +280,17 @@ body {
   white-space: nowrap;
 }
 .hide-gu .fmap-gu-label { opacity: 0.35; }
-.stn { position: absolute; left: 0; top: 0; translate: -5px -5px; display: none; align-items: center; gap: 3px; white-space: nowrap; }
-.show-stations .stn { display: flex; }
-.stn i { width: 10px; height: 10px; border-radius: 50%; background: var(--white); border: 2.5px solid var(--stn, var(--grey500)); box-sizing: border-box; }
-.stn b { display: none; font-size: 11px; font-weight: 500; color: var(--grey700); text-shadow: 0 0 3px var(--white), 0 0 2px var(--white); }
-.show-stn-labels .stn b { display: inline; }
+.stn { position: absolute; z-index: 1; left: 0; top: 0; translate: -8px -8px; display: none; align-items: center; gap: 4px; white-space: nowrap; pointer-events: none; }
+.show-stations .stn, .stn.is-near { display: flex; }
+/* 노선 색 동그라미 + 호선 번호 */
+.stn i { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: var(--stn, var(--grey500)); border: 2px solid var(--white); box-sizing: border-box; box-shadow: 0 1px 3px rgb(0 0 0 / 0.25); font-style: normal; font-size: 9px; font-weight: 800; line-height: 1; color: var(--white); }
+/* 역 이름: 흰 테두리 글씨로 지도 위에서도 잘 읽혀요 */
+.stn b { display: none; font-size: 12.5px; font-weight: 700; color: var(--grey900); paint-order: stroke; -webkit-text-stroke: 3px var(--white); text-shadow: 0 0 4px rgb(255 255 255 / 0.9); letter-spacing: -0.2px; }
+.show-stn-labels .stn b, .stn.is-near b { display: inline; }
+/* 고른 찜질방 근처 역은 더 크게 */
+.stn.is-near { z-index: 2; translate: -10px -10px; }
+.stn.is-near i { width: 20px; height: 20px; font-size: 11px; }
+.stn.is-near b { font-size: 13.5px; }
 .fmap-credit {
   position: absolute;
   left: max(10px, env(safe-area-inset-left, 0px));
@@ -628,3 +634,4 @@ body {
 .pgrid-more p { margin: 0; font-size: 13px; color: var(--grey500); }
 .pgrid-more-btn { display: inline-flex; align-items: center; gap: 4px; height: 48px; padding: 0 20px; border-radius: 14px; background: #03c75a; color: var(--white); font-size: 15px; font-weight: 700; text-decoration: none; }
 .pgrid-more-btn:active { opacity: 0.85; }
+.stn.stn-hide-label b { display: none; }
