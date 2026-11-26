@@ -6677,6 +6677,614 @@
         "수유",
         "강북구"
       ]
+    },
+    {
+      "id": "onam-goldspa-bulgama-sauna",
+      "name": "골드스파 불가마사우나",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 오남읍 진건오남로 508 신명프라자 지하",
+      "station": null,
+      "lat": 37.6995,
+      "lng": 127.2045,
+      "coordsApprox": true,
+      "open24h": false,
+      "schedule": null,
+      "hours": null,
+      "closed": [],
+      "phone": "031-572-7888",
+      "gender": "all",
+      "prices": [],
+      "priceSource": null,
+      "priceNote": "업체 소개 페이지에 '사우나+찜질방+플레이타임+수영장 15,000원', 다른 블로그엔 17,000원으로 나와 날짜 확인이 안 돼 가격은 넣지 않음",
+      "includes": [],
+      "extraFees": [],
+      "alert": null,
+      "facilities": [
+        "bulgama",
+        "pool",
+        "kids",
+        "seshin",
+        "parking"
+      ],
+      "facilityNotes": "해수풀 방식 수영장, 플레이타임(키즈), 지상·지하 무료주차 안내",
+      "highlights": [
+        "찜질방과 수영장을 함께 이용",
+        "오남·진접 주민이 자주 찾는 곳"
+      ],
+      "cons": [
+        "수영장 바닥 청결이 아쉽다는 2025년 후기"
+      ],
+      "hashtags": [],
+      "aliases": [
+        "골드스파사우나",
+        "남양주 골드스파"
+      ],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "골드스파사우나 (당근 동네 업체 후기)",
+          "url": "https://www.daangn.com/kr/local-profile/%EA%B3%A8%EB%93%9C%EC%8A%A4%ED%8C%8C%EC%82%AC%EC%9A%B0%EB%82%98-gqwd7rtctjfj/",
+          "source": "당근",
+          "date": "2025-10",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "mixed"
+        },
+        {
+          "title": "골드스파 불가마사우나 소개",
+          "url": "https://goldspa2017.modoo.at/?link=9a742fba",
+          "source": "modoo 업체 페이지",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "medium",
+      "operatingEvidence": "2025년 8~10월 당근 이용 후기, 2025년 5월·10월 방송/자체 콘텐츠 촬영지로 소개됨"
+    },
+    {
+      "id": "onam-bulgama-sauna",
+      "name": "오남불가마사우나",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 오남읍 진건오남로 692 지하",
+      "station": null,
+      "lat": 37.711,
+      "lng": 127.205,
+      "coordsApprox": true,
+      "open24h": false,
+      "schedule": null,
+      "hours": null,
+      "closed": [],
+      "phone": "031-575-1009",
+      "gender": "all",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "일반",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": "찜질복 제공"
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+        "label": "블로그 정리글",
+        "date": "2025-01"
+      },
+      "priceNote": "당근 업체 페이지(업주 등록)에는 대인 9,000원~, 초등 8,000원~, 유아 7,000원~로 더 낮게 나옴. 방문 전 확인 필요",
+      "includes": [],
+      "extraFees": [],
+      "alert": "24시간 영업이라는 글과 05:30~20:00(당근 업체 페이지)이 엇갈림",
+      "facilities": [
+        "bulgama",
+        "food",
+        "parking"
+      ],
+      "facilityNotes": "24시간 매점 후기, 건물 앞뒤 주차",
+      "highlights": [
+        "오남·진접에서 규모가 가장 크다는 후기"
+      ],
+      "cons": [],
+      "hashtags": [],
+      "aliases": [
+        "오남장작불한증막사우나"
+      ],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "남양주 찜질방 추천 24시 사우나 4곳 운영 정보",
+          "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+          "source": "sssbrain.com",
+          "date": "2025-01",
+          "platform": "web",
+          "kind": "list",
+          "verdict": null
+        },
+        {
+          "title": "오남불가마사우나 (당근 업체 페이지)",
+          "url": "https://www.daangn.com/kr/local-profile/%EC%98%A4%EB%82%A8%EB%B6%88%EA%B0%80%EB%A7%88%EC%82%AC%EC%9A%B0%EB%82%98-13769049/",
+          "source": "당근",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "medium",
+      "operatingEvidence": "2024년 8월 새 운영자로 재개장(당근 업체 소개), 2025년 1월 블로그 정리글"
+    },
+    {
+      "id": "jinjeop-janghyeon-sauna",
+      "name": "장현사우나",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 진접읍 장현로 77 지하1층",
+      "station": null,
+      "lat": 37.733,
+      "lng": 127.19,
+      "coordsApprox": true,
+      "open24h": true,
+      "schedule": null,
+      "hours": "24시간 연중무휴(블로그 기준)",
+      "closed": [],
+      "phone": "0507-1429-3800",
+      "gender": "all",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "일반",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+        "label": "블로그 정리글",
+        "date": "2025-01"
+      },
+      "priceNote": "다른 블로그엔 찜질복 2,000원 별도, 초등 10,000원, 유아 7,000원으로 나옴",
+      "includes": [],
+      "extraFees": [],
+      "alert": "'장현불한증막사우나', '해밀24시불가마사우나'와 주소가 겹쳐 상호가 바뀐 것으로 보임. 현재 상호 확인 필요",
+      "facilities": [
+        "kids",
+        "food",
+        "parking"
+      ],
+      "facilityNotes": "리모델링 후 실내 키즈놀이터와 24시 자판기, 주차 5시간 무료(블로그 기준)",
+      "highlights": [
+        "진접에서 드문 24시간 찜질방"
+      ],
+      "cons": [],
+      "hashtags": [],
+      "aliases": [
+        "장현불한증막사우나"
+      ],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "남양주 찜질방 추천 24시 사우나 4곳 운영 정보",
+          "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+          "source": "sssbrain.com",
+          "date": "2025-01",
+          "platform": "web",
+          "kind": "list",
+          "verdict": null
+        },
+        {
+          "title": "장현불한증막사우나 (당근 업체 페이지)",
+          "url": "https://www.daangn.com/kr/local-profile/%EC%9E%A5%ED%98%84%EB%B6%88%ED%95%9C%EC%A6%9D%EB%A7%89%EC%82%AC%EC%9A%B0%EB%82%98-fbd7oyaqr13g/",
+          "source": "당근",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "low",
+      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개. 그 뒤 후기는 찾지 못함"
+    },
+    {
+      "id": "byeollae-noblesse-spa-24",
+      "name": "노블레스스파24시",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 순화궁로 116 노블레스빌딩 B1 (별내동)",
+      "station": "별내역 2번 출구 약 500m",
+      "lat": 37.644,
+      "lng": 127.1255,
+      "coordsApprox": true,
+      "open24h": true,
+      "schedule": null,
+      "hours": "24시간 연중무휴(블로그 기준)",
+      "closed": [],
+      "phone": "031-527-3922",
+      "gender": "all",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 12000,
+          "note": null
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 13000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+        "label": "블로그 정리글",
+        "date": "2025-01"
+      },
+      "priceNote": "예전 글엔 7,000~10,000원도 있어 차이가 큼",
+      "includes": [],
+      "extraFees": [],
+      "alert": null,
+      "facilities": [
+        "parking"
+      ],
+      "facilityNotes": "무료주차 4~5시간(출처마다 다름)",
+      "highlights": [
+        "별내역 가까운 24시간 찜질방",
+        "깔끔하다는 평"
+      ],
+      "cons": [
+        "좁다는 예전 후기"
+      ],
+      "hashtags": [],
+      "aliases": [],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "남양주 찜질방 추천 24시 사우나 4곳 운영 정보",
+          "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+          "source": "sssbrain.com",
+          "date": "2025-01",
+          "platform": "web",
+          "kind": "list",
+          "verdict": null
+        },
+        {
+          "title": "노블레스스파24시ㅣ별내찜질방추천",
+          "url": "https://www.youtube.com/watch?v=0LDPjwq14Uo",
+          "source": "YouTube",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "low",
+      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개"
+    },
+    {
+      "id": "geumgok-hongyu-spaland",
+      "name": "홍유스파랜드",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 홍유릉로248번길 39 (금곡동)",
+      "station": null,
+      "lat": 37.636,
+      "lng": 127.205,
+      "coordsApprox": true,
+      "open24h": true,
+      "schedule": null,
+      "hours": "24시간 연중무휴(블로그 기준)",
+      "closed": [],
+      "phone": "031-702-8085",
+      "gender": "all",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 10000,
+          "note": null
+        },
+        {
+          "type": "찜질",
+          "label": "주간",
+          "who": "소인",
+          "days": "전체",
+          "time": null,
+          "price": 8000,
+          "note": null
+        },
+        {
+          "type": "찜질",
+          "label": "야간",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 11000,
+          "note": null
+        }
+      ],
+      "priceSource": {
+        "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+        "label": "블로그 정리글",
+        "date": "2025-01"
+      },
+      "priceNote": null,
+      "includes": [],
+      "extraFees": [
+        "찜질복 2,000원",
+        "남탕 세신 20,000원"
+      ],
+      "alert": null,
+      "facilities": [
+        "seshin"
+      ],
+      "facilityNotes": null,
+      "highlights": [
+        "홍유릉 근처",
+        "세신 가능"
+      ],
+      "cons": [],
+      "hashtags": [],
+      "aliases": [],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "남양주 찜질방 추천 24시 사우나 4곳 운영 정보",
+          "url": "https://sssbrain.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%B6%94%EC%B2%9C-24%EC%8B%9C-%EC%82%AC%EC%9A%B0%EB%82%98-4%EA%B3%B3-%EC%9A%B4%EC%98%81-%EC%A0%95%EB%B3%B4/",
+          "source": "sssbrain.com",
+          "date": "2025-01",
+          "platform": "web",
+          "kind": "list",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "low",
+      "operatingEvidence": "2025년 1월 블로그 정리글에 24시간 영업으로 소개"
+    },
+    {
+      "id": "dasan-king-jjimjilbang",
+      "name": "다산킹찜질방",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 다산중앙로123번길 22-80 (다산동)",
+      "station": null,
+      "lat": 37.628,
+      "lng": 127.153,
+      "coordsApprox": true,
+      "open24h": true,
+      "schedule": null,
+      "hours": "24시간 연중무휴(2024년 기사 기준)",
+      "closed": [],
+      "phone": "031-556-5000",
+      "gender": "all",
+      "prices": [],
+      "priceSource": null,
+      "priceNote": "당근 후기: 주말 저녁 입장 약 12,000원, 찜질복·식사 포함 약 17,000원(날짜 불명이라 가격은 넣지 않음)",
+      "includes": [],
+      "extraFees": [],
+      "alert": null,
+      "facilities": [
+        "kids",
+        "food",
+        "parking"
+      ],
+      "facilityNotes": "3개 층, 6층 키즈존(볼풀·트램펄린 등 입장료만으로 이용), 7층 휴식존·토굴방. 주차 무료시간 넘으면 30분당 1,500원",
+      "highlights": [
+        "아이와 가기 좋은 찜질방"
+      ],
+      "cons": [
+        "토요일 저녁 붐빔",
+        "매점 다소 비쌈"
+      ],
+      "hashtags": [],
+      "aliases": [],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "다산킹찜질방 주차·키즈카페 한눈에 정리",
+          "url": "https://pandarank.net/contents/696ae619b9f325bc430fa66c",
+          "source": "판다랭크",
+          "date": "2026-01",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "다산 사우나: 재방문후기, 키즈카페보다 좋은 아이들의 성지 다산킹찜질방",
+          "url": "https://www.keyzard.cc/babo_be/nb/224185251505",
+          "source": "블로그 재게시",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "남양주 다산킹찜질방, 아이랑 가기좋은 찜질방",
+          "url": "https://www.yugacrew.com/crewtalk/23760",
+          "source": "유가크루",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "가족들과 함께 할 수 있는 공간 다산킹찜질방",
+          "url": "http://www.newspeople.co.kr/news_proc/news_contents.jsp?ncd=55916",
+          "source": "뉴스앤피플",
+          "date": "2024-02",
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "medium",
+      "operatingEvidence": "2026년 1월 무렵 재방문 후기 정리글, 2024년 2월 기사"
+    },
+    {
+      "id": "dasan-spadium24",
+      "name": "스파디움24",
+      "category": "찜질방",
+      "gu": "남양주시",
+      "address": "경기 남양주시 다산순환로 20 현대프리미어캠퍼스몰 C동 B1 (다산동)",
+      "station": "도농역 도보 약 20분",
+      "lat": 37.6115,
+      "lng": 127.159,
+      "coordsApprox": true,
+      "open24h": true,
+      "schedule": null,
+      "hours": "24시간 연중무휴 (주간 07:00~22:00, 야간 22:00~07:00 / 01:00~04:00 탕 청소)",
+      "closed": [],
+      "phone": "031-791-1911",
+      "gender": "all",
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "찜질스파 주간",
+          "who": "대인",
+          "days": "평일",
+          "time": "07:00~22:00",
+          "price": 23000,
+          "note": "부터"
+        },
+        {
+          "type": "찜질",
+          "label": "찜질스파 야간",
+          "who": "대인",
+          "days": "주말",
+          "time": "22:00~07:00",
+          "price": 28000,
+          "note": "12시간"
+        }
+      ],
+      "priceSource": {
+        "url": "https://v.daum.net/v/tSOdONnQD8",
+        "label": "다음 콘텐츠 기사",
+        "date": "2026-01"
+      },
+      "priceNote": "다른 안내: 평일 야간 26,000원, 주말 주간 25,000원, 평일 사우나 주간 13,000원(3시간)",
+      "includes": [],
+      "extraFees": [
+        "이용시간 초과 시 시간당 5,000원"
+      ],
+      "alert": "초등학생 이상만 입장",
+      "facilities": [
+        "bulgama",
+        "pyeonbaek",
+        "salt",
+        "bath",
+        "comics",
+        "food",
+        "cafe",
+        "parking"
+      ],
+      "facilityNotes": "로울리, 편백나무방, 소금방, 구름방, 만화 북카페 라운지",
+      "highlights": [
+        "다산 대형 찜질스파",
+        "만화카페 무료 이용"
+      ],
+      "cons": [
+        "성수기 붐빔",
+        "요금이 비싼 편"
+      ],
+      "hashtags": [],
+      "aliases": [
+        "아쿠아필드 힐앤스파 다산",
+        "SPADIUM24"
+      ],
+      "nameEn": null,
+      "reviewLinks": [
+        {
+          "title": "혼자는 못해 찜질방 촬영지 3곳｜양평 남양주 숯가마 위치 가격까지",
+          "url": "https://v.daum.net/v/tSOdONnQD8",
+          "source": "다음",
+          "date": "2026-01",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
+        },
+        {
+          "title": "서울 근교 대형 찜질방 [스파디움 24] 할인, 내부 구성",
+          "url": "https://shortmouthnagne.com/entry/%EB%82%A8%EC%96%91%EC%A3%BC-%EC%84%9C%EC%9A%B8-%EA%B7%BC%EA%B5%90-%EB%8C%80%ED%98%95-%EC%B0%9C%EC%A7%88%EB%B0%A9-%EC%8A%A4%ED%8C%8C%EB%94%94%EC%9B%8024-%ED%95%A0%EC%9D%B8-%EB%A7%8C%ED%99%94%EC%B9%B4%ED%8E%98-%ED%83%81%EA%B5%AC",
+          "source": "티스토리 블로그",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "서울근교 당일치기 여행 추천, 남양주 스파디움24 솔직 후기",
+          "url": "https://soocation.com/entry/%EC%84%9C%EC%9A%B8%EA%B7%BC%EA%B5%90-%EB%8B%B9%EC%9D%BC%EC%B9%98%EA%B8%B0-%EC%97%AC%ED%96%89-%EC%B6%94%EC%B2%9C-%EB%82%A8%EC%96%91%EC%A3%BC-%EC%8A%A4%ED%8C%8C%EB%94%94%EC%9B%8024-%EB%B6%80%EB%AA%A8%EB%8B%98%EA%B3%BC-%ED%95%A8%EA%BB%98-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%86%94%EC%A7%81-%ED%9B%84%EA%B8%B0",
+          "source": "블로그",
+          "date": null,
+          "platform": "web",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "[남양주 가볼 만한 곳] 스파디움24",
+          "url": "https://www.youtube.com/watch?v=BKW4Q97UCOs",
+          "source": "YouTube",
+          "date": null,
+          "platform": "youtube",
+          "kind": "review",
+          "verdict": null
+        },
+        {
+          "title": "서울 근교 찜질방 추천 (에스콰이어)",
+          "url": "https://www.esquirekorea.co.kr/article/1907992",
+          "source": "에스콰이어",
+          "date": "2026-08",
+          "platform": "web",
+          "kind": "list",
+          "verdict": "recommend"
+        }
+      ],
+      "instagram": null,
+      "photos": [],
+      "naverPlaceId": null,
+      "verifiedAt": "2026-11",
+      "confidence": "high",
+      "operatingEvidence": "2026년 1월 요금 기사, 2026년 8월 추천 기사"
     }
   ]
 }

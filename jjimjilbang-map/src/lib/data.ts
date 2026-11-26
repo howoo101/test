@@ -400,6 +400,7 @@ export function filterPlaces(f: FilterState, now: KstNow = kstNow()): Place[] {
     if (q && !p.haystack.includes(q)) return false;
     for (const c of f.chips) {
       if (c === 'fav') { if (!f.favs.has(p.id)) return false; }
+      else if (c === 'nyj') { if (p.gu !== '남양주시') return false; }
       else if (c === 'visited') { if (!f.visited?.has(p.id)) return false; }
       else if (c === 'open') { const k = openStatus(p, now).key; if (k !== 'open' && k !== 'closing') return false; }
       else if (c === 'open24h') { if (!p.open24h) return false; }

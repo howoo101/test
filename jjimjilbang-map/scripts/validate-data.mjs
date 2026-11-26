@@ -97,12 +97,12 @@ for (const p of places) {
   if (ids.has(p.id)) err(p, `id가 중복돼요 (${p.id})`);
   ids.add(p.id);
   if (!p.name) err(p, 'name이 비었어요');
-  if (!GU.has(p.gu)) err(p, `gu가 서울 자치구 이름이 아니에요 (${p.gu})`);
+  if (!GU.has(p.gu)) err(p, `gu가 지도에 있는 지역(서울 자치구·남양주시) 이름이 아니에요 (${p.gu})`);
   if (typeof p.lat !== 'number' || typeof p.lng !== 'number') {
     err(p, 'lat/lng가 숫자가 아니에요');
   } else {
     const at = guAt(p.lng, p.lat);
-    if (!at) err(p, `좌표가 서울 밖이에요 (${p.lat}, ${p.lng})`);
+    if (!at) err(p, `좌표가 지도 범위(서울·남양주) 밖이에요 (${p.lat}, ${p.lng})`);
     else if (at !== p.gu) warn(p, `좌표가 ${at}에 찍혀요 (적힌 구: ${p.gu}). 구 경계 근처라면 괜찮아요.`);
   }
   if (!GENDERS.has(p.gender)) err(p, `gender는 all/female/male 중 하나예요 (${p.gender})`);
