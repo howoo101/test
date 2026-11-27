@@ -2,6 +2,7 @@
 import placesJson from '../../data/places.json';
 import naverJson from '../../data/naver-content.json';
 import youtubeJson from '../../data/youtube-content.json';
+import { LINE_ORDER, linesOf, type Line } from './lines';
 import facilitiesJson from '../../data/facilities.json';
 import type { LatLng } from './map/types';
 
@@ -105,6 +106,8 @@ export interface Place extends RawPlace {
   minPrice: number | null;
   haystack: string;
   reviews: ReviewSummary;
+  /** 가까운 역을 지나는 지하철 노선 */
+  lines: Line[];
 }
 
 export interface ReviewSummary {
@@ -280,6 +283,7 @@ function normalize(p: RawPlace, index: number): Place {
     minPrice: base.length ? Math.min(...base.map((r) => r.price)) : null,
     haystack: normText([p.name, p.nameEn, (p.aliases || []).join(' '), p.gu, p.address, p.station, p.category, (p.hashtags || []).join(' ')].join(' ')),
     reviews: summarizeReviews(reviewLinks, p.confidence, NAVER.byPlace?.[p.id]?.blogTotal, p.instagram?.location?.posts),
+    lines: linesOf(p.station),
   };
 }
 
@@ -382,6 +386,20 @@ export function openStatus(p: Place, now: KstNow = kstNow()): OpenStatus {
 
 // ---------------------------------------------------------------- 필터·정렬
 export type SortKey = 'rec' | 'price' | 'near';
+/** 지역(구·시) 고르기 목록: 서울 구는 가나다순, 그다음 경기 */
+export const GU_OPTIONS = (() => {
+  const count = new Map<string, number>();
+  PLACES.forEach((p) => count.set(p.gu, (count.get(p.gu) || 0) + 1));
+  return [...count.entries()]
+    .sort(([a], [b]) => Number(a.endsWith('시')) - Number(b.endsWith('시')) || a.localeCompare(b, 'ko'))
+    .map(([name, n]) => ({ name, n }));
+})();
+
+/** 지하철 노선 고르기 목록 (찜질방이 있는 노선만) */
+export const LINE_OPTIONS = LINE_ORDER
+  .map((name) => ({ name, n: PLACES.filter((p) => p.lines.includes(name)).length }))
+  .filter((o) => o.n > 0);
+
 export const SORT_LABELS: Record<SortKey, string> = { rec: '추천순', price: '낮은 요금순', near: '가까운순' };
 
 export interface FilterState {
@@ -390,6 +408,10 @@ export interface FilterState {
   favs: Set<string>;
   /** 내 기록이 있는 장소 id */
   visited?: Set<string>;
+  /** 고른 구·시 (예: 강남구, 남양주시) */
+  gu?: string | null;
+  /** 고른 지하철 노선 (예: 2호선) */
+  line?: Line | null;
   sort: SortKey;
   userPos: { lat: number; lng: number } | null;
 }
@@ -398,6 +420,8 @@ export function filterPlaces(f: FilterState, now: KstNow = kstNow()): Place[] {
   const q = normText(f.q);
   const list = PLACES.filter((p) => {
     if (q && !p.haystack.includes(q)) return false;
+    if (f.gu && p.gu !== f.gu) return false;
+    if (f.line && !p.lines.includes(f.line)) return false;
     for (const c of f.chips) {
       if (c === 'fav') { if (!f.favs.has(p.id)) return false; }
       else if (c === 'nyj') { if (p.gu !== '남양주시') return false; }

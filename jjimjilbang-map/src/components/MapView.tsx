@@ -21,9 +21,14 @@ interface Props {
   fitKey: string;
   /** false 면 아래 장소 카드 대신 핀을 누르면 바로 상세를 열어요 (넓은 화면) */
   card?: boolean;
+  /** 지도 위를 가리는 위(검색창)·아래(목록 시트) 높이(px). 핀을 이 사이 보이는 곳에 맞춰요 */
+  insets?: { top: number; bottom: number };
 }
 
-export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, card = true }: Props) {
+export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, card = true, insets }: Props) {
+  const ins = useRef(insets ?? { top: 0, bottom: 0 });
+  ins.current = insets ?? { top: 0, bottom: 0 };
+  const pad = () => ({ top: 48 + ins.current.top, right: 56, bottom: 40 + ins.current.bottom, left: 40 });
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<MapAdapter<Place> | null>(null);
   const { favs, userPos, locate } = useApp();
@@ -132,18 +137,24 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, 
   // 검색어·필터가 바뀌면 결과가 다 보이게 맞춰요.
   useEffect(() => {
     if (!ready || !places.length) return;
-    map.current?.fit(places, { top: 48, right: 56, bottom: 40, left: 40 });
+    map.current?.fit(places, pad());
     // places 는 fitKey(검색어·필터)가 바뀔 때만 다시 맞춰요.
   }, [ready, fitKey]);
 
   useEffect(() => {
     if (!ready || !selectedId) return;
-    map.current?.focus(BY_ID[selectedId], 0, card ? CARD_SPACE / 2 : 0);
+    map.current?.focus(BY_ID[selectedId], 0, ((card ? CARD_SPACE : 0) + ins.current.bottom - ins.current.top) / 2);
   }, [ready, selectedId, card]);
 
   useEffect(() => {
     if (active) map.current?.resize();
   }, [active]);
+
+  // 검색창·목록 시트에 가리는 높이를 지도에 알려줘요
+  const insTop = insets?.top ?? 0, insBottom = insets?.bottom ?? 0;
+  useEffect(() => {
+    if (ready) map.current?.setInsets?.(insTop, insBottom);
+  }, [ready, insTop, insBottom]);
 
   // 넓은 화면: 상세 칸이 열리고 닫히며 지도 폭이 바뀌어도 보던 곳을 지켜요
   useEffect(() => {
@@ -157,7 +168,7 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, 
 
   const onLocate = async () => {
     const pos = await locate();
-    if (pos) map.current?.focus(pos, 0, selected ? CARD_SPACE / 2 : 0);
+    if (pos) map.current?.focus(pos, 0, ((selected && card ? CARD_SPACE : 0) + ins.current.bottom - ins.current.top) / 2);
   };
 
   return (
@@ -169,7 +180,7 @@ export function MapView({ places, selectedId, onSelect, onOpen, active, fitKey, 
           <button type="button" className="mc-btn" onClick={() => map.current?.zoomBy(1)} aria-label="지도 확대"><Icon name="plus" /></button>
           <button type="button" className="mc-btn" onClick={() => map.current?.zoomBy(-1)} aria-label="지도 축소"><Icon name="minus" /></button>
         </div>
-        <button type="button" className="mc-btn mc-solo" onClick={() => map.current?.fit(places.length ? places : PLACES, { top: 48, right: 56, bottom: 40, left: 40 })} aria-label="찜질방 전체 보기"><Icon name="expand" /></button>
+        <button type="button" className="mc-btn mc-solo" onClick={() => map.current?.fit(places.length ? places : PLACES, pad())} aria-label="찜질방 전체 보기"><Icon name="expand" /></button>
       </div>
       {!card ? null : selected ? (
         <div className="map-card">

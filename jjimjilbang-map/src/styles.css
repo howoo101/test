@@ -638,3 +638,59 @@ body {
 /* 역 이름을 동그라미 왼쪽에 둘 때 */
 .stn.stn-left { flex-direction: row-reverse; translate: calc(-100% + 6px) -6px; }
 .stn.is-near.stn-left { translate: calc(-100% + 7px) -7px; }
+
+/* ------------------------------------------------------------ 휴대폰: 네이버 지도 앱처럼
+   지도는 화면 전체, 위에 떠 있는 검색창·필터, 아래에서 끌어올리는 목록 시트(내림·반·전체) */
+@media (max-width: 1023px) {
+  .home.is-mobile { position: fixed; inset: 0; overflow: hidden; }
+  .home.is-mobile .home-map { position: absolute; inset: 0; }
+  .home.is-mobile .map-view { position: absolute; inset: 0; }
+  /* 위: 검색창 + 필터 (지도 위에 떠 있어요) */
+  .m-top {
+    position: absolute; z-index: 20; top: 0; left: 0; right: 0;
+    padding-top: env(safe-area-inset-top, 0px);
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgb(255 255 255 / 0.92) 0, rgb(255 255 255 / 0.75) 62%, rgb(255 255 255 / 0));
+  }
+  .m-top > * { pointer-events: auto; }
+  .m-top .ui-search { padding-top: 10px; padding-bottom: 8px; }
+  .m-top .ui-search-box { height: 46px; background: var(--white); box-shadow: 0 2px 10px rgb(0 0 0 / 0.12); }
+  .m-top .chip-row { padding-bottom: 10px; }
+  .m-top .ui-chip { height: 34px; padding: 0 13px; font-size: 14px; background: var(--white); box-shadow: 0 1px 6px rgb(0 0 0 / 0.12); border-color: transparent; }
+  .m-top .ui-chip.is-selected { background: var(--grey900); color: var(--white); }
+  /* 지도 버튼은 검색창 아래, 시트 위에서 움직이지 않게 */
+  .home.is-mobile .map-ctrl { top: calc(var(--m-top) + 4px); gap: 6px; }
+  .home.is-mobile .mc-btn { width: 40px; height: 40px; }
+  .home.is-mobile .map-hint { display: none; }
+  .home.is-mobile .map-card { bottom: calc(var(--m-sheet) + 10px); }
+  .home.is-mobile .fmap-credit { top: auto; bottom: calc(var(--m-sheet) + 4px); }
+  .home.is-mobile.sheet-full .map-ctrl, .home.is-mobile.sheet-full .map-card, .home.is-mobile.sheet-full .fmap-credit { visibility: hidden; }
+  /* 시트 안 목록 머리말은 짧게 */
+  .m-sheet .home-list .ui-lh-main > :not(:first-child) { display: none; }
+
+  /* 아래: 목록 시트 */
+  .m-sheet {
+    position: absolute; z-index: 15; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column;
+    border-radius: 20px 20px 0 0;
+    background: var(--white);
+    box-shadow: 0 -4px 20px rgb(0 0 0 / 0.12);
+    transition: height 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    touch-action: none;
+  }
+  .home.sheet-drag .m-sheet { transition: none; }
+  .m-grab { flex: none; display: grid; place-items: center; height: 22px; cursor: grab; }
+  .m-grab-bar { width: 40px; height: 4px; border-radius: 2px; background: var(--grey300); }
+  .m-sheet-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .home.sheet-peek .m-sheet-body { overflow: hidden; }
+  .m-sheet .home-list .ui-lh { padding-top: 0; cursor: grab; touch-action: none; }
+}
+
+/* 지역·지하철 고르기 버튼 */
+.pick-chip { display: inline-flex; align-items: center; gap: 4px; }
+.pick-caret { margin-right: -3px; opacity: 0.7; }
+.line-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--white); }
+.picker-note { margin: 4px 24px 8px; font-size: 13px; line-height: 1.5; color: var(--grey500); }
+/* 목록 시트를 끌 때 글자가 선택되지 않게 */
+.m-sheet { -webkit-user-select: none; user-select: none; }
+.home.is-mobile.sheet-peek .fmap-credit { display: none; }

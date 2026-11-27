@@ -27,5 +27,7 @@ export interface MapAdapter<T extends PinPlace> {
   zoomBy(steps: number): void;
   setUserPosition(pos: LatLng): void;
   resize(): void;
+  /** 지도 위·아래를 가리는 화면 요소 높이(px). 지도를 그 사이 보이는 곳 기준으로 맞춰요 */
+  setInsets?(top: number, bottom: number): void;
   destroy(): void;
 }
