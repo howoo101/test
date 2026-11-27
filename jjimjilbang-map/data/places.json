@@ -7296,7 +7296,7 @@
     {
       "id": "jinjeop-gwangneung-sauna",
       "name": "광릉사우나",
-      "category": "사우나·찜질방",
+      "category": "목욕탕·사우나",
       "gu": "남양주시",
       "address": "경기 남양주시 진접읍 금강로 1549",
       "station": "진접역 인근",
@@ -7316,26 +7316,46 @@
       "extraFees": [],
       "alert": null,
       "facilities": [
-        "bath"
+        "bath",
+        "parking"
       ],
-      "facilityNotes": null,
+      "facilityNotes": "옛날 감성의 동네 목욕탕이에요. 대형 찜질방 시설은 적을 수 있어요.",
       "highlights": [],
       "cons": [],
       "hashtags": [],
       "aliases": [],
       "nameEn": null,
-      "reviewLinks": [],
+      "reviewLinks": [
+        {
+          "title": "[명소] 주차장 있는 남양주 동네 장사 목욕탕 광릉사우나",
+          "url": "https://blog.naver.com/lclub_star/224185334293",
+          "source": "네이버 블로그",
+          "date": "2026-02",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "남양주 옛날 감성 목욕탕 광릉사우나",
+          "url": "https://blog.naver.com/lyly_taeng/223997581359",
+          "source": "네이버 블로그",
+          "date": "2025-09",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        }
+      ],
       "instagram": null,
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "네이버 지도(지역 검색)에 찜질방으로 등록된 곳이에요. 요금·영업시간은 아직 확인하지 못했어요."
+      "confidence": "medium",
+      "operatingEvidence": "2026년 2월 블로그 방문 후기, 네이버 지도 등록"
     },
     {
       "id": "jinjeop-thehue-pyeonbaek",
       "name": "더휴편백원",
-      "category": "편백 찜질방",
+      "category": "효소찜질",
       "gu": "남양주시",
       "address": "경기 남양주시 진접읍 장현로 148-20 2층",
       "station": "진접역 인근",
@@ -7343,33 +7363,77 @@
       "lng": 127.187933,
       "coordsApprox": false,
       "open24h": false,
-      "schedule": null,
-      "hours": null,
+      "schedule": {
+        "open": "10:00",
+        "close": "19:00",
+        "days": [
+          0,
+          1,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "hours": "매일 10:00~19:00 (화요일 휴무, 후기 기준)",
       "closed": [],
-      "phone": null,
+      "phone": "031-573-8594",
       "gender": "all",
-      "prices": [],
-      "priceSource": null,
+      "prices": [
+        {
+          "type": "찜질",
+          "label": "효소찜질 코스",
+          "who": "대인",
+          "days": "전체",
+          "time": null,
+          "price": 30000,
+          "note": "편백 효소찜질 코스, 예약은 전화로"
+        }
+      ],
+      "priceSource": {
+        "url": "https://blog.naver.com/rose4pcs/224461332836",
+        "label": "네이버 블로그 후기",
+        "date": "2026-11"
+      },
       "priceNote": null,
       "includes": [],
       "extraFees": [],
-      "alert": null,
+      "alert": "예약제로 운영돼요. 방문 전에 전화로 예약해 주세요.",
       "facilities": [
         "pyeonbaek"
       ],
-      "facilityNotes": "편백나무 찜질 공간이에요. 일반 대형 찜질방보다 작은 곳일 수 있어요.",
+      "facilityNotes": "편백나무 효소찜질 공간이에요. 일반 찜질방이 아니라 코스로 예약해서 이용해요.",
       "highlights": [],
       "cons": [],
       "hashtags": [],
       "aliases": [],
       "nameEn": null,
-      "reviewLinks": [],
+      "reviewLinks": [
+        {
+          "title": "진접 더휴편백원 효소찜질 후기",
+          "url": "https://blog.naver.com/rose4pcs/224461332836",
+          "source": "네이버 블로그",
+          "date": "2026-11",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        },
+        {
+          "title": "[진접 더휴편백원] 가성비 효소찜질 서울근교 내돈내산 후기",
+          "url": "https://blog.naver.com/nyamfinder/224451391420",
+          "source": "네이버 블로그",
+          "date": "2026-10",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        }
+      ],
       "instagram": null,
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "네이버 지도(지역 검색)에 찜질방으로 등록된 곳이에요. 요금·영업시간은 아직 확인하지 못했어요."
+      "confidence": "medium",
+      "operatingEvidence": "2026년 11월 블로그 방문 후기 여러 건"
     },
     {
       "id": "jinjeop-bium-garden",
@@ -7406,7 +7470,13 @@
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
       "confidence": "low",
-      "operatingEvidence": "네이버 지도(지역 검색)에 찜질방으로 등록된 곳이에요. 요금·영업시간은 아직 확인하지 못했어요."
+      "operatingEvidence": "네이버 지도(지역 검색)에 찜질방으로 등록된 곳이에요. 요금·영업시간은 아직 확인하지 못했어요.",
+      "naverExclude": [
+        "정원다움",
+        "햇살정원",
+        "바람정원",
+        "루이보스"
+      ]
     },
     {
       "id": "onam-myeonyeok-touch",
@@ -7451,13 +7521,13 @@
       "category": "백토 찜질방",
       "gu": "남양주시",
       "address": "경기 남양주시 덕송1로55번길 6 501호",
-      "station": null,
+      "station": "별내별가람역 3번 출구 약 300m",
       "lat": 37.666084,
       "lng": 127.118477,
       "coordsApprox": false,
       "open24h": false,
       "schedule": null,
-      "hours": null,
+      "hours": "수~일 운영 (월·화 휴무), 소규모 예약제 (2025년 4월 후기 기준)",
       "closed": [],
       "phone": null,
       "gender": "all",
@@ -7466,7 +7536,7 @@
       "priceNote": null,
       "includes": [],
       "extraFees": [],
-      "alert": null,
+      "alert": "소규모 예약제로 운영돼요. 방문 전에 예약해 주세요.",
       "facilities": [],
       "facilityNotes": "양구 백토(흰 흙) 찜질 체험 공간이에요. 일반 대형 찜질방보다 작은 곳일 수 있어요.",
       "highlights": [],
@@ -7474,13 +7544,23 @@
       "hashtags": [],
       "aliases": [],
       "nameEn": null,
-      "reviewLinks": [],
+      "reviewLinks": [
+        {
+          "title": "별내찜질방 백토 원적외선 음이온으로 조용하게 힐링할 수 있는 양구백토체험방",
+          "url": "https://blog.naver.com/canvas12426/223820504316",
+          "source": "네이버 블로그",
+          "date": "2025-04",
+          "platform": "web",
+          "kind": "review",
+          "verdict": "recommend"
+        }
+      ],
       "instagram": null,
       "photos": [],
       "naverPlaceId": null,
       "verifiedAt": "2026-11",
-      "confidence": "low",
-      "operatingEvidence": "네이버 지도(지역 검색)에 찜질방으로 등록된 곳이에요. 요금·영업시간은 아직 확인하지 못했어요."
+      "confidence": "medium",
+      "operatingEvidence": "2025년 4월 블로그 방문 후기, 네이버 지도 등록"
     }
   ]
 }
