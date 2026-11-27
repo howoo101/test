@@ -185,6 +185,13 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
 
   // 손으로 끌거나 확대·축소해도 서울 지도 밖으로 멀리 벗어나지 않게 화면 중심을 묶어요.
   // 지도 가장자리가 화면 안쪽으로 최대 48px까지만 들어올 수 있어요.
+  private insets = { top: 0, bottom: 0 };
+  setInsets(top: number, bottom: number) {
+    if (top === this.insets.top && bottom === this.insets.bottom) return;
+    this.insets = { top, bottom };
+    this.schedule();
+  }
+
   private clampView() {
     const v = this.view, b = this.bounds;
     if (!isFinite(b.minX) || this.w < 2) return;
@@ -195,7 +202,11 @@ export class FallbackMap<T extends PinPlace> implements MapAdapter<T> {
       return Math.min(z, Math.max(a, c));
     };
     v.cx = clampAxis(v.cx, b.minX, b.maxX, this.w / 2 / v.k);
-    v.cy = clampAxis(v.cy, b.minY, b.maxY, this.h / 2 / v.k);
+    // 세로는 검색창(위)·목록 시트(아래)에 가리지 않는 부분을 기준으로 막아요
+    const it = Math.min(this.insets.top, this.h * 0.6), ib = Math.min(this.insets.bottom, this.h * 0.7);
+    const a = b.minY + (this.h / 2 - it) / v.k - slack;
+    const z = b.maxY - (this.h / 2 - ib) / v.k + slack;
+    v.cy = a > z ? (b.minY + b.maxY) / 2 - (it - ib) / 2 / v.k : Math.min(z, Math.max(a, v.cy));
   }
 
   private zoomAt(factor: number, pt: { x: number; y: number }) {
